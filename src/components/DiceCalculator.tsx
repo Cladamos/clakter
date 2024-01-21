@@ -28,7 +28,7 @@ function parseDiceInput(input: string): ParsedInput {
   return { rolls, modifier };
 }
 
-function calculateDices(dices: ParsedInput): number[] {
+function calculateDices(dices: ParsedInput) {
   const output = [];
   let arr: number[];
   for (let i = 0; i < dices.rolls.length; i++) {
@@ -37,7 +37,7 @@ function calculateDices(dices: ParsedInput): number[] {
       output.push(arr[i]);
     }
   }
-  return output;
+  return { rolls: output, modifier: dices.modifier };
 }
 
 function throwDice(count: number, sideNum: number): number[] {

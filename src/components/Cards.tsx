@@ -43,14 +43,16 @@ function Cards() {
 
   if (query.isLoading || query.isPending) {
     return (
-      <Container size="xl" py={100}>
+      <Container size="xl" py={165}>
         <Group gap="lg" justify="center">
           <Input
+            leftSection={<IconSearch size={30} />}
             w="100%"
             radius="sm"
-            placeholder="Search for spells"
             size="md"
-            disabled
+            placeholder="Search for spells"
+            value={input}
+            onChange={handleChange}
           />
           <Grid w="100%">
             {Array.from(Array(24)).map(() => (
