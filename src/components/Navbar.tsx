@@ -5,11 +5,23 @@ import {
   Text,
   useMantineColorScheme,
   Button,
+  Container,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSun, IconMoon } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
-const buttons: string[] = ["Home", "Contact", "Support"];
+type MenuItems = {
+  label: string;
+  route: string;
+};
+
+const menuItems: MenuItems[] = [
+  { label: "Home", route: "/" },
+  { label: "Spells", route: "/spells" },
+  { label: "Characters", route: "/characters" },
+  { label: "Dice Roller", route: "/dice-roller" },
+];
 
 function Navbar() {
   const [opened, { toggle }] = useDisclosure();
@@ -30,41 +42,50 @@ function Navbar() {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="xl">
-          <Group justify="space-between" style={{ flex: 1 }}>
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              hiddenFrom="sm"
-              size="sm"
-            />
-            <Text size="xl" fw={900}>
-              Clabook
-            </Text>
-            <Group gap={70}>
-              <Group ml="xl" gap={30} visibleFrom="sm">
-                {buttons.map((button) => (
-                  <Button variant="subtle" color="indigo">
-                    {button}
-                  </Button>
-                ))}
+        <Container size="xl" h={60}>
+          <Group px="sm" h="100%">
+            <Group justify="space-between" style={{ flex: 1 }}>
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                hiddenFrom="sm"
+                size="sm"
+              />
+              <Text size="xl" fw={900}>
+                Clakter
+              </Text>
+              <Group gap={70}>
+                <Group ml="xl" gap={30} visibleFrom="sm">
+                  {menuItems.map((menuItem) => (
+                    <Button
+                      variant="subtle"
+                      radius="md"
+                      component={Link}
+                      to={menuItem.route}
+                    >
+                      {menuItem.label}
+                    </Button>
+                  ))}
+                </Group>
+                <Button onClick={toggleColorScheme} px={6} radius={8}>
+                  {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
+                </Button>
               </Group>
-              <Button
-                onClick={toggleColorScheme}
-                px={6}
-                radius={8}
-                color="indigo"
-              >
-                {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
-              </Button>
             </Group>
           </Group>
-        </Group>
+        </Container>
       </AppShell.Header>
       <AppShell.Navbar py="md" px="sm">
-        {buttons.map((button) => (
-          <Button variant="subtle" color="indigo" justify="start">
-            {button}
+        {menuItems.map((menuItem) => (
+          <Button
+            variant="subtle"
+            justify="start"
+            size="lg"
+            radius="md"
+            component={Link}
+            to={menuItem.route}
+          >
+            {menuItem.label}
           </Button>
         ))}
       </AppShell.Navbar>
