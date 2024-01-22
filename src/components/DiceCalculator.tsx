@@ -1,16 +1,42 @@
-interface DiceRoll {
+import D4 from "../assets/diceSvgs/dice-d4.svg";
+import D6 from "../assets/diceSvgs/dice-d6.svg";
+import D8 from "../assets/diceSvgs/dice-d8.svg";
+import D10 from "../assets/diceSvgs/dice-d10.svg";
+import D12 from "../assets/diceSvgs/dice-d12.svg";
+import D20 from "../assets/diceSvgs/dice-d20.svg";
+
+interface DiceData {
   count: number;
   sides: number;
 }
 
 interface ParsedInput {
-  rolls: DiceRoll[];
+  data: DiceData[];
   modifier: number;
 }
 
+interface DiceResult {
+  score: number;
+  type: string;
+}
+
+interface CalculatedOutput {
+  results: DiceResult[];
+  modifier: number;
+}
+
+const diceTypeMap: { [key: number]: string } = {
+  4: D4,
+  6: D6,
+  8: D8,
+  10: D10,
+  12: D12,
+  20: D20,
+};
+
 function parseDiceInput(input: string): ParsedInput {
   const parts = input.split("+");
-  const rolls: DiceRoll[] = [];
+  const data: DiceData[] = [];
 
   for (const part of parts) {
     const match = part.match(/(\d+)d(\d+)/);
@@ -18,40 +44,33 @@ function parseDiceInput(input: string): ParsedInput {
     if (match) {
       const count = parseInt(match[1], 10);
       const sides = parseInt(match[2], 10);
-      rolls.push({ count, sides });
+      data.push({ count, sides });
     }
   }
 
   const modifierPart = parts.find((part) => !part.includes("d"));
   const modifier = modifierPart ? parseInt(modifierPart, 10) : 0;
 
-  return { rolls, modifier };
+  return { data, modifier };
 }
 
-function calculateDices(dices: ParsedInput) {
-  const output = [];
-  let arr: number[];
-  for (let i = 0; i < dices.rolls.length; i++) {
-    arr = throwDice(dices.rolls[i].count, dices.rolls[i].sides);
-    for (let i = 0; i < arr.length; i++) {
-      output.push(arr[i]);
+function throwDice(input: string): CalculatedOutput {
+  const { data, modifier } = parseDiceInput(input);
+
+  const results: DiceResult[] = [];
+
+  for (const roll of data) {
+    for (let i = 0; i < roll.count; i++) {
+      // Simulate rolling each die and add the result to the array
+      const rollResult = Math.floor(Math.random() * roll.sides) + 1;
+      results.push({ score: rollResult, type: diceTypeMap[roll.sides] });
     }
   }
-  return { rolls: output, modifier: dices.modifier };
-}
-
-function throwDice(count: number, sideNum: number): number[] {
-  let rand;
-  const res = [];
-  for (let i = 0; i < count; i++) {
-    rand = Math.floor(1 + Math.random() * sideNum);
-    res.push(rand);
-  }
-  return res;
+  return { results, modifier: modifier };
 }
 
 function DiceCalculator(input: string) {
-  return calculateDices(parseDiceInput(input));
+  return throwDice(input);
 }
 
 export default DiceCalculator;

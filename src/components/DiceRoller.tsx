@@ -1,4 +1,12 @@
-import { Container, Group, Input, Button, Text, Image } from "@mantine/core";
+import {
+  Container,
+  Group,
+  Input,
+  Button,
+  Text,
+  Image,
+  Flex,
+} from "@mantine/core";
 import DiceCalculator from "./DiceCalculator";
 import D4 from "../assets/diceSvgs/dice-d4.svg";
 import D6 from "../assets/diceSvgs/dice-d6.svg";
@@ -23,37 +31,34 @@ const diceSvgs: Dices[] = [
 ];
 
 function DiceRoller() {
-  const [dices, setDices] = useState([0]);
+  const [dices, setDices] = useState([{ score: 0, type: "" }]);
   const [input, setInput] = useState("");
   const [modifier, setModifier] = useState(0);
+  const total = dices.reduce((acc, curr) => acc + curr.score, 0) + modifier;
 
   function handleButtonClick() {
     const output = DiceCalculator(input);
-    setDices(output.rolls);
+    console.log(output);
+    setDices(output.results);
     setModifier(output.modifier);
   }
   function handleSvgClick(damage: string) {
     const output = DiceCalculator(damage);
-    setDices(output.rolls);
+    setDices(output.results);
     setModifier(0);
   }
 
   return (
-    <Container size="xl" py={100} h="100%">
+    <Container size="md" py={100} h="100%">
       <Group gap={50}>
         <Group w="100%" justify="center">
-          <Input.Wrapper
-            description="You can write multiple things as showned"
-            size="xs"
-          >
-            <Input
-              size="lg"
-              w={200}
-              placeholder="1d6 + 3d10 + 8"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-            />
-          </Input.Wrapper>
+          <Input
+            size="lg"
+            w={200}
+            placeholder="1d6 + 3d10 + 8"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+          />
 
           <Button size="lg" onClick={handleButtonClick}>
             Roll!
@@ -70,11 +75,22 @@ function DiceRoller() {
           ))}
         </Group>
 
-        <Group w="100%" justify="center">
-          {dices.map((num) => (
-            <Text> {num}</Text>
-          ))}
-          <Text>{modifier}</Text>
+        <Group w="100%" justify="center" gap="md">
+          <Group gap="xl" w="100%" justify="center">
+            {dices.map((dice) => (
+              <Flex align="center" direction="column" gap={5}>
+                <Image src={dice.type} h={40} w={40}></Image>
+                <Text size="lg" fw={700}>
+                  {dice.score}
+                </Text>
+              </Flex>
+            ))}
+
+            <Text size="xl" fw={700}>
+              +{modifier}
+            </Text>
+          </Group>
+          <Text size="xl"> Total: {total}</Text>
         </Group>
       </Group>
     </Container>
