@@ -4,34 +4,38 @@ import {
   Input,
   Button,
   Text,
-  Image,
   Flex,
+  useMantineColorScheme,
+  Tooltip,
+  Paper,
 } from "@mantine/core";
-import DiceCalculator from "./DiceCalculator";
-import D4 from "../assets/diceSvgs/dice-d4.svg";
-import D6 from "../assets/diceSvgs/dice-d6.svg";
-import D8 from "../assets/diceSvgs/dice-d8.svg";
-import D10 from "../assets/diceSvgs/dice-d10.svg";
-import D12 from "../assets/diceSvgs/dice-d12.svg";
-import D20 from "../assets/diceSvgs/dice-d20.svg";
-import { useState } from "react";
+import DiceCalculator, { DiceResult } from "./DiceCalculator";
+import D4 from "../assets/diceSvgs/dice-d4.svg?react";
+import D6 from "../assets/diceSvgs/dice-d6.svg?react";
+import D8 from "../assets/diceSvgs/dice-d8.svg?react";
+import D10 from "../assets/diceSvgs/dice-d10.svg?react";
+import D12 from "../assets/diceSvgs/dice-d12.svg?react";
+import D20 from "../assets/diceSvgs/dice-d20.svg?react";
+import { FC, useState } from "react";
+import classes from "./DiceRoller.module.css";
 
 type Dices = {
-  src: string;
+  svg: FC;
   damage: string;
 };
 
 const diceSvgs: Dices[] = [
-  { src: D4, damage: "1d4" },
-  { src: D6, damage: "1d6" },
-  { src: D8, damage: "1d8" },
-  { src: D10, damage: "1d10" },
-  { src: D12, damage: "1d12" },
-  { src: D20, damage: "1d20" },
+  { svg: D4, damage: "1d4" },
+  { svg: D6, damage: "1d6" },
+  { svg: D8, damage: "1d8" },
+  { svg: D10, damage: "1d10" },
+  { svg: D12, damage: "1d12" },
+  { svg: D20, damage: "1d20" },
 ];
 
 function DiceRoller() {
-  const [dices, setDices] = useState([{ score: 0, type: "" }]);
+  const { colorScheme } = useMantineColorScheme();
+  const [dices, setDices] = useState<DiceResult[]>([]);
   const [input, setInput] = useState("");
   const [modifier, setModifier] = useState(0);
   const total = dices.reduce((acc, curr) => acc + curr.score, 0) + modifier;
@@ -66,29 +70,48 @@ function DiceRoller() {
         </Group>
         <Group w="100%" justify="center">
           {diceSvgs.map((dice) => (
-            <Image
-              src={dice.src}
-              h={100}
-              w={100}
-              onClick={() => handleSvgClick(dice.damage)}
-            ></Image>
+            <Tooltip label={`Roll ${dice.damage}`}>
+              <Button
+                onClick={() => handleSvgClick(dice.damage)}
+                className={classes.dice}
+                style={{
+                  fill: colorScheme === "dark" ? "white" : "black",
+                }}
+                variant="default"
+                radius="md"
+                h="130"
+              >
+                <dice.svg />
+              </Button>
+            </Tooltip>
           ))}
         </Group>
 
         <Group w="100%" justify="center" gap="md">
-          <Group gap="xl" w="100%" justify="center">
+          <Group gap="xl" w="100%" justify="center" align="flex-end">
             {dices.map((dice) => (
               <Flex align="center" direction="column" gap={5}>
-                <Image src={dice.type} h={40} w={40}></Image>
+                <Paper
+                  className={`${classes.dice} ${classes.small_dice}`}
+                  style={{
+                    fill: colorScheme === "dark" ? "white" : "black",
+                  }}
+                >
+                  <dice.type />
+                </Paper>
                 <Text size="lg" fw={700}>
                   {dice.score}
                 </Text>
               </Flex>
             ))}
 
-            <Text size="xl" fw={700}>
-              +{modifier}
-            </Text>
+            {modifier != 0 && (
+              <Tooltip label="Modifier">
+                <Text size="lg" fw={700}>
+                  {modifier > 0 ? `+${modifier}` : modifier}
+                </Text>
+              </Tooltip>
+            )}
           </Group>
           <Text size="xl"> Total: {total}</Text>
         </Group>

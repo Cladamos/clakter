@@ -1,31 +1,32 @@
-import D4 from "../assets/diceSvgs/dice-d4.svg";
-import D6 from "../assets/diceSvgs/dice-d6.svg";
-import D8 from "../assets/diceSvgs/dice-d8.svg";
-import D10 from "../assets/diceSvgs/dice-d10.svg";
-import D12 from "../assets/diceSvgs/dice-d12.svg";
-import D20 from "../assets/diceSvgs/dice-d20.svg";
+import D4 from "../assets/diceSvgs/dice-d4.svg?react";
+import D6 from "../assets/diceSvgs/dice-d6.svg?react";
+import D8 from "../assets/diceSvgs/dice-d8.svg?react";
+import D10 from "../assets/diceSvgs/dice-d10.svg?react";
+import D12 from "../assets/diceSvgs/dice-d12.svg?react";
+import D20 from "../assets/diceSvgs/dice-d20.svg?react";
+import { FC } from "react";
 
-interface DiceData {
+type DiceData = {
   count: number;
   sides: number;
-}
+};
 
-interface ParsedInput {
+type ParsedInput = {
   data: DiceData[];
   modifier: number;
-}
+};
 
-interface DiceResult {
+export type DiceResult = {
   score: number;
-  type: string;
-}
+  type: FC;
+};
 
-interface CalculatedOutput {
+type CalculatedOutput = {
   results: DiceResult[];
   modifier: number;
-}
+};
 
-const diceTypeMap: { [key: number]: string } = {
+const diceTypeMap: { [key: number]: FC } = {
   4: D4,
   6: D6,
   8: D8,

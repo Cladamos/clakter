@@ -39,7 +39,7 @@ function Cards() {
 
   const [input, setInput] = useState("");
   const [activePage, setPage] = useState(1);
-  const cardsPerPage = 12;
+  const cardsPerPage = 9;
 
   if (query.isLoading || query.isPending) {
     return (
@@ -91,7 +91,7 @@ function Cards() {
 
   return (
     <Container size="xl" py={100}>
-      <Group gap="lg" justify="center">
+      <Group gap="lg" justify="flex-end">
         <Pagination
           total={data.length / cardsPerPage}
           value={activePage}
