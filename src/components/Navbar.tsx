@@ -42,52 +42,65 @@ function Navbar() {
       padding="md"
     >
       <AppShell.Header>
-        <Container size="xl" h={60}>
-          <Group px="sm" h="100%">
-            <Group justify="space-between" style={{ flex: 1 }}>
-              <Burger
-                opened={opened}
-                onClick={toggle}
-                hiddenFrom="sm"
-                size="sm"
-              />
-              <Text size="xl" fw={900}>
-                Clakter
-              </Text>
-              <Group gap={70}>
-                <Group ml="xl" gap={30} visibleFrom="sm">
-                  {menuItems.map((menuItem) => (
-                    <Button
-                      variant="subtle"
-                      radius="md"
-                      component={Link}
-                      to={menuItem.route}
-                    >
-                      {menuItem.label}
-                    </Button>
-                  ))}
-                </Group>
-                <Button onClick={toggleColorScheme} px={6} radius={8}>
-                  {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
+        <Container size="xl" h="100%">
+          <Group h="100%" justify="space-between">
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Text size="xl" fw={900}>
+              Clakter
+            </Text>
+            <Group gap="sm" visibleFrom="sm" justify="center">
+              {menuItems.map((menuItem) => (
+                <Button
+                  variant="subtle"
+                  radius="md"
+                  component={Link}
+                  to={menuItem.route}
+                >
+                  {menuItem.label}
                 </Button>
+              ))}
+            </Group>
+            <Group justify="flex-end">
+              <Group visibleFrom="sm">
+                <Button variant="outline"> Login</Button>
+                <Button> Sign up </Button>
               </Group>
+              <Button onClick={toggleColorScheme} px={6} radius={8}>
+                {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
+              </Button>
             </Group>
           </Group>
         </Container>
       </AppShell.Header>
       <AppShell.Navbar py="md" px="sm">
-        {menuItems.map((menuItem) => (
-          <Button
-            variant="subtle"
-            justify="start"
-            size="lg"
-            radius="md"
-            component={Link}
-            to={menuItem.route}
-          >
-            {menuItem.label}
-          </Button>
-        ))}
+        <Group gap="xl">
+          <Group>
+            {menuItems.map((menuItem) => (
+              <Button
+                w="100%"
+                variant="subtle"
+                justify="start"
+                size="lg"
+                radius="md"
+                component={Link}
+                to={menuItem.route}
+              >
+                {menuItem.label}
+              </Button>
+            ))}
+          </Group>
+          <Group px="lg" grow w="100%" gap="md">
+            <Button size="md" variant="outline">
+              Login
+            </Button>
+            <Button size="md">Sign up</Button>
+          </Group>
+        </Group>
       </AppShell.Navbar>
     </AppShell>
   );

@@ -1,5 +1,6 @@
-function CharactersView() {
-  return <div></div>;
-}
+import Characters from "../components/Characters";
 
+function CharactersView() {
+  return <Characters />;
+}
 export default CharactersView;

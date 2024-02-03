@@ -1,7 +1,7 @@
-import { Text } from "@mantine/core";
+import Home from "../components/Home";
 
 function HomeView() {
-  return <Text size="xl"> Home </Text>;
+  return <Home />;
 }
 
 export default HomeView;

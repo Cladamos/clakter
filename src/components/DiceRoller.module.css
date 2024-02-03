@@ -11,7 +11,7 @@
 }
 
 .dice:focus {
-    outline: 1px solid var(--mantine-color-violet-6);
+    outline: 1px solid var(--mantine-primary-color-filled);
 }
 
 

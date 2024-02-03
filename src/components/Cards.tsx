@@ -43,7 +43,7 @@ function Cards() {
 
   if (query.isLoading || query.isPending) {
     return (
-      <Container size="xl" py={165}>
+      <Container size="xl" mt={165}>
         <Group gap="lg" justify="center">
           <Input
             leftSection={<IconSearch size={30} />}
@@ -69,7 +69,7 @@ function Cards() {
   if (query.isError) {
     const icon = <IconExclamationCircle />;
     return (
-      <Container size="xl" py={100}>
+      <Container size="xl" mt={100}>
         <Alert variant="light" color="red" title="Error" icon={icon}>
           There was an error occured.
         </Alert>
@@ -90,7 +90,7 @@ function Cards() {
   }
 
   return (
-    <Container size="xl" py={100}>
+    <Container size="lg" mt={100}>
       <Group gap="lg" justify="flex-end">
         <Pagination
           total={data.length / cardsPerPage}

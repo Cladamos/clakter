@@ -1,3 +1,4 @@
+import { IconHelpHexagon } from "@tabler/icons-react";
 import D4 from "../assets/diceSvgs/dice-d4.svg?react";
 import D6 from "../assets/diceSvgs/dice-d6.svg?react";
 import D8 from "../assets/diceSvgs/dice-d8.svg?react";
@@ -9,6 +10,7 @@ import { FC } from "react";
 type DiceData = {
   count: number;
   sides: number;
+  operation: string;
 };
 
 type ParsedInput = {
@@ -36,24 +38,74 @@ const diceTypeMap: { [key: number]: FC } = {
 };
 
 function parseDiceInput(input: string): ParsedInput {
-  const parts = input.split("+");
+  const parts = input.split(/([+-])/);
   const data: DiceData[] = [];
+  let modifier = 0;
+  let operation = "+";
 
   for (const part of parts) {
-    const match = part.match(/(\d+)d(\d+)/);
+    const trimmedPart = part.trim();
 
-    if (match) {
-      const count = parseInt(match[1], 10);
-      const sides = parseInt(match[2], 10);
-      data.push({ count, sides });
+    if (trimmedPart === "+") {
+      operation = "+";
+    } else if (trimmedPart === "-") {
+      operation = "-";
+    } else if (trimmedPart.includes("d")) {
+      const match = trimmedPart.match(/(\d+)d(\d+)/);
+
+      if (match) {
+        const count = parseInt(match[1], 10);
+        const sides = parseInt(match[2], 10);
+        data.push({ count, sides, operation });
+      }
+    } else {
+      const number = parseInt(trimmedPart, 10);
+
+      if (!isNaN(number)) {
+        if (operation === "+") {
+          modifier += number;
+        } else {
+          modifier -= number;
+        }
+      }
     }
   }
 
-  const modifierPart = parts.find((part) => !part.includes("d"));
-  const modifier = modifierPart ? parseInt(modifierPart, 10) : 0;
-
   return { data, modifier };
 }
+
+/* function parseAyberk(input: string): ParsedInput {
+  const data: DiceData[] = [];
+  let modifier = 0;
+  const mod = input.includes("-") ? "-" : "+";
+  let tempParts = input.split(mod);
+  // if positive look last index if it is not contains `d` it is dice, so no modifier
+  // if negative last index is modifier
+
+  const lastIdx = tempParts[tempParts.length - 1];
+  if (!lastIdx.includes("d")) {
+    modifier = Number(`${mod}${lastIdx}`);
+
+    if (tempParts.length > 1) {
+      tempParts.pop();
+    }
+  }
+
+  console.log("modifier ", modifier);
+  console.log("mod ", mod);
+
+  if (mod === "-") {
+    tempParts = tempParts[0].split("+");
+  }
+  console.log("tempParts ", tempParts);
+
+  tempParts.forEach((part) => {
+    const [count, sides] = part.split("d");
+    data.push({ count: Number(count), sides: Number(sides) });
+  });
+
+  return { data, modifier };
+} */
 
 function throwDice(input: string): CalculatedOutput {
   const { data, modifier } = parseDiceInput(input);
@@ -63,8 +115,13 @@ function throwDice(input: string): CalculatedOutput {
   for (const roll of data) {
     for (let i = 0; i < roll.count; i++) {
       // Simulate rolling each die and add the result to the array
-      const rollResult = Math.floor(Math.random() * roll.sides) + 1;
-      results.push({ score: rollResult, type: diceTypeMap[roll.sides] });
+      let rollResult = Math.floor(Math.random() * roll.sides) + 1;
+      if (roll.operation === "-") {
+        rollResult = rollResult * -1;
+      }
+      const diceType = diceTypeMap[roll.sides] || IconHelpHexagon;
+
+      results.push({ score: rollResult, type: diceType });
     }
   }
   return { results, modifier: modifier };
