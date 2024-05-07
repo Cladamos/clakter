@@ -1,9 +1,13 @@
 import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
 import { useState } from "react";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 type Props = {
   title: string;
+  level: string
   desc: string;
+  index: string
+  handleCurrSpell: (index: string) => void
 };
 
 function Spell(props: Props) {
@@ -21,7 +25,12 @@ function Spell(props: Props) {
 
       <Group justify="space-between" mt="md" mb="xs">
         <Text fw={500}>{props.title}</Text>
-        <Badge color="pink">On Sale</Badge>
+        <Group>
+          <Badge color="pink">{props.level}</Badge>
+          <Button radius={100} px={5} size="xs" onClick={() => props.handleCurrSpell(props.index)}>
+            <IconInfoCircle size={20} />
+          </Button>
+        </Group>
       </Group>
 
       <Text size="sm" c="dimmed">

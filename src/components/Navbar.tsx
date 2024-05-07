@@ -50,7 +50,7 @@ function Navbar() {
               hiddenFrom="sm"
               size="sm"
             />
-            <Text size="xl" fw={900}>
+            <Text size="xl" fw={900} w={{sm: "", md: "200"}}>
               Clakter
             </Text>
             <Group gap="sm" visibleFrom="sm" justify="center">
@@ -65,11 +65,11 @@ function Navbar() {
                 </Button>
               ))}
             </Group>
-            <Group justify="flex-end">
-              <Group visibleFrom="sm">
+            <Group justify="flex-end" w={{sm: "", md: "200"}}>
+              {/* <Group visibleFrom="sm">
                 <Button variant="outline"> Login</Button>
                 <Button> Sign up </Button>
-              </Group>
+              </Group> */}
               <Button onClick={toggleColorScheme} px={6} radius={8}>
                 {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
               </Button>
@@ -89,17 +89,18 @@ function Navbar() {
                 radius="md"
                 component={Link}
                 to={menuItem.route}
+                onClick={toggle}
               >
                 {menuItem.label}
               </Button>
             ))}
           </Group>
-          <Group px="lg" grow w="100%" gap="md">
+          {/* <Group px="lg" grow w="100%" gap="md">
             <Button size="md" variant="outline">
               Login
             </Button>
             <Button size="md">Sign up</Button>
-          </Group>
+          </Group> */}
         </Group>
       </AppShell.Navbar>
     </AppShell>
