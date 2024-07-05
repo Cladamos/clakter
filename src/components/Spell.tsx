@@ -1,32 +1,30 @@
-import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
-import { useState } from "react";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { Card, Image, Text, Badge, Button, Group } from "@mantine/core"
+import { useState } from "react"
+import { IconInfoCircle } from "@tabler/icons-react"
 
 type Props = {
-  title: string;
+  title: string
   level: string
-  desc: string;
+  desc: string
   index: string
   handleCurrSpell: (index: string) => void
-};
+}
 
 function Spell(props: Props) {
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(false)
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
-        <Image
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
-          height={160}
-          alt="Norway"
-        />
+        <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png" height={160} alt="Norway" />
       </Card.Section>
 
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500}>{props.title}</Text>
+        <Text fw={500} size="sm">
+          {props.title}
+        </Text>
         <Group>
-          <Badge color="pink">{props.level}</Badge>
+          <Badge color="pink">{props.level === "0 Level" ? "Cantrip" : props.level}</Badge>
           <Button radius={100} px={5} size="xs" onClick={() => props.handleCurrSpell(props.index)}>
             <IconInfoCircle size={20} />
           </Button>
@@ -48,7 +46,7 @@ function Spell(props: Props) {
         {status === true ? "Added your spellbook" : "Add to your spellbook"}
       </Button>
     </Card>
-  );
+  )
 }
 
-export default Spell;
+export default Spell

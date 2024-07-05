@@ -1,5 +1,5 @@
 function Characters() {
-  return <div></div>;
+  return <div></div>
 }
 
-export default Characters;
+export default Characters

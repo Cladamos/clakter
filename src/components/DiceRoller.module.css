@@ -1,20 +1,19 @@
 .dice svg {
-    width: 100px;
-    height: 100px;
-    transition: 300ms all ease;
-    cursor: pointer;
+  width: 100px;
+  height: 100px;
+  transition: 300ms all ease;
+  cursor: pointer;
 }
 
 .small_dice svg {
-    width: 32px;
-    height: 32px;
+  width: 32px;
+  height: 32px;
 }
 
 .dice:focus {
-    outline: 1px solid var(--mantine-primary-color-filled);
+  outline: 1px solid var(--mantine-primary-color-filled);
 }
 
-
 .dice svg:active {
-rotate: 180deg;
+  rotate: 180deg;
 }

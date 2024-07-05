@@ -1,52 +1,55 @@
-import Spell from "./Spell";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import {
-  Container,
-  Grid,
-  Skeleton,
-  Alert,
-  Input,
-  Group,
-  Pagination,
-  Button,
-} from "@mantine/core";
-import { IconExclamationCircle, IconSearch } from "@tabler/icons-react";
-import React, { useState } from "react";
-import SpellModal from "./SpellModal";
-import { useDisclosure } from '@mantine/hooks';
-
+import Spell from "./Spell"
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
+import { Container, Grid, Skeleton, Alert, Input, Group, Pagination, Button } from "@mantine/core"
+import { IconExclamationCircle, IconSearch } from "@tabler/icons-react"
+import React, { useState } from "react"
+import SpellModal from "./SpellModal"
+import { useDisclosure } from "@mantine/hooks"
+import CreateSpellModal from "./CreateSpellModal"
+import { createdSpell } from "./CreateSpellModal"
 
 const variants = {
   regular: { base: 12, md: 6, lg: 4 },
-};
+}
 
 type FetchAllSpellsResponseBody = {
   results: {
-    index: string;
-    name: "string";
-    level: "string";
-  }[];
-};
-
-async function fetchAllSpels() {
-  const response = await axios<FetchAllSpellsResponseBody>(
-    "https://www.dnd5eapi.co/api/spells"
-  );
-  return response.data;
+    index: string
+    name: "string"
+    level: "string"
+  }[]
 }
 
+const spells: createdSpell[] = [
+  {
+    name: "Tungsten Balls",
+    level: "8 Level",
+    desc: "It hurts ...",
+  },
+]
+
+async function fetchAllSpels() {
+  const response = await axios<FetchAllSpellsResponseBody>("https://www.dnd5eapi.co/api/spells")
+  return response.data
+}
 function Cards() {
   const query = useQuery({
     queryKey: ["spells"],
     queryFn: fetchAllSpels,
-  });
+  })
 
-  const [input, setInput] = useState("");
-  const [currSpell, setCurrSpell] = useState("");
-  const [opened, { open, close }] = useDisclosure(false);
-  const [activePage, setPage] = useState(1);
-  const cardsPerPage = 9;
+  const [createdSpells, setCreatedSpells] = useState(spells)
+  const [input, setInput] = useState("")
+  const [currSpell, setCurrSpell] = useState("")
+  const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
+  const [openedCreateSpellModal, { open: openCreateSpellModal, close: closeCreateSpellModal }] = useDisclosure(false)
+  const [activePage, setPage] = useState(1)
+  const cardsPerPage = 9
+
+  function handleCreateSpell(spell: createdSpell) {
+    setCreatedSpells([...createdSpells, spell])
+  }
 
   if (query.isLoading || query.isPending) {
     return (
@@ -70,47 +73,45 @@ function Cards() {
           </Grid>
         </Group>
       </Container>
-    );
+    )
   }
 
   if (query.isError) {
-    const icon = <IconExclamationCircle />;
+    const icon = <IconExclamationCircle />
     return (
       <Container size="lg" mt={100}>
         <Alert variant="light" color="red" title="Error" icon={icon}>
           There was an error occured.
         </Alert>
       </Container>
-    );
+    )
   }
-  const data = query.data.results.filter((curr) =>
-    curr.name.toLowerCase().includes(input.toLowerCase())
-  );
 
-  const indexOfLastCard = activePage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = data.slice(indexOfFirstCard, indexOfLastCard);
+  const data = query.data.results.filter((curr) => curr.name.toLowerCase().includes(input.toLowerCase()))
+
+  const indexOfLastCard = activePage * cardsPerPage
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage
+  const currentCards = data.slice(indexOfFirstCard, indexOfLastCard)
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setInput(event.target.value);
-    setPage(1);
+    setInput(event.target.value)
+    setPage(1)
   }
   function handleCurrSpell(index: string) {
     setCurrSpell(index)
-    console.log(index)
-    open()
+    openSpellModal()
   }
 
   return (
     <>
-      <SpellModal opened={opened} close={close} spellIndex={currSpell} />
+      <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} />
+      <SpellModal opened={openedSpellModal} close={closeSpellModal} spellIndex={currSpell} />
       <Container size="lg" mt={100}>
         <Group gap="lg" justify="flex-end">
           <Pagination
             total={data.length / cardsPerPage}
             value={activePage}
             onChange={setPage}
-            mt="sm"
             size="md"
             disabled={currentCards.length < cardsPerPage}
           />
@@ -123,9 +124,6 @@ function Cards() {
             value={input}
             onChange={handleChange}
           />
-          <Button onClick={open}>
-            Test Modal
-          </Button>
           <Grid w="100%">
             {currentCards.map((spell) => (
               <Grid.Col span={variants.regular}>
@@ -133,10 +131,13 @@ function Cards() {
               </Grid.Col>
             ))}
           </Grid>
+          <Button w="100%" radius="md" mb="md" onClick={openCreateSpellModal}>
+            Create Your Own Spells
+          </Button>
         </Group>
       </Container>
     </>
-  );
+  )
 }
 
-export default Cards;
+export default Cards
