@@ -53,7 +53,7 @@ function Cards() {
 
   if (query.isLoading || query.isPending) {
     return (
-      <Container size="lg" mt={165}>
+      <Container size="lg" mt={100}>
         <Group gap="lg" justify="center">
           <Input
             leftSection={<IconSearch size={30} />}
@@ -65,12 +65,15 @@ function Cards() {
             onChange={handleChange}
           />
           <Grid w="100%">
-            {Array.from(Array(24)).map(() => (
+            {Array.from(Array(12)).map(() => (
               <Grid.Col span={variants.regular}>
-                <Skeleton height={250} mt={6} radius="md" />
+                <Skeleton height={125} mt={6} radius="md" />
               </Grid.Col>
             ))}
           </Grid>
+          <Button w="100%" radius="md" onClick={openCreateSpellModal}>
+            Create Your Own Spells
+          </Button>
         </Group>
       </Container>
     )
@@ -124,7 +127,7 @@ function Cards() {
               </Grid.Col>
             ))}
           </Grid>
-          <Button w="100%" radius="md" mb="md" onClick={openCreateSpellModal}>
+          <Button w="100%" radius="md" onClick={openCreateSpellModal}>
             Create Your Own Spells
           </Button>
           <Pagination
