@@ -1,4 +1,4 @@
-import { Modal, Stack, Input, InputBase, Button, Textarea, NativeSelect } from "@mantine/core"
+import { Modal, Stack, Input, Button, Textarea, NativeSelect } from "@mantine/core"
 import { useInputState } from "@mantine/hooks"
 
 type CreateSpellModalProps = {

@@ -1,6 +1,7 @@
-import { Modal, Text } from "@mantine/core"
+import { Group, Loader, Modal, Badge, Text, Tooltip, Popover, PopoverTarget, PopoverDropdown } from "@mantine/core"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
+import { useDisclosure } from "@mantine/hooks"
 
 type SpellModalProps = {
   opened: boolean
@@ -11,6 +12,11 @@ type SpellModalProps = {
 type FetchCurrSpellResposeBody = {
   name: string
   desc: string
+  range: string
+  casting_time: string
+  duration: string
+  components: [string]
+  material: string
 }
 const BASE_URL = "https://www.dnd5eapi.co/api/spells"
 
@@ -20,21 +26,67 @@ async function fetchCurrSpell(spellIndex: string) {
 }
 
 function SpellModal(props: SpellModalProps) {
+  const [opened, { close, open }] = useDisclosure(false)
   const query = useQuery({
     queryKey: ["spell", props.spellIndex],
     queryFn: ({ queryKey }) => fetchCurrSpell(queryKey[1]),
   })
   if (query.isLoading || query.isPending) {
-    return
+    return (
+      <Modal opened={props.opened} onClose={props.close} size="lg" padding="xl" radius="md" centered>
+        <Group justify="center" h={300} mb="xl" gap="lg">
+          <Loader color="blue" size="xl" />
+          <Text size="xl"> Loading... </Text>
+        </Group>
+      </Modal>
+    )
   }
   if (query.error) {
-    ;<Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered>
-      <Text> Opps! Error occured</Text>
-    </Modal>
+    return (
+      <Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered>
+        <Text> Opps! Error occured</Text>
+      </Modal>
+    )
   }
+
   return (
     <Modal opened={props.opened} onClose={props.close} size="lg" padding="xl" radius="md" centered title={query.data?.name}>
-      <Text size="sm">{query.data?.desc}</Text>
+      <Group mb="md" gap="lg" justify="center">
+        <Tooltip label="Casting Time" transitionProps={{ transition: "pop", duration: 200 }} position="bottom">
+          <Badge variant="dot" color="blue" size="lg">
+            {query.data.casting_time}
+          </Badge>
+        </Tooltip>
+        <Popover
+          disabled={query.data.material === undefined}
+          position="top"
+          withArrow
+          opened={opened}
+          transitionProps={{ transition: "pop", duration: 200 }}
+        >
+          <PopoverTarget>
+            <Tooltip label="Components" transitionProps={{ transition: "pop", duration: 200 }} position="bottom">
+              <Badge variant="dot" color="violet" size="lg" onMouseEnter={open} onMouseLeave={close}>
+                {query.data.components}
+              </Badge>
+            </Tooltip>
+          </PopoverTarget>
+          <PopoverDropdown>
+            <Text size="xs">{query.data.material}</Text>
+          </PopoverDropdown>
+        </Popover>
+        <Tooltip label="Range" transitionProps={{ transition: "pop", duration: 200 }} position="bottom">
+          <Badge variant="dot" color="grape" size="lg">
+            {query.data.range}
+          </Badge>
+        </Tooltip>
+        <Tooltip label="Duration" transitionProps={{ transition: "pop", duration: 200 }} position="bottom">
+          <Badge variant="dot" color="red" size="lg">
+            {query.data.duration}
+          </Badge>
+        </Tooltip>
+      </Group>
+      <Text size="sm">{query.data.desc}</Text>
     </Modal>
   )
 }

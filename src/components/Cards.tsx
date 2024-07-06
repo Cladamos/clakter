@@ -45,7 +45,7 @@ function Cards() {
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
   const [openedCreateSpellModal, { open: openCreateSpellModal, close: closeCreateSpellModal }] = useDisclosure(false)
   const [activePage, setPage] = useState(1)
-  const cardsPerPage = 9
+  const cardsPerPage = 12
 
   function handleCreateSpell(spell: createdSpell) {
     setCreatedSpells([...createdSpells, spell])
@@ -107,14 +107,7 @@ function Cards() {
       <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} />
       <SpellModal opened={openedSpellModal} close={closeSpellModal} spellIndex={currSpell} />
       <Container size="lg" mt={100}>
-        <Group gap="lg" justify="flex-end">
-          <Pagination
-            total={data.length / cardsPerPage}
-            value={activePage}
-            onChange={setPage}
-            size="md"
-            disabled={currentCards.length < cardsPerPage}
-          />
+        <Group gap="lg" justify="center">
           <Input
             leftSection={<IconSearch size={30} />}
             w="100%"
@@ -124,7 +117,7 @@ function Cards() {
             value={input}
             onChange={handleChange}
           />
-          <Grid w="100%">
+          <Grid>
             {currentCards.map((spell) => (
               <Grid.Col span={variants.regular}>
                 <Spell title={spell.name} desc="" level={spell.level + " Level"} index={spell.index} handleCurrSpell={handleCurrSpell} />
@@ -134,6 +127,13 @@ function Cards() {
           <Button w="100%" radius="md" mb="md" onClick={openCreateSpellModal}>
             Create Your Own Spells
           </Button>
+          <Pagination
+            total={data.length / cardsPerPage}
+            value={activePage}
+            onChange={setPage}
+            size="md"
+            disabled={currentCards.length < cardsPerPage}
+          />
         </Group>
       </Container>
     </>
