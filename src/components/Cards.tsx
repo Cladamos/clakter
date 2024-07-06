@@ -23,9 +23,14 @@ type FetchAllSpellsResponseBody = {
 
 const spells: createdSpell[] = [
   {
-    name: "Tungsten Balls",
-    level: "8 Level",
-    desc: "It hurts ...",
+    name: "Test",
+    desc: "test123",
+    level: "2 Level",
+    components: "VSM",
+    castingTime: "321",
+    range: "123",
+    material: "elma ve 1 kilo muz",
+    duration: "3",
   },
 ]
 
@@ -49,6 +54,7 @@ function Cards() {
 
   function handleCreateSpell(spell: createdSpell) {
     setCreatedSpells([...createdSpells, spell])
+    console.log(createdSpells)
   }
 
   if (query.isLoading || query.isPending) {

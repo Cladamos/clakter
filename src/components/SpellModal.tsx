@@ -15,7 +15,7 @@ type FetchCurrSpellResposeBody = {
   range: string
   casting_time: string
   duration: string
-  components: [string]
+  components: string
   material: string
   level: string
 }
@@ -50,7 +50,6 @@ function SpellModal(props: SpellModalProps) {
     )
   }
 
-  console.log(query.data.level)
   return (
     <Modal opened={props.opened} onClose={props.close} size="lg" padding="xl" radius="md" centered title={query.data?.name}>
       <Group mb="md" gap="xs" justify="center">

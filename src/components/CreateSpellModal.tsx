@@ -1,5 +1,5 @@
-import { Modal, Stack, Input, Button, Textarea, NativeSelect } from "@mantine/core"
-import { useInputState } from "@mantine/hooks"
+import { Modal, Stack, Button, Textarea, NativeSelect, Group, TextInput } from "@mantine/core"
+import { useForm } from "@mantine/form"
 
 type CreateSpellModalProps = {
   opened: boolean
@@ -9,43 +9,113 @@ type CreateSpellModalProps = {
 
 export type createdSpell = {
   name: string
-  level: string
   desc: string
+  level: string
+  components: string
+  castingTime: string
+  range: string
+  material: string
+  duration: string
 }
 
 function CreateSpellModal(props: CreateSpellModalProps) {
-  const [name, setName] = useInputState("")
-  const [description, setDescription] = useInputState("")
-  const [level, setLevel] = useInputState("")
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      name: "",
+      desc: "",
+      level: "2 Level",
+      components: "VSM",
+      castingTime: "",
+      range: "",
+      material: "",
+      duration: "",
+    },
+    validate: {},
+  })
 
-  function handleClick() {
-    props.createSpell({ name: name, level: level, desc: description })
+  function handleSumbit() {
+    props.createSpell(form.getValues())
     props.close()
+    form.reset()
   }
 
   return (
     <Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered title="Create Your Own Spell">
-      <Stack gap="md" justify="center">
-        <Input.Wrapper label="Name" required>
-          <Input size="md" radius="md" placeholder="Spell Name" onChange={setName} />
-        </Input.Wrapper>
-        <Input.Wrapper size="md" label="Description">
-          <Textarea size="md" radius="md" placeholder="Spell Description" onChange={setDescription} />
-        </Input.Wrapper>
-        <NativeSelect
-          value={level}
-          data={["Cantrip", "1 Level", "2 Level", "3 Level", "4 Level", "5 Level", "6 Level", "7 Level", "8 Level", "9 Level"]}
-          label="Spell Level"
-          component="select"
-          size="md"
-          radius="md"
-          required
-          onChange={setLevel}
-        />
-        <Button radius="md" size="md" onClick={handleClick}>
-          Create
-        </Button>
-      </Stack>
+      <form onSubmit={form.onSubmit(handleSumbit)}>
+        <Stack gap="md">
+          <TextInput size="md" radius="md" placeholder="Aid" label="Name" required key={form.key("name")} {...form.getInputProps("name")} />
+          <Textarea
+            size="md"
+            radius="md"
+            label="Description"
+            placeholder="Your spell bolsters your allies with toughness and resolve. Choose up to three creatures within range. Each target's hit point maximum and current hit points increase by 5 for the duration."
+            autosize
+            minRows={3}
+            maxRows={10}
+            key={form.key("desc")}
+            {...form.getInputProps("desc")}
+          />
+          <Group grow>
+            <NativeSelect
+              value={form.getValues().level}
+              data={["Cantrip", "1 Level", "2 Level", "3 Level", "4 Level", "5 Level", "6 Level", "7 Level", "8 Level", "9 Level"]}
+              label="Spell Level"
+              component="select"
+              size="md"
+              radius="md"
+              required
+              onChange={(event) => form.setFieldValue("level", event.currentTarget.value)}
+            />
+            <NativeSelect
+              value={form.getValues().components}
+              data={["V", "S", "M", "VS", "SM", "VM", "VSM"]}
+              label="Components"
+              component="select"
+              size="md"
+              radius="md"
+              required
+              onChange={(event) => form.setFieldValue("components", event.currentTarget.value)}
+            />
+          </Group>
+          <Group grow>
+            <TextInput
+              size="md"
+              radius="md"
+              placeholder="1 Action"
+              label="Casting Time"
+              required
+              key={form.key("castingTime")}
+              {...form.getInputProps("castingTime")}
+            />
+            <TextInput size="md" radius="md" placeholder="30 Feet" label="Range" required key={form.key("range")} {...form.getInputProps("range")} />
+          </Group>
+          <Group grow>
+            <TextInput
+              size="md"
+              radius="md"
+              placeholder="A tiny strip of white cloth"
+              label="Material"
+              required
+              key={form.key("material")}
+              {...form.getInputProps("material")}
+              disabled={!form.getValues().components.includes("M")}
+            />
+            <TextInput
+              size="md"
+              radius="md"
+              placeholder="8 Hours"
+              label="Duration"
+              required
+              key={form.key("duration")}
+              {...form.getInputProps("duration")}
+            />
+          </Group>
+          <Button radius="md" size="md" type="submit">
+            Create
+          </Button>
+        </Stack>
+      </form>
     </Modal>
   )
 }
