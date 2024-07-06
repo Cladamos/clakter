@@ -20,7 +20,7 @@ function Spell(props: Props) {
           {props.title}
         </Text>
         <Group>
-          <Badge color="pink">{props.level === "0 Level" ? "Cantrip" : props.level}</Badge>
+          <Badge color="pink">{props.level == "Level 0" ? "Cantrip" : props.level}</Badge>
           <ActionIcon radius={100} size="md" onClick={() => props.handleCurrSpell(props.index)}>
             <IconInfoCircle size={20} />
           </ActionIcon>

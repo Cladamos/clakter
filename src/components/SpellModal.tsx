@@ -17,6 +17,7 @@ type FetchCurrSpellResposeBody = {
   duration: string
   components: [string]
   material: string
+  level: string
 }
 const BASE_URL = "https://www.dnd5eapi.co/api/spells"
 
@@ -49,9 +50,10 @@ function SpellModal(props: SpellModalProps) {
     )
   }
 
+  console.log(query.data.level)
   return (
     <Modal opened={props.opened} onClose={props.close} size="lg" padding="xl" radius="md" centered title={query.data?.name}>
-      <Group mb="md" gap="lg" justify="center">
+      <Group mb="md" gap="xs" justify="center">
         <Tooltip label="Casting Time" transitionProps={{ transition: "pop", duration: 200 }} position="bottom">
           <Badge variant="dot" color="blue" size="lg">
             {query.data.casting_time}
@@ -83,6 +85,11 @@ function SpellModal(props: SpellModalProps) {
         <Tooltip label="Duration" transitionProps={{ transition: "pop", duration: 200 }} position="bottom">
           <Badge variant="dot" color="red" size="lg">
             {query.data.duration}
+          </Badge>
+        </Tooltip>
+        <Tooltip label="Level" transitionProps={{ transition: "pop", duration: 200 }} position="bottom">
+          <Badge variant="dot" color="red" size="lg">
+            {query.data.level == "0" ? "Cantrip" : "Level " + query.data.level}
           </Badge>
         </Tooltip>
       </Group>

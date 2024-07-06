@@ -123,7 +123,7 @@ function Cards() {
           <Grid>
             {currentCards.map((spell) => (
               <Grid.Col span={variants.regular}>
-                <Spell title={spell.name} desc="" level={spell.level + " Level"} index={spell.index} handleCurrSpell={handleCurrSpell} />
+                <Spell title={spell.name} desc="" level={"Level " + spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />
               </Grid.Col>
             ))}
           </Grid>
