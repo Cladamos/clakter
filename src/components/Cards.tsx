@@ -31,6 +31,8 @@ const spells: createdSpell[] = [
     range: "123",
     material: "elma ve 1 kilo muz",
     duration: "3",
+    school: "test",
+    classes: "uyyy",
   },
 ]
 
@@ -54,7 +56,6 @@ function Cards() {
 
   function handleCreateSpell(spell: createdSpell) {
     setCreatedSpells([...createdSpells, spell])
-    console.log(createdSpells)
   }
 
   if (query.isLoading || query.isPending) {

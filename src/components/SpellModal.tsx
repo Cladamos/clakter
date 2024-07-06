@@ -1,4 +1,4 @@
-import { Group, Loader, Modal, Badge, Text, Tooltip, Popover, PopoverTarget, PopoverDropdown } from "@mantine/core"
+import { Group, Loader, Modal, Badge, Text, Tooltip, Popover, PopoverTarget, PopoverDropdown, Stack } from "@mantine/core"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { useDisclosure } from "@mantine/hooks"
@@ -18,6 +18,14 @@ type FetchCurrSpellResposeBody = {
   components: string
   material: string
   level: string
+  school: {
+    name: string
+  }
+  classes: [
+    {
+      name: string
+    },
+  ]
 }
 const BASE_URL = "https://www.dnd5eapi.co/api/spells"
 
@@ -92,7 +100,13 @@ function SpellModal(props: SpellModalProps) {
           </Badge>
         </Tooltip>
       </Group>
-      <Text size="sm">{query.data.desc}</Text>
+      <Stack gap="sm">
+        <Text size="sm">{query.data.desc}</Text>
+        <Group justify="space-between">
+          <Text size="sm">School: {query.data.school?.name}</Text>
+          <Text size="sm">Classes: {query.data.classes?.map((n) => " " + n.name).toString()}</Text>
+        </Group>
+      </Stack>
     </Modal>
   )
 }

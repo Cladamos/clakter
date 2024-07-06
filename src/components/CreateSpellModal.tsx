@@ -16,6 +16,8 @@ export type createdSpell = {
   range: string
   material: string
   duration: string
+  school: string
+  classes: string
 }
 
 function CreateSpellModal(props: CreateSpellModalProps) {
@@ -30,6 +32,8 @@ function CreateSpellModal(props: CreateSpellModalProps) {
       range: "",
       material: "",
       duration: "",
+      school: "",
+      classes: "",
     },
     validate: {},
   })
@@ -43,7 +47,7 @@ function CreateSpellModal(props: CreateSpellModalProps) {
   return (
     <Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered title="Create Your Own Spell">
       <form onSubmit={form.onSubmit(handleSumbit)}>
-        <Stack gap="md">
+        <Stack gap="sm">
           <TextInput size="md" radius="md" placeholder="Aid" label="Name" required key={form.key("name")} {...form.getInputProps("name")} />
           <Textarea
             size="md"
@@ -52,7 +56,7 @@ function CreateSpellModal(props: CreateSpellModalProps) {
             placeholder="Your spell bolsters your allies with toughness and resolve. Choose up to three creatures within range. Each target's hit point maximum and current hit points increase by 5 for the duration."
             autosize
             minRows={3}
-            maxRows={10}
+            maxRows={5}
             key={form.key("desc")}
             {...form.getInputProps("desc")}
           />
@@ -111,7 +115,18 @@ function CreateSpellModal(props: CreateSpellModalProps) {
               {...form.getInputProps("duration")}
             />
           </Group>
-          <Button radius="md" size="md" type="submit">
+          <Group grow>
+            <TextInput size="md" radius="md" placeholder="Abjuration" label="School" key={form.key("school")} {...form.getInputProps("school")} />
+            <TextInput
+              size="md"
+              radius="md"
+              placeholder="Cleric, Paladin"
+              label="Classes"
+              key={form.key("classes")}
+              {...form.getInputProps("classes")}
+            />
+          </Group>
+          <Button radius="md" size="md" type="submit" mt="md">
             Create
           </Button>
         </Stack>
