@@ -1,6 +1,16 @@
-import Characters from "../components/Characters";
+import { useDisclosure } from "@mantine/hooks"
+import Characters from "../components/Characters"
+import { HeroText } from "../components/HeroHeader/HeroText"
+import CreateCharacterModal from "../components/CreateCharacterModal"
 
 function CharactersView() {
-  return <Characters />;
+  const [opened, { open, close }] = useDisclosure(false)
+  return (
+    <>
+      <CreateCharacterModal opened={opened} close={close} />
+      <HeroText open={open} />
+      <Characters />
+    </>
+  )
 }
-export default CharactersView;
+export default CharactersView
