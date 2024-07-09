@@ -1,6 +1,7 @@
 import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, Grid, Container } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { IconCircleFilled } from "@tabler/icons-react"
+import { IconCircleFilled, IconCheck } from "@tabler/icons-react"
+import { notifications } from "@mantine/notifications"
 import { useState } from "react"
 
 type createCharacterModalProps = {
@@ -121,15 +122,19 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     setActive(0)
   }
 
-  function handleSubmit() {
+  function handleSubmit(className: string) {
     props.close()
     console.log(form.getValues())
     form.reset()
+    notifications.show({
+      title: "Your character is created",
+      message: "Have fun with your " + className + ". Such a great choice!",
+    })
   }
 
   return (
     <Modal opened={props.opened} onClose={handleModalClose} size="xl" padding="lg" radius="md" centered title="Create Your Own Character">
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit((val) => handleSubmit(val.class))}>
         <Stepper active={active} onStepClick={setActive} size="sm" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>

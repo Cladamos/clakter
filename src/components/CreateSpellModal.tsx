@@ -1,5 +1,6 @@
 import { Modal, Stack, Button, Textarea, NativeSelect, Group, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
+import { notifications } from "@mantine/notifications"
 
 type CreateSpellModalProps = {
   opened: boolean
@@ -38,15 +39,19 @@ function CreateSpellModal(props: CreateSpellModalProps) {
     validate: {},
   })
 
-  function handleSumbit() {
+  function handleSumbit(name: string) {
     props.createSpell(form.getValues())
     props.close()
     form.reset()
+    notifications.show({
+      title: "Your spell is created",
+      message: "Your " + name + " created succesfuly. It look awesome :D",
+    })
   }
 
   return (
     <Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered title="Create Your Own Spell">
-      <form onSubmit={form.onSubmit(handleSumbit)}>
+      <form onSubmit={form.onSubmit((val) => handleSumbit(val.name))}>
         <Stack gap="sm">
           <TextInput size="md" radius="md" placeholder="Aid" label="Name" required key={form.key("name")} {...form.getInputProps("name")} />
           <Textarea
@@ -83,15 +88,7 @@ function CreateSpellModal(props: CreateSpellModalProps) {
             />
           </Group>
           <Group grow>
-            <TextInput
-              size="md"
-              radius="md"
-              placeholder="1 Action"
-              label="Casting Time"
-              required
-              key={form.key("castingTime")}
-              {...form.getInputProps("castingTime")}
-            />
+            <TextInput size="md" radius="md" placeholder="1 Action" label="Casting Time" required key={form.key("castingTime")} {...form.getInputProps("castingTime")} />
             <TextInput size="md" radius="md" placeholder="30 Feet" label="Range" required key={form.key("range")} {...form.getInputProps("range")} />
           </Group>
           <Group grow>
@@ -105,26 +102,11 @@ function CreateSpellModal(props: CreateSpellModalProps) {
               {...form.getInputProps("material")}
               disabled={!form.getValues().components.includes("M")}
             />
-            <TextInput
-              size="md"
-              radius="md"
-              placeholder="8 Hours"
-              label="Duration"
-              required
-              key={form.key("duration")}
-              {...form.getInputProps("duration")}
-            />
+            <TextInput size="md" radius="md" placeholder="8 Hours" label="Duration" required key={form.key("duration")} {...form.getInputProps("duration")} />
           </Group>
           <Group grow>
             <TextInput size="md" radius="md" placeholder="Abjuration" label="School" key={form.key("school")} {...form.getInputProps("school")} />
-            <TextInput
-              size="md"
-              radius="md"
-              placeholder="Cleric, Paladin"
-              label="Classes"
-              key={form.key("classes")}
-              {...form.getInputProps("classes")}
-            />
+            <TextInput size="md" radius="md" placeholder="Cleric, Paladin" label="Classes" key={form.key("classes")} {...form.getInputProps("classes")} />
           </Group>
           <Button radius="md" size="md" type="submit" mt="md">
             Create
