@@ -1,7 +1,8 @@
-import { AppShell, Burger, Group, Text, useMantineColorScheme, Button, Container } from "@mantine/core"
+import { AppShell, Burger, Group, Text, useMantineColorScheme, Button, Container, Paper } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconSun, IconMoon } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
+import NavbarAvatar from "./NavbarAvatar"
 
 type MenuItems = {
   label: string
@@ -28,7 +29,7 @@ function Navbar() {
       header={{ height: 60 }}
       navbar={{
         width: 300,
-        breakpoint: "sm",
+        breakpoint: "lg",
         collapsed: { desktop: true, mobile: !opened },
       }}
       padding="md"
@@ -36,22 +37,21 @@ function Navbar() {
       <AppShell.Header>
         <Container size="xl" h="100%">
           <Group h="100%" justify="space-between">
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-            <Text size="xl" fw={900} w={{ sm: "", md: "200" }}>
+            <Burger opened={opened} onClick={toggle} hiddenFrom="lg" size="sm" w={{ sm: "100", lg: "300" }} />
+            <Text size="xl" fw={900} w={{ lg: "300" }}>
               Clakter
             </Text>
-            <Group gap="sm" visibleFrom="sm" justify="center">
+            <Group gap="sm" visibleFrom="lg" justify="center">
               {menuItems.map((menuItem) => (
-                <Button variant="subtle" radius="md" component={Link} to={menuItem.route}>
+                <Button variant="subtle" radius="md" component={Link} to={menuItem.route} key={menuItem.label}>
                   {menuItem.label}
                 </Button>
               ))}
             </Group>
-            <Group justify="flex-end" w={{ sm: "", md: "200" }}>
-              {/* <Group visibleFrom="sm">
-                <Button variant="outline"> Login</Button>
-                <Button> Sign up </Button>
-              </Group> */}
+            <Group justify="flex-end" w={{ sm: "100", lg: "300" }} gap="lg">
+              <Paper visibleFrom="lg">
+                <NavbarAvatar size="md" />
+              </Paper>
               <Button onClick={toggleColorScheme} px={6} radius={8}>
                 {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
               </Button>
@@ -60,20 +60,15 @@ function Navbar() {
         </Container>
       </AppShell.Header>
       <AppShell.Navbar py="md" px="sm">
-        <Group gap="xl">
-          <Group>
-            {menuItems.map((menuItem) => (
-              <Button w="100%" variant="subtle" justify="start" size="lg" radius="md" component={Link} to={menuItem.route} onClick={toggle}>
-                {menuItem.label}
-              </Button>
-            ))}
-          </Group>
-          {/* <Group px="lg" grow w="100%" gap="md">
-            <Button size="md" variant="outline">
-              Login
+        <Paper m="lg">
+          <NavbarAvatar size="md" />
+        </Paper>
+        <Group>
+          {menuItems.map((menuItem) => (
+            <Button w="100%" variant="subtle" justify="start" size="lg" radius="md" component={Link} to={menuItem.route} onClick={toggle}>
+              {menuItem.label}
             </Button>
-            <Button size="md">Sign up</Button>
-          </Group> */}
+          ))}
         </Group>
       </AppShell.Navbar>
     </AppShell>
