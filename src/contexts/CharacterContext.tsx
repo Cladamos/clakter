@@ -2,6 +2,7 @@ import { createContext, ReactNode, useContext } from "react"
 import { useLocalStorage } from "usehooks-ts"
 
 export type Character = {
+  id: string
   name: string
   class: string
   race: string

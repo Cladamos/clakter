@@ -3,7 +3,7 @@ import { CharacterContext } from "../contexts/CharacterContext"
 import { useDisclosure } from "@mantine/hooks"
 import Characters from "../components/Characters"
 import { HeroText } from "../components/HeroHeader/HeroText"
-import CreateCharacterModal from "../components/CreateCharacterModal"
+import CreateCharacterModal from "../components/Modals/CreateCharacterModal"
 
 function CharactersView() {
   const characterCtx = useContext(CharacterContext)

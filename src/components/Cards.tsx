@@ -4,10 +4,10 @@ import { useQuery } from "@tanstack/react-query"
 import { Container, Grid, Skeleton, Alert, Input, Group, Pagination, Button } from "@mantine/core"
 import { IconExclamationCircle, IconSearch } from "@tabler/icons-react"
 import React, { useState } from "react"
-import SpellModal from "./SpellModal"
+import SpellModal from "./Modals/SpellModal"
 import { useDisclosure } from "@mantine/hooks"
-import CreateSpellModal from "./CreateSpellModal"
-import { createdSpell } from "./CreateSpellModal"
+import CreateSpellModal from "./Modals/CreateSpellModal"
+import { createdSpell } from "./Modals/CreateSpellModal"
 
 const variants = {
   regular: { base: 12, md: 6, lg: 4 },
@@ -72,8 +72,8 @@ function Cards() {
             onChange={handleChange}
           />
           <Grid w="100%">
-            {Array.from(Array(12)).map(() => (
-              <Grid.Col span={variants.regular}>
+            {Array.from(Array(12)).map((index) => (
+              <Grid.Col span={variants.regular} key={index}>
                 <Skeleton height={125} mt={6} radius="md" />
               </Grid.Col>
             ))}
@@ -87,10 +87,9 @@ function Cards() {
   }
 
   if (query.isError) {
-    const icon = <IconExclamationCircle />
     return (
       <Container size="lg" mt={100}>
-        <Alert variant="light" color="red" title="Error" icon={icon}>
+        <Alert variant="light" color="red" title="Error" icon={<IconExclamationCircle />}>
           There was an error occured.
         </Alert>
       </Container>
@@ -128,8 +127,8 @@ function Cards() {
             onChange={handleChange}
           />
           <Grid>
-            {currentCards.map((spell) => (
-              <Grid.Col span={variants.regular}>
+            {currentCards.map((spell, index) => (
+              <Grid.Col span={variants.regular} key={index}>
                 <Spell title={spell.name} desc="" level={"Level " + spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />
               </Grid.Col>
             ))}

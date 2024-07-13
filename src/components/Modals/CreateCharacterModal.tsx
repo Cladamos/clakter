@@ -3,7 +3,8 @@ import { useForm } from "@mantine/form"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
 import { useState } from "react"
-import { Character, useCharacter } from "../contexts/CharacterContext"
+import { Character, useCharacter } from "../../contexts/CharacterContext"
+import { v4 as uuidv4 } from "uuid"
 
 type createCharacterModalProps = {
   opened: boolean
@@ -140,6 +141,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       title: "Your character is created",
       message: "Have fun with your " + character.class + ". Such a great choice!",
     })
+    setActive(0)
   }
 
   function handleError() {
@@ -222,7 +224,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
 
   return (
     <Modal opened={props.opened} onClose={handleModalClose} size="xl" padding="lg" radius="md" centered title="Create Your Own Character">
-      <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+      <form onSubmit={form.onSubmit((val) => handleSubmit({ ...val, id: uuidv4() }), handleError)}>
         <Stepper active={active} onStepClick={setActive} size="sm" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>

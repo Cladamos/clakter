@@ -52,7 +52,7 @@ function SpellModal(props: SpellModalProps) {
   }
   if (query.error) {
     return (
-      <Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered>
+      <Modal opened={props.opened} onClose={props.close} size="lg" padding="xl" radius="md" centered>
         <Text> Opps! Error occured</Text>
       </Modal>
     )

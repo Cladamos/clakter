@@ -48,7 +48,7 @@ function Navbar() {
                 </Button>
               ))}
             </Group>
-            <Group justify="flex-end" w={{ sm: "100", lg: "300" }} gap="lg">
+            <Group justify="flex-end" w={{ sm: "100", lg: "300" }} gap="xl">
               <Paper visibleFrom="lg">
                 <NavbarAvatar size="md" />
               </Paper>
@@ -65,7 +65,17 @@ function Navbar() {
         </Paper>
         <Group>
           {menuItems.map((menuItem) => (
-            <Button w="100%" variant="subtle" justify="start" size="lg" radius="md" component={Link} to={menuItem.route} onClick={toggle}>
+            <Button
+              w="100%"
+              variant="subtle"
+              justify="start"
+              size="lg"
+              radius="md"
+              component={Link}
+              to={menuItem.route}
+              key={menuItem.label}
+              onClick={toggle}
+            >
               {menuItem.label}
             </Button>
           ))}

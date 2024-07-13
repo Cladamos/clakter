@@ -88,7 +88,15 @@ function CreateSpellModal(props: CreateSpellModalProps) {
             />
           </Group>
           <Group grow>
-            <TextInput size="md" radius="md" placeholder="1 Action" label="Casting Time" required key={form.key("castingTime")} {...form.getInputProps("castingTime")} />
+            <TextInput
+              size="md"
+              radius="md"
+              placeholder="1 Action"
+              label="Casting Time"
+              required
+              key={form.key("castingTime")}
+              {...form.getInputProps("castingTime")}
+            />
             <TextInput size="md" radius="md" placeholder="30 Feet" label="Range" required key={form.key("range")} {...form.getInputProps("range")} />
           </Group>
           <Group grow>
@@ -102,11 +110,26 @@ function CreateSpellModal(props: CreateSpellModalProps) {
               {...form.getInputProps("material")}
               disabled={!form.getValues().components.includes("M")}
             />
-            <TextInput size="md" radius="md" placeholder="8 Hours" label="Duration" required key={form.key("duration")} {...form.getInputProps("duration")} />
+            <TextInput
+              size="md"
+              radius="md"
+              placeholder="8 Hours"
+              label="Duration"
+              required
+              key={form.key("duration")}
+              {...form.getInputProps("duration")}
+            />
           </Group>
           <Group grow>
             <TextInput size="md" radius="md" placeholder="Abjuration" label="School" key={form.key("school")} {...form.getInputProps("school")} />
-            <TextInput size="md" radius="md" placeholder="Cleric, Paladin" label="Classes" key={form.key("classes")} {...form.getInputProps("classes")} />
+            <TextInput
+              size="md"
+              radius="md"
+              placeholder="Cleric, Paladin"
+              label="Classes"
+              key={form.key("classes")}
+              {...form.getInputProps("classes")}
+            />
           </Group>
           <Button radius="md" size="md" type="submit" mt="md">
             Create
