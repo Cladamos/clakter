@@ -2,7 +2,8 @@ import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, 
 import { useForm } from "@mantine/form"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { Character, CharacterContext } from "../contexts/CharacterContext"
 
 type createCharacterModalProps = {
   opened: boolean
@@ -59,6 +60,8 @@ const skillCheckInputProps = [
 ]
 
 function CreateCharacterModal(props: createCharacterModalProps) {
+  const characterCtx = useContext(CharacterContext)
+
   const [active, setActive] = useState(0)
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current))
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
@@ -128,13 +131,13 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     setActive(0)
   }
 
-  function handleSubmit(className: string) {
+  function handleSubmit(character: Character) {
     props.close()
-    console.log(form.getValues())
+    characterCtx?.setCharacters((c) => [...c, character])
     form.reset()
     notifications.show({
       title: "Your character is created",
-      message: "Have fun with your " + className + ". Such a great choice!",
+      message: "Have fun with your " + character.class + ". Such a great choice!",
     })
   }
 
@@ -193,7 +196,10 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       newSavingThrows.push({
         ...s,
         proficiency: false,
-        score: form.getValues().attributes[index].effect <= 0 ? String(form.getValues().attributes[index].effect) : "+" + String(form.getValues().attributes[index].effect),
+        score:
+          form.getValues().attributes[index].effect <= 0
+            ? String(form.getValues().attributes[index].effect)
+            : "+" + String(form.getValues().attributes[index].effect),
       }),
     )
     form.setValues({ savingThrows: newSavingThrows })
@@ -202,14 +208,20 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     form
       .getValues()
       .skillChecks.map((s) =>
-        form.getValues().attributes.find((a) => (a.name.includes(s.type) ? newSkillChecks.push({ ...s, proficiency: false, score: a.effect <= 0 ? String(a.effect) : "+" + String(a.effect) }) : null)),
+        form
+          .getValues()
+          .attributes.find((a) =>
+            a.name.includes(s.type)
+              ? newSkillChecks.push({ ...s, proficiency: false, score: a.effect <= 0 ? String(a.effect) : "+" + String(a.effect) })
+              : null,
+          ),
       )
     form.setValues({ skillChecks: newSkillChecks })
   }
 
   return (
     <Modal opened={props.opened} onClose={handleModalClose} size="xl" padding="lg" radius="md" centered title="Create Your Own Character">
-      <form onSubmit={form.onSubmit((val) => handleSubmit(val.class), handleError)}>
+      <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
         <Stepper active={active} onStepClick={setActive} size="sm" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>
@@ -239,7 +251,13 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                 <Group grow mt="sm">
                   {savingThrowInputProps.map((s, index) => (
                     <Group wrap="nowrap" key={s.key}>
-                      <Checkbox radius="xl" mt="lg" icon={IconCircleFilled} checked={form.getValues().savingThrows[index].proficiency} onChange={() => handleCheckboxChange(s.key, index)} />
+                      <Checkbox
+                        radius="xl"
+                        mt="lg"
+                        icon={IconCircleFilled}
+                        checked={form.getValues().savingThrows[index].proficiency}
+                        onChange={() => handleCheckboxChange(s.key, index)}
+                      />
                       <TextInput size="md" radius="md" label={s.label} key={form.key(s.key)} {...form.getInputProps(s.key)} />
                     </Group>
                   ))}
@@ -258,7 +276,13 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                 {skillCheckInputProps.map((s, index) => (
                   <Grid.Col span={3} key={s.key}>
                     <Group wrap="nowrap">
-                      <Checkbox radius="xl" mt="lg" icon={IconCircleFilled} checked={form.getValues().skillChecks[index].proficiency} onChange={() => handleCheckboxChange(s.key, index)} />
+                      <Checkbox
+                        radius="xl"
+                        mt="lg"
+                        icon={IconCircleFilled}
+                        checked={form.getValues().skillChecks[index].proficiency}
+                        onChange={() => handleCheckboxChange(s.key, index)}
+                      />
                       <TextInput size="sm" radius="md" label={s.label} key={form.key(s.key)} {...form.getInputProps(s.key)} />
                     </Group>
                   </Grid.Col>

@@ -13,6 +13,8 @@ import Navbar from "./components/Navbar"
 import { theme } from "./theme"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
+import { CharacterProvider } from "./contexts/CharacterContext"
+
 const router = createBrowserRouter([
   {
     path: "",
@@ -36,8 +38,10 @@ const queryClient = new QueryClient()
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <CharacterProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </CharacterProvider>
   )
 }
