@@ -24,13 +24,13 @@ export function HeroText(props: HeroTextProps) {
 
         <Container p={0} size={600}>
           <Text size="lg" c="dimmed" className={classes.description}>
-            Create your first character and experience all great tools of Clakter
+            Create your character and experience all great tools of Clakter
           </Text>
         </Container>
 
         <div className={classes.controls}>
           <Button className={classes.control} size="lg" onClick={props.open}>
-            Create Your First Character
+            Create Your Character
           </Button>
         </div>
       </div>

@@ -2,8 +2,8 @@ import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, 
 import { useForm } from "@mantine/form"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
-import { useState, useContext } from "react"
-import { Character, CharacterContext } from "../contexts/CharacterContext"
+import { useState } from "react"
+import { Character, useCharacter } from "../contexts/CharacterContext"
 
 type createCharacterModalProps = {
   opened: boolean
@@ -60,7 +60,7 @@ const skillCheckInputProps = [
 ]
 
 function CreateCharacterModal(props: createCharacterModalProps) {
-  const characterCtx = useContext(CharacterContext)
+  const characterCtx = useCharacter()
 
   const [active, setActive] = useState(0)
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current))
@@ -133,7 +133,8 @@ function CreateCharacterModal(props: createCharacterModalProps) {
 
   function handleSubmit(character: Character) {
     props.close()
-    characterCtx?.setCharacters((c) => [...c, character])
+    characterCtx.setCharacters((c) => [...c, character])
+    characterCtx.setCurrCharacter(character)
     form.reset()
     notifications.show({
       title: "Your character is created",

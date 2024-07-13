@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from "react"
+import { createContext, ReactNode, useContext } from "react"
 import { useLocalStorage } from "usehooks-ts"
 
 export type Character = {
@@ -28,4 +28,14 @@ export const CharacterProvider = (props: { children: ReactNode }) => {
   return (
     <CharacterContext.Provider value={{ characters, setCharacters, currCharacter, setCurrCharacter }}>{props.children}</CharacterContext.Provider>
   )
+}
+
+export const useCharacter = () => {
+  const ctx = useContext(CharacterContext)
+
+  if (ctx === null) {
+    throw new Error("UserContext should be used within the UserProvider")
+  }
+
+  return ctx
 }
