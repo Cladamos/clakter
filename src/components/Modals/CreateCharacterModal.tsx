@@ -2,13 +2,14 @@ import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, 
 import { useForm } from "@mantine/form"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Character, useCharacter } from "../../contexts/CharacterContext"
 import { v4 as uuidv4 } from "uuid"
 
 type createCharacterModalProps = {
   opened: boolean
   close: () => void
+  type: "editing" | "creating"
 }
 
 const basicsProps = [
@@ -79,7 +80,9 @@ function CreateCharacterModal(props: createCharacterModalProps) {
 
   const form = useForm({
     mode: "uncontrolled",
+
     initialValues: {
+      id: "",
       name: "",
       class: "",
       race: "",
@@ -127,20 +130,47 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     validate: validationSchema,
   })
 
+  const initialLoad = useRef(true)
+
+  useEffect(() => {
+    if (props.opened && initialLoad.current) {
+      if (props.type === "editing" && characterCtx.currCharacter) {
+        form.setValues(characterCtx.currCharacter)
+      } else if (props.type === "creating") {
+        form.reset()
+      }
+      initialLoad.current = false
+    }
+  }, [props.opened, props.type, characterCtx.currCharacter, form])
+
+  useEffect(() => {
+    if (!props.opened) {
+      initialLoad.current = true
+    }
+  }, [props.opened])
+
+  if (!props.opened) return null
+
   function handleModalClose() {
     props.close()
     setActive(0)
   }
 
   function handleSubmit(character: Character) {
+    if (props.type == "editing") {
+      characterCtx.setCurrCharacter(character)
+      characterCtx.setCharacters((c) => [...c.filter((c) => c.id !== character.id), character])
+    } else {
+      const id = uuidv4()
+      characterCtx.setCharacters((c) => [...c, { ...character, id: id }])
+      characterCtx.setCurrCharacter({ ...character, id: id })
+      form.reset()
+      notifications.show({
+        title: "Your character is created",
+        message: "Have fun with your " + character.class + ". Such a great choice!",
+      })
+    }
     props.close()
-    characterCtx.setCharacters((c) => [...c, character])
-    characterCtx.setCurrCharacter(character)
-    form.reset()
-    notifications.show({
-      title: "Your character is created",
-      message: "Have fun with your " + character.class + ". Such a great choice!",
-    })
     setActive(0)
   }
 
@@ -224,7 +254,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
 
   return (
     <Modal opened={props.opened} onClose={handleModalClose} size="xl" padding="lg" radius="md" centered title="Create Your Own Character">
-      <form onSubmit={form.onSubmit((val) => handleSubmit({ ...val, id: uuidv4() }), handleError)}>
+      <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
         <Stepper active={active} onStepClick={setActive} size="sm" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>

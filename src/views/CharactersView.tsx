@@ -11,14 +11,14 @@ function CharactersView() {
   if (characterCtx?.currCharacter == null) {
     return (
       <>
-        <CreateCharacterModal opened={opened} close={close} />
+        <CreateCharacterModal type="creating" opened={opened} close={close} />
         <HeroText open={open} />
       </>
     )
   } else {
     return (
       <>
-        <CreateCharacterModal opened={opened} close={close} />
+        <CreateCharacterModal type="creating" opened={opened} close={close} />
         <Characters />
       </>
     )
