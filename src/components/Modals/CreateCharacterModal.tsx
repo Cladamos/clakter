@@ -160,6 +160,10 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     if (props.type == "editing") {
       characterCtx.setCurrCharacter(character)
       characterCtx.setCharacters((c) => [...c.filter((c) => c.id !== character.id), character])
+      notifications.show({
+        title: "Your character succesfuly edited",
+        message: "Have fun with your new changes",
+      })
     } else {
       const id = uuidv4()
       characterCtx.setCharacters((c) => [...c, { ...character, id: id }])
@@ -253,7 +257,15 @@ function CreateCharacterModal(props: createCharacterModalProps) {
   }
 
   return (
-    <Modal opened={props.opened} onClose={handleModalClose} size="xl" padding="lg" radius="md" centered title="Create Your Own Character">
+    <Modal
+      opened={props.opened}
+      onClose={handleModalClose}
+      size="xl"
+      padding="lg"
+      radius="md"
+      centered
+      title={props.type == "creating" ? "Create Your Own Character" : "Edit Your Character"}
+    >
       <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
         <Stepper active={active} onStepClick={setActive} size="sm" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
@@ -326,9 +338,13 @@ function CreateCharacterModal(props: createCharacterModalProps) {
           <Stepper.Completed>
             <Container size="xs" my="lg" p="xl">
               <Stack justify="center">
-                <Text size="xl">Thank for using Clakter for creating your character. I hope you will like it.</Text>
+                <Text size="xl">
+                  {props.type == "creating"
+                    ? "Thanks for using Clakter for creating your character. I hope you will like it."
+                    : "New changes will override your old character, please confirm your changes."}
+                </Text>
                 <Button size="lg" type="submit" variant="gradient" gradient={{ from: "grape", to: "cyan", deg: 90 }}>
-                  Create
+                  {props.type == "creating" ? "Create" : "Confirm"}
                 </Button>
               </Stack>
             </Container>
