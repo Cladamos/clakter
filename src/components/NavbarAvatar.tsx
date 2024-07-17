@@ -4,7 +4,9 @@ import { Group, Avatar, Text, Menu, rem } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import DeleteCharacterModal from "./Modals/DeleteCharacterModal"
 import CreateCharacterModal from "./Modals/CreateCharacterModal"
+import SelectCharacterModal from "./Modals/SelectCharacterModal"
 import { useState } from "react"
+import { notifications } from "@mantine/notifications"
 
 type NavbarAvatarProps = {
   size: string
@@ -13,6 +15,7 @@ type NavbarAvatarProps = {
 function NavbarAvatar(props: NavbarAvatarProps) {
   const [openedDeleteCharacterModal, { open: openDeleteCharacterModal, close: closeDeleteCharacterModal }] = useDisclosure(false)
   const [openedCreateCharacterModal, { open: openCreateCharacterModal, close: closeCreateCharacterModal }] = useDisclosure(false)
+  const [openedSelectCharacterModal, { open: openSelectCharacterModal, close: closeSelectCharacterModal }] = useDisclosure(false)
   const [modalType, setModalType] = useState<"editing" | "creating">("editing")
   const characterCtx = useCharacter()
 
@@ -21,11 +24,20 @@ function NavbarAvatar(props: NavbarAvatarProps) {
     openCreateCharacterModal()
   }
 
+  function handleSelectCharacterError() {
+    notifications.show({
+      title: "You have only one character",
+      message: "You can create new characters with using menu",
+      color: "red",
+    })
+  }
+
   if (characterCtx.currCharacter) {
     return (
       <>
         <CreateCharacterModal opened={openedCreateCharacterModal} close={closeCreateCharacterModal} type={modalType} />
         <DeleteCharacterModal opened={openedDeleteCharacterModal} close={closeDeleteCharacterModal} />
+        <SelectCharacterModal opened={openedSelectCharacterModal} close={closeSelectCharacterModal} />
         <Menu withArrow offset={20}>
           <Menu.Target>
             <Group>
@@ -41,7 +53,12 @@ function NavbarAvatar(props: NavbarAvatarProps) {
             <Menu.Item leftSection={<IconPencil style={{ width: rem(14), height: rem(14) }} />} onClick={() => handleModalType("editing")}>
               Edit my character
             </Menu.Item>
-            <Menu.Item leftSection={<IconSwitch2 style={{ width: rem(14), height: rem(14) }} />}>Change character</Menu.Item>
+            <Menu.Item
+              leftSection={<IconSwitch2 style={{ width: rem(14), height: rem(14) }} />}
+              onClick={characterCtx.characters.length > 1 ? openSelectCharacterModal : handleSelectCharacterError}
+            >
+              Change character
+            </Menu.Item>
             <Menu.Item leftSection={<IconPlus style={{ width: rem(14), height: rem(14) }} />} onClick={() => handleModalType("creating")}>
               Create new character
             </Menu.Item>
