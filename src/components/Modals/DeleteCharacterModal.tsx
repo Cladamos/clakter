@@ -22,7 +22,7 @@ function DeleteCharacterModal(props: DeleteCharacterModalProps) {
   }
 
   return (
-    <Modal opened={props.opened} onClose={props.close} size="sm" centered padding="md" title="Delete your character">
+    <Modal opened={props.opened} onClose={props.close} size="sm" radius="md" centered padding="md" title="Delete your character">
       <Stack>
         <Text size="sm">
           Are you sure you want to

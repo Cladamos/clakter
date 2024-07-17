@@ -1,5 +1,5 @@
-import { AppShell, Burger, Group, Text, useMantineColorScheme, Button, Container, Paper } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
+import { AppShell, Burger, Group, Text, useMantineColorScheme, Button, Container, Paper, em } from "@mantine/core"
+import { useDisclosure, useMediaQuery } from "@mantine/hooks"
 import { IconSun, IconMoon } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
 import NavbarAvatar from "./NavbarAvatar"
@@ -24,6 +24,8 @@ function Navbar() {
     setColorScheme(colorScheme === "dark" ? "light" : "dark")
   }
 
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`)
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -37,7 +39,7 @@ function Navbar() {
       <AppShell.Header>
         <Container size="xl" h="100%">
           <Group h="100%" justify="space-between">
-            <Burger opened={opened} onClick={toggle} hiddenFrom="lg" size="sm" w={{ sm: "100", lg: "300" }} />
+            <Burger opened={opened} onClick={toggle} hiddenFrom="lg" size="sm" w={isMobile ? 100 : 300} />
             <Text size="xl" fw={900} w={{ lg: "300" }}>
               Clakter
             </Text>
@@ -48,7 +50,7 @@ function Navbar() {
                 </Button>
               ))}
             </Group>
-            <Group justify="flex-end" w={{ sm: "100", lg: "300" }} gap="xl">
+            <Group justify="flex-end" w={isMobile ? 100 : 300} gap="xl">
               <Paper visibleFrom="lg">
                 <NavbarAvatar size="md" />
               </Paper>

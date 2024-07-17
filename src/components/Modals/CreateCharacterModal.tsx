@@ -271,7 +271,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>
               {basicsProps.map((b) => (
-                <Grid.Col span={4} key={b.key}>
+                <Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={b.key}>
                   <TextInput size="md" radius="md" placeholder={b.placeholder} label={b.label} key={form.key(b.key)} {...form.getInputProps(b.key)} />
                 </Grid.Col>
               ))}
@@ -279,34 +279,36 @@ function CreateCharacterModal(props: createCharacterModalProps) {
           </Stepper.Step>
           <Stepper.Step label="Second step" description="Set attributes">
             <Stack gap="md">
-              <Group grow mt="md">
+              <Grid grow mt="md">
                 {attributeInputProps.map((a) => (
-                  <TextInput size="md" radius="md" label={a.label} key={form.key(a.key)} {...form.getInputProps(a.key)} />
+                  <Grid.Col span={{ base: 6, md: 4, lg: 2 }} key={a.key}>
+                    <TextInput size="md" radius="md" label={a.label} key={form.key(a.key)} {...form.getInputProps(a.key)} />
+                  </Grid.Col>
                 ))}
-              </Group>
+              </Grid>
               <Button size="lg" mb="lg" onClick={calculateEffects}>
                 Calculate saving thorws and skill checks
               </Button>
               <Card withBorder shadow="sm" radius="md">
                 <Card.Section withBorder inheritPadding py="xs">
-                  <Group justify="space-between">
-                    <Text fw={500}>Saving throws</Text>
-                  </Group>
+                  <Text fw={500}>Saving throws</Text>
                 </Card.Section>
-                <Group grow mt="sm">
+                <Grid grow mt="sm">
                   {savingThrowInputProps.map((s, index) => (
-                    <Group wrap="nowrap" key={s.key}>
-                      <Checkbox
-                        radius="xl"
-                        mt="lg"
-                        icon={IconCircleFilled}
-                        checked={form.getValues().savingThrows[index].proficiency}
-                        onChange={() => handleCheckboxChange(s.key, index)}
-                      />
-                      <TextInput size="md" radius="md" label={s.label} key={form.key(s.key)} {...form.getInputProps(s.key)} />
-                    </Group>
+                    <Grid.Col span={{ base: 6, md: 4, lg: 2 }} key={s.key}>
+                      <Group wrap="nowrap">
+                        <Checkbox
+                          radius="xl"
+                          mt="lg"
+                          icon={IconCircleFilled}
+                          checked={form.getValues().savingThrows[index].proficiency}
+                          onChange={() => handleCheckboxChange(s.key, index)}
+                        />
+                        <TextInput size="md" radius="md" label={s.label} key={form.key(s.key)} {...form.getInputProps(s.key)} />
+                      </Group>
+                    </Grid.Col>
                   ))}
-                </Group>
+                </Grid>
               </Card>
             </Stack>
           </Stepper.Step>
@@ -319,7 +321,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
               </Card.Section>
               <Grid mt="md">
                 {skillCheckInputProps.map((s, index) => (
-                  <Grid.Col span={3} key={s.key}>
+                  <Grid.Col span={{ base: 12, md: 4, lg: 3 }} key={s.key}>
                     <Group wrap="nowrap">
                       <Checkbox
                         radius="xl"

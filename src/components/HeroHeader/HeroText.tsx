@@ -1,14 +1,16 @@
-import { Title, Text, Button, Container } from "@mantine/core"
+import { Title, Text, Button, Container, em } from "@mantine/core"
 import { Dots } from "./Dots"
 import classes from "./HeroText.module.css"
+import { useMediaQuery } from "@mantine/hooks"
 
 type HeroTextProps = {
   open: () => void
 }
 
 export function HeroText(props: HeroTextProps) {
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`)
   return (
-    <Container className={classes.wrapper} size={1400} mt={300}>
+    <Container className={classes.wrapper} size={1400} mt={isMobile ? 150 : 300}>
       <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
       <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
       <Dots className={classes.dots} style={{ left: 0, top: 140 }} />

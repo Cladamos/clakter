@@ -38,13 +38,15 @@ function NavbarAvatar(props: NavbarAvatarProps) {
         <CreateCharacterModal opened={openedCreateCharacterModal} close={closeCreateCharacterModal} type={modalType} />
         <DeleteCharacterModal opened={openedDeleteCharacterModal} close={closeDeleteCharacterModal} />
         <SelectCharacterModal opened={openedSelectCharacterModal} close={closeSelectCharacterModal} />
-        <Menu withArrow offset={20}>
+        <Menu withArrow offset={20} position="bottom-start">
           <Menu.Target>
             <Group>
               <Avatar size={props.size} alt={characterCtx.currCharacter.name} color="var(--mantine-color-anchor)">
                 {characterCtx.currCharacter.name.slice(0, 2).toUpperCase()}
               </Avatar>
-              <Text size={props.size}>{characterCtx.currCharacter.name}</Text>
+              <Text truncate="end" maw={100} size={props.size}>
+                {characterCtx.currCharacter.name}
+              </Text>
               <IconChevronDown style={{ width: rem(18), height: rem(18) }} />
             </Group>
           </Menu.Target>
