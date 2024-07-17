@@ -1,5 +1,6 @@
 import { Button, Group, Modal, Text, Stack } from "@mantine/core"
 import { useCharacter } from "../../contexts/CharacterContext"
+import { notifications } from "@mantine/notifications"
 
 type DeleteCharacterModalProps = {
   opened: boolean
@@ -13,6 +14,11 @@ function DeleteCharacterModal(props: DeleteCharacterModalProps) {
     characterCtx.setCharacters((cs) => [...cs.filter((c) => c.id !== characterCtx?.currCharacter?.id)])
     characterCtx.setCurrCharacter(null)
     props.close()
+    notifications.show({
+      title: "Your character succesfuly deleted",
+      message: "Your " + characterCtx.currCharacter?.class + " gone to void D:",
+      color: "red",
+    })
   }
 
   return (
