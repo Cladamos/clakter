@@ -23,7 +23,7 @@ export type DiceResult = {
   type: FC
 }
 
-type CalculatedOutput = {
+export type CalculatedOutput = {
   results: DiceResult[]
   modifier: number
 }

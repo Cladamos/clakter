@@ -7,7 +7,7 @@ import { Notifications } from "@mantine/notifications"
 import HomeView from "./views/HomeView"
 import SpellsView from "./views/SpellsView"
 import DiceRollerView from "./views/DiceRollerView"
-import CharactersView from "./views/CharactersView"
+import CharacterView from "./views/CharacterView"
 
 import Navbar from "./components/Navbar"
 import { theme } from "./theme"
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: "/", index: true, element: <HomeView /> },
       { path: "/spells", element: <SpellsView /> },
       { path: "/dice-roller", element: <DiceRollerView /> },
-      { path: "/characters", element: <CharactersView /> },
+      { path: "/characters", element: <CharacterView /> },
     ],
   },
 ])

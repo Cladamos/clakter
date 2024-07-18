@@ -1,9 +1,9 @@
 import { useContext } from "react"
 import { CharacterContext } from "../contexts/CharacterContext"
 import { useDisclosure } from "@mantine/hooks"
-import Characters from "../components/Characters"
 import { HeroText } from "../components/HeroHeader/HeroText"
 import CreateCharacterModal from "../components/Modals/CreateCharacterModal"
+import CharacterSheet from "../components/CharacterSheet"
 
 function CharactersView() {
   const characterCtx = useContext(CharacterContext)
@@ -19,7 +19,7 @@ function CharactersView() {
     return (
       <>
         <CreateCharacterModal type="creating" opened={opened} close={close} />
-        <Characters />
+        <CharacterSheet />
       </>
     )
   }

@@ -24,25 +24,25 @@ function SelectCharacterModal(props: selectCharacterModalProps) {
       <ScrollArea h={300} scrollbars="y">
         <Stack>
           <Divider />
-          {characterCtx.characters.map((c) =>
-            characterCtx.currCharacter?.id == c.id ? (
-              <></>
-            ) : (
-              <>
-                <Button variant="subtle" justify="flex-start" size="lg" key={c.id} onClick={() => handleSetCharacter(c)}>
-                  <Group gap="md">
-                    <Avatar color="var(--mantine-color-anchor)" alt={c.name}>
-                      {c.name.slice(0, 2).toUpperCase()}
-                    </Avatar>
-                    <Text maw={100} truncate="end">
-                      {c.name}
-                    </Text>
-                  </Group>
-                </Button>
-                <Divider />
-              </>
-            ),
-          )}
+          {characterCtx.characters.map((c) => {
+            if (characterCtx.currCharacter?.id !== c.id) {
+              return (
+                <>
+                  <Button variant="subtle" justify="flex-start" size="lg" key={c.id} onClick={() => handleSetCharacter(c)}>
+                    <Group gap="md">
+                      <Avatar color="var(--mantine-color-anchor)" alt={c.name}>
+                        {c.name.slice(0, 2).toUpperCase()}
+                      </Avatar>
+                      <Text maw={100} truncate="end">
+                        {c.name}
+                      </Text>
+                    </Group>
+                  </Button>
+                  <Divider />
+                </>
+              )
+            }
+          })}
         </Stack>
       </ScrollArea>
     </Modal>

@@ -11,7 +11,7 @@ export type Character = {
   alignment: string
   level: string
   attributes: { name: string; score: string; effect: number }[]
-  savingThrows: { type: string; score: string; proficiency: boolean }[]
+  savingThrows: { name: string; type: string; score: string; proficiency: boolean }[]
   skillChecks: { name: string; type: string; score: string; proficiency: boolean }[]
 }
 

@@ -73,8 +73,6 @@ function NavbarAvatar(props: NavbarAvatarProps) {
         </Menu>
       </>
     )
-  } else {
-    return <></>
   }
 }
 

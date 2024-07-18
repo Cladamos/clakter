@@ -26,7 +26,7 @@ function DeleteCharacterModal(props: DeleteCharacterModalProps) {
       <Stack>
         <Text size="sm">
           Are you sure you want to
-          <Text size="sm" color="red" inherit component="span">
+          <Text size="sm" c="red" inherit component="span">
             {" "}
             delete{" "}
           </Text>

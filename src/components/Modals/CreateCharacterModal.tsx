@@ -99,12 +99,12 @@ function CreateCharacterModal(props: createCharacterModalProps) {
         { name: "charisma", score: "", effect: 0 },
       ],
       savingThrows: [
-        { type: "str", score: "", proficiency: false },
-        { type: "dex", score: "", proficiency: false },
-        { type: "con", score: "", proficiency: false },
-        { type: "int", score: "", proficiency: false },
-        { type: "wis", score: "", proficiency: false },
-        { type: "cha", score: "", proficiency: false },
+        { name: "strength", type: "str", score: "", proficiency: false },
+        { name: "dexterity", type: "dex", score: "", proficiency: false },
+        { name: "constitution", type: "con", score: "", proficiency: false },
+        { name: "intelligence", type: "int", score: "", proficiency: false },
+        { name: "wisdom", type: "wis", score: "", proficiency: false },
+        { name: "charisma", type: "cha", score: "", proficiency: false },
       ],
       skillChecks: [
         { name: "acrobatics", type: "dex", score: "", proficiency: false },
@@ -228,7 +228,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
   }
 
   function calculateSkills() {
-    const newSavingThrows: { type: string; score: string; proficiency: boolean }[] = []
+    const newSavingThrows: { name: string; type: string; score: string; proficiency: boolean }[] = []
     form.getValues().savingThrows.map((s, index) =>
       newSavingThrows.push({
         ...s,
