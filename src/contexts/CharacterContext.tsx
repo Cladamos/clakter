@@ -10,6 +10,10 @@ export type Character = {
   proficiency: string
   alignment: string
   level: string
+  ac: string
+  hp: string
+  speed: string
+  intiative: string
   attributes: { name: string; score: string; effect: number }[]
   savingThrows: { name: string; type: string; score: string; proficiency: boolean }[]
   skillChecks: { name: string; type: string; score: string; proficiency: boolean }[]

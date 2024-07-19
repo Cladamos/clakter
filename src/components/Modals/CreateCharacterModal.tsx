@@ -1,4 +1,4 @@
-import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, Grid, Container } from "@mantine/core"
+import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, Grid, Container, Tooltip } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
@@ -29,6 +29,13 @@ const attributeInputProps = [
   { label: "Int", key: "attributes.3.score" },
   { label: "Wis", key: "attributes.4.score" },
   { label: "Cha", key: "attributes.5.score" },
+]
+
+const extraDetailsProps = [
+  { label: "Armor Class", placeholder: "22", tooltip: "10 + your dex modifier + armor", key: "ac" },
+  { label: "Hit Point", placeholder: "66", tooltip: "Based on your hit dice rolls", key: "hp" },
+  { label: "Speed", placeholder: "30ft", tooltip: "Based on your race", key: "speed" },
+  { label: "Intiative", placeholder: "+3", tooltip: "Your dex modifier", key: "intiative" },
 ]
 
 const savingThrowInputProps = [
@@ -90,6 +97,10 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       proficiency: "",
       alignment: "",
       level: "",
+      ac: "",
+      hp: "",
+      speed: "",
+      intiative: "",
       attributes: [
         { name: "strength", score: "", effect: 0 },
         { name: "dexterity", score: "", effect: 0 },
@@ -283,6 +294,22 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                 {attributeInputProps.map((a) => (
                   <Grid.Col span={{ base: 6, md: 4, lg: 2 }} key={a.key}>
                     <TextInput size="md" radius="md" label={a.label} key={form.key(a.key)} {...form.getInputProps(a.key)} />
+                  </Grid.Col>
+                ))}
+              </Grid>
+              <Grid grow>
+                {extraDetailsProps.map((e) => (
+                  <Grid.Col span={{ base: 6, md: 6, lg: 3 }} key={e.key}>
+                    <Tooltip label={e.tooltip}>
+                      <TextInput
+                        size="md"
+                        radius="md"
+                        placeholder={e.placeholder}
+                        label={e.label}
+                        key={form.key(e.key)}
+                        {...form.getInputProps(e.key)}
+                      />
+                    </Tooltip>
                   </Grid.Col>
                 ))}
               </Grid>

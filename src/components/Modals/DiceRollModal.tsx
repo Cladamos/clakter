@@ -14,7 +14,9 @@ type DiceRollModalProps = {
 function DiceRollModal(props: DiceRollModalProps) {
   const [roll, setRoll] = useState(DiceCalculator(props.input))
   function handleRollAgain() {
-    setRoll(DiceCalculator(props.input))
+    setTimeout(() => {
+      setRoll(DiceCalculator(props.input))
+    }, 300)
   }
 
   useEffect(() => {
