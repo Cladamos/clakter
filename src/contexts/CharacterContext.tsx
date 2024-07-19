@@ -17,6 +17,11 @@ export type Character = {
   attributes: { name: string; score: string; effect: number }[]
   savingThrows: { name: string; type: string; score: string; proficiency: boolean }[]
   skillChecks: { name: string; type: string; score: string; proficiency: boolean }[]
+  personalTrait1: string
+  personalTrait2: string
+  ideals: string
+  bonds: string
+  flaws: string
 }
 
 export const CharacterContext = createContext<{

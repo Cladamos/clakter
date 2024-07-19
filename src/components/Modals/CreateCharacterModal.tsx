@@ -1,4 +1,4 @@
-import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, Grid, Container, Tooltip } from "@mantine/core"
+import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, Grid, Container, Tooltip, Textarea } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
@@ -12,7 +12,7 @@ type createCharacterModalProps = {
   type: "editing" | "creating"
 }
 
-const basicsProps = [
+const basics = [
   { label: "Name", placeholder: "Cladamos", key: "name" },
   { label: "Class", placeholder: "Bard", key: "class" },
   { label: "Race", placeholder: "Human", key: "race" },
@@ -22,7 +22,7 @@ const basicsProps = [
   { label: "Level", placeholder: "9 Level", key: "level" },
 ]
 
-const attributeInputProps = [
+const attributes = [
   { label: "Str", key: "attributes.0.score" },
   { label: "Dex", key: "attributes.1.score" },
   { label: "Con", key: "attributes.2.score" },
@@ -31,14 +31,25 @@ const attributeInputProps = [
   { label: "Cha", key: "attributes.5.score" },
 ]
 
-const extraDetailsProps = [
+const extraDetails = [
   { label: "Armor Class", placeholder: "22", tooltip: "10 + your dex modifier + armor", key: "ac" },
   { label: "Hit Point", placeholder: "66", tooltip: "Based on your hit dice rolls", key: "hp" },
   { label: "Speed", placeholder: "30ft", tooltip: "Based on your race", key: "speed" },
   { label: "Intiative", placeholder: "+3", tooltip: "Your dex modifier", key: "intiative" },
 ]
+const personalDetails = [
+  { label: "Personal Trait 1", placeholder: "Nothing can shake my optimistic attitude.", key: "personalTrait1" },
+  {
+    label: "Personal Trait 2",
+    placeholder: "I've enjoyed fine food, drink, and high society among my temple's elite. Rough living grates on me.",
+    key: "personalTrait2",
+  },
+  { label: "Ideals", placeholder: "Freedom. Tyrants must not be allowed to oppress the people.", key: "ideals" },
+  { label: "Bonds", placeholder: "I'm trying to pay off an old debt I owe to a generous benefactor.", key: "bonds" },
+  { label: "Flaws", placeholder: "I'm never satisfied with what I have--I always want more.", key: "flaws" },
+]
 
-const savingThrowInputProps = [
+const savingThrows = [
   { label: "Str", key: "savingThrows.0.score" },
   { label: "Dex", key: "savingThrows.1.score" },
   { label: "Con", key: "savingThrows.2.score" },
@@ -47,7 +58,7 @@ const savingThrowInputProps = [
   { label: "Cha", key: "savingThrows.5.score" },
 ]
 
-const skillCheckInputProps = [
+const skillChecks = [
   { label: "Acrobatics", key: "skillChecks.0.score" },
   { label: "Animal Handling", key: "skillChecks.1.score" },
   { label: "Arcane", key: "skillChecks.2.score" },
@@ -72,7 +83,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
   const characterCtx = useCharacter()
 
   const [active, setActive] = useState(0)
-  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current))
+  const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current))
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
 
   const isNotEmpty = (message: string) => (value: string) => value.trim() === "" ? message : null
@@ -137,6 +148,11 @@ function CreateCharacterModal(props: createCharacterModalProps) {
         { name: "stealth", type: "dex", score: "", proficiency: false },
         { name: "survival", type: "wis", score: "", proficiency: false },
       ],
+      personalTrait1: "",
+      personalTrait2: "",
+      ideals: "",
+      bonds: "",
+      flaws: "",
     },
     validate: validationSchema,
   })
@@ -278,27 +294,46 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       title={props.type == "creating" ? "Create Your Own Character" : "Edit Your Character"}
     >
       <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
-        <Stepper active={active} onStepClick={setActive} size="sm" mt="xs">
+        <Stepper active={active} onStepClick={setActive} size="xs" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>
-              {basicsProps.map((b) => (
+              {basics.map((b) => (
                 <Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={b.key}>
                   <TextInput size="md" radius="md" placeholder={b.placeholder} label={b.label} key={form.key(b.key)} {...form.getInputProps(b.key)} />
                 </Grid.Col>
               ))}
             </Grid>
           </Stepper.Step>
-          <Stepper.Step label="Second step" description="Set attributes">
+          <Stepper.Step label="Second step" description="Create Personality">
+            <Grid grow>
+              {personalDetails.map((p) => (
+                <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
+                  <Textarea
+                    size="md"
+                    radius="md"
+                    label={p.label}
+                    placeholder={p.placeholder}
+                    autosize
+                    minRows={3}
+                    maxRows={5}
+                    key={form.key(p.key)}
+                    {...form.getInputProps(p.key)}
+                  />
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Stepper.Step>
+          <Stepper.Step label="Third Step" description="Set attributes">
             <Stack gap="md">
-              <Grid grow mt="md">
-                {attributeInputProps.map((a) => (
+              <Grid grow>
+                {attributes.map((a) => (
                   <Grid.Col span={{ base: 6, md: 4, lg: 2 }} key={a.key}>
                     <TextInput size="md" radius="md" label={a.label} key={form.key(a.key)} {...form.getInputProps(a.key)} />
                   </Grid.Col>
                 ))}
               </Grid>
               <Grid grow>
-                {extraDetailsProps.map((e) => (
+                {extraDetails.map((e) => (
                   <Grid.Col span={{ base: 6, md: 6, lg: 3 }} key={e.key}>
                     <Tooltip label={e.tooltip}>
                       <TextInput
@@ -321,7 +356,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                   <Text fw={500}>Saving throws</Text>
                 </Card.Section>
                 <Grid grow mt="sm">
-                  {savingThrowInputProps.map((s, index) => (
+                  {savingThrows.map((s, index) => (
                     <Grid.Col span={{ base: 6, md: 4, lg: 2 }} key={s.key}>
                       <Group wrap="nowrap">
                         <Checkbox
@@ -339,7 +374,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
               </Card>
             </Stack>
           </Stepper.Step>
-          <Stepper.Step label="Final step" description="Get full access">
+          <Stepper.Step label="Final Step" description="Confirm skills">
             <Card withBorder shadow="sm" radius="md">
               <Card.Section withBorder inheritPadding py="xs">
                 <Group justify="space-between">
@@ -347,7 +382,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                 </Group>
               </Card.Section>
               <Grid mt="md">
-                {skillCheckInputProps.map((s, index) => (
+                {skillChecks.map((s, index) => (
                   <Grid.Col span={{ base: 12, md: 4, lg: 3 }} key={s.key}>
                     <Group wrap="nowrap">
                       <Checkbox

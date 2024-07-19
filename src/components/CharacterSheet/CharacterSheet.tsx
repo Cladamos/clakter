@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks"
 import DiceRollModal from "../Modals/DiceRollModal"
 import "./CharacterSheet.Module..css"
+import PersonalDetailsModal from "../Modals/PersonalDetailsModal"
 
 function camelCaseToNormal(input: string): string {
   let output = ""
@@ -28,14 +29,15 @@ function CharacterSheet() {
     { val: false, color: "indigo" },
   ])
   const [rollInput, setRollInput] = useState("")
-  const [opened, { open, close }] = useDisclosure(false)
+  const [openedDiceRollModal, { open: openDiceRollModal, close: closeDiceRollModal }] = useDisclosure(false)
+  const [openedPersonalDetailsModal, { open: openPersonalDetailsModal, close: closePersonalDetailsModal }] = useDisclosure(false)
   const c = useCharacter().currCharacter
 
   const isMobile = useMediaQuery(`(max-width: ${em(1200)})`)
 
   function handleDiceRoll(input: string) {
     setRollInput(input)
-    open()
+    openDiceRollModal()
   }
 
   function handleCheckbox(i: number, checkbox: { val: boolean; color: string }) {
@@ -67,7 +69,8 @@ function CharacterSheet() {
 
     return (
       <>
-        <DiceRollModal opened={opened} close={close} input={rollInput} />
+        <PersonalDetailsModal opened={openedPersonalDetailsModal} close={closePersonalDetailsModal} />
+        <DiceRollModal opened={openedDiceRollModal} close={closeDiceRollModal} input={rollInput} />
         <Container size="xl" mt={90}>
           <Group gap="lg">
             {isMobile ? (
@@ -94,7 +97,7 @@ function CharacterSheet() {
             <Stack w={isMobile ? "100%" : "88%"}>
               <Card withBorder shadow="sm" radius="md">
                 <Stack align="center" pb="sm">
-                  <Title size="h2" fw={900} c="var(--mantine-color-anchor)">
+                  <Title className="title-hover" size="h2" fw={900} c="var(--mantine-color-anchor)" onClick={openPersonalDetailsModal}>
                     {c.name}
                   </Title>
                 </Stack>
