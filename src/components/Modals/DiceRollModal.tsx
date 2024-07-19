@@ -1,6 +1,6 @@
 import { Flex, Modal, Paper, useMantineColorScheme, Text, Group, Button, Tooltip } from "@mantine/core"
-import DiceCalculator from "../DiceCalculator"
-import classes from "../DiceRoller.module.css"
+import DiceCalculator from "../DiceRoller/DiceCalculator.tsx"
+import classes from "../DiceRoller/DiceRoller.module.css"
 import { useEffect, useState } from "react"
 
 type DiceRollModalProps = {

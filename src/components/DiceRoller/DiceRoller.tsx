@@ -1,14 +1,14 @@
 import { Container, Group, Input, Button, Text, Flex, useMantineColorScheme, Tooltip, Paper } from "@mantine/core"
-import DiceCalculator, { DiceResult } from "./DiceCalculator"
-import D4 from "../assets/diceSvgs/dice-d4.svg?react"
-import D6 from "../assets/diceSvgs/dice-d6.svg?react"
-import D8 from "../assets/diceSvgs/dice-d8.svg?react"
-import D10 from "../assets/diceSvgs/dice-d10.svg?react"
-import D12 from "../assets/diceSvgs/dice-d12.svg?react"
-import D20 from "../assets/diceSvgs/dice-d20.svg?react"
+import D4 from "../../assets/diceSvgs/dice-d4.svg?react"
+import D6 from "../../assets/diceSvgs/dice-d6.svg?react"
+import D8 from "../../assets/diceSvgs/dice-d8.svg?react"
+import D10 from "../../assets/diceSvgs/dice-d10.svg?react"
+import D12 from "../../assets/diceSvgs/dice-d12.svg?react"
+import D20 from "../../assets/diceSvgs/dice-d20.svg?react"
 import { FC, useState } from "react"
 import classes from "./DiceRoller.module.css"
 import { IconArrowBadgeLeft, IconArrowBadgeRight, IconSquareLetterM } from "@tabler/icons-react"
+import DiceCalculator, { DiceResult } from "./DiceCalculator"
 
 type Dices = {
   svg: FC

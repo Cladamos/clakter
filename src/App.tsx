@@ -4,16 +4,15 @@ import "@mantine/notifications/styles.css"
 import { MantineProvider } from "@mantine/core"
 import { Notifications } from "@mantine/notifications"
 
-import HomeView from "./views/HomeView"
 import SpellsView from "./views/SpellsView"
 import DiceRollerView from "./views/DiceRollerView"
 import CharacterView from "./views/CharacterView"
 
-import Navbar from "./components/Navbar"
 import { theme } from "./theme"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import { CharacterProvider } from "./contexts/CharacterContext"
+import Navbar from "./components/Navbar/Navbar"
 
 const router = createBrowserRouter([
   {
@@ -26,10 +25,9 @@ const router = createBrowserRouter([
       </MantineProvider>
     ),
     children: [
-      { path: "/", index: true, element: <HomeView /> },
       { path: "/spells", element: <SpellsView /> },
       { path: "/dice-roller", element: <DiceRollerView /> },
-      { path: "/characters", element: <CharacterView /> },
+      { path: "/", index: true, element: <CharacterView /> },
     ],
   },
 ])

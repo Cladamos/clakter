@@ -1,10 +1,10 @@
 import { IconHelpHexagon } from "@tabler/icons-react"
-import D4 from "../assets/diceSvgs/dice-d4.svg?react"
-import D6 from "../assets/diceSvgs/dice-d6.svg?react"
-import D8 from "../assets/diceSvgs/dice-d8.svg?react"
-import D10 from "../assets/diceSvgs/dice-d10.svg?react"
-import D12 from "../assets/diceSvgs/dice-d12.svg?react"
-import D20 from "../assets/diceSvgs/dice-d20.svg?react"
+import D4 from "../../assets/diceSvgs/dice-d4.svg?react"
+import D6 from "../../assets/diceSvgs/dice-d6.svg?react"
+import D8 from "../../assets/diceSvgs/dice-d8.svg?react"
+import D10 from "../../assets/diceSvgs/dice-d10.svg?react"
+import D12 from "../../assets/diceSvgs/dice-d12.svg?react"
+import D20 from "../../assets/diceSvgs/dice-d20.svg?react"
 import { FC } from "react"
 
 type DiceData = {

@@ -1,7 +1,7 @@
-import DiceRoller from "../components/DiceRoller";
+import DiceRoller from "../components/DiceRoller/DiceRoller"
 
 function DiceRollerView() {
-  return <DiceRoller />;
+  return <DiceRoller />
 }
 
-export default DiceRollerView;
+export default DiceRollerView

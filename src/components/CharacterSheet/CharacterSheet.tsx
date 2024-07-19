@@ -1,9 +1,9 @@
 import { Card, CardSection, Checkbox, Container, em, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core"
-import { useCharacter } from "../contexts/CharacterContext"
+import { useCharacter } from "../../contexts/CharacterContext"
 import { IconCircle, IconCircleFilled } from "@tabler/icons-react"
 import { useState } from "react"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks"
-import DiceRollModal from "./Modals/DiceRollModal"
+import DiceRollModal from "../Modals/DiceRollModal"
 import "./CharacterSheet.Module..css"
 
 function camelCaseToNormal(input: string): string {

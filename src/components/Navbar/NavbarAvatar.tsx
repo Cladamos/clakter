@@ -1,12 +1,12 @@
 import { IconChevronDown, IconPencil, IconTrash, IconSwitch2, IconPlus } from "@tabler/icons-react"
-import { useCharacter } from "../contexts/CharacterContext"
 import { Group, Avatar, Text, Menu, rem } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import DeleteCharacterModal from "./Modals/DeleteCharacterModal"
-import CreateCharacterModal from "./Modals/CreateCharacterModal"
-import SelectCharacterModal from "./Modals/SelectCharacterModal"
 import { useState } from "react"
 import { notifications } from "@mantine/notifications"
+import { useCharacter } from "../../contexts/CharacterContext"
+import CreateCharacterModal from "../Modals/CreateCharacterModal"
+import DeleteCharacterModal from "../Modals/DeleteCharacterModal"
+import SelectCharacterModal from "../Modals/SelectCharacterModal"
 
 type NavbarAvatarProps = {
   size: string

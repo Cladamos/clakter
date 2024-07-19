@@ -10,9 +10,8 @@ type MenuItems = {
 }
 
 const menuItems: MenuItems[] = [
-  { label: "Home", route: "/" },
+  { label: "Characters", route: "/" },
   { label: "Spells", route: "/spells" },
-  { label: "Characters", route: "/characters" },
   { label: "Dice Roller", route: "/dice-roller" },
 ]
 
