@@ -144,7 +144,13 @@ function CharacterSheet() {
                   {extraValues.map((e) => (
                     <Grid.Col span={{ base: 6, md: 2, lg: 2 }} key={e.message}>
                       <Text>{e.message}</Text>
-                      <Paper py="xs" px="xl" withBorder onClick={e.message == "Hp" ? openHpModal : undefined}>
+                      <Paper
+                        py="xs"
+                        px="xl"
+                        withBorder
+                        onClick={e.message == "Hp" ? openHpModal : undefined}
+                        className={e.message == "Hp" ? "paper-hover" : undefined}
+                      >
                         {e.val}
                       </Paper>
                     </Grid.Col>
@@ -159,6 +165,7 @@ function CharacterSheet() {
                             radius="xl"
                             color={c.color}
                             checked={c.val}
+                            key={index}
                             icon={IconCircleFilled}
                             onChange={() => handleCheckbox(index, c)}
                           />

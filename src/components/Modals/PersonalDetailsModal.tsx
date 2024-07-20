@@ -20,7 +20,7 @@ function PersonalDetailsModal(props: PersonalDetailsModalProps) {
       <Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered title="Your Personal Details">
         <Stack>
           {data.map((d) => (
-            <Paper withBorder py="xs" px="xl">
+            <Paper withBorder py="xs" px="xl" key={d.val}>
               <Text>
                 <Text inherit fw={700}>
                   {d.message}
