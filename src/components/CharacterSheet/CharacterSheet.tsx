@@ -6,6 +6,7 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks"
 import DiceRollModal from "../Modals/DiceRollModal"
 import "./CharacterSheet.Module..css"
 import PersonalDetailsModal from "../Modals/PersonalDetailsModal"
+import HpModal from "../Modals/HpModal"
 
 function camelCaseToNormal(input: string): string {
   let output = ""
@@ -31,6 +32,7 @@ function CharacterSheet() {
   const [rollInput, setRollInput] = useState("")
   const [openedDiceRollModal, { open: openDiceRollModal, close: closeDiceRollModal }] = useDisclosure(false)
   const [openedPersonalDetailsModal, { open: openPersonalDetailsModal, close: closePersonalDetailsModal }] = useDisclosure(false)
+  const [openedHpModal, { open: openHpModal, close: closeHpModal }] = useDisclosure(false)
   const c = useCharacter().currCharacter
 
   const isMobile = useMediaQuery(`(max-width: ${em(1200)})`)
@@ -62,13 +64,14 @@ function CharacterSheet() {
     ]
     const extraValues = [
       { message: "Ac", val: c.ac },
-      { message: "Hp", val: c.hp },
+      { message: "Hp", val: Number(c.hitPoints.hp) + Number(c.hitPoints.thp) },
       { message: "Speed", val: c.speed },
       { message: "Intiative", val: c.intiative },
     ]
 
     return (
       <>
+        <HpModal opened={openedHpModal} close={closeHpModal} />
         <PersonalDetailsModal opened={openedPersonalDetailsModal} close={closePersonalDetailsModal} />
         <DiceRollModal opened={openedDiceRollModal} close={closeDiceRollModal} input={rollInput} />
         <Container size="xl" mt={90}>
@@ -141,7 +144,7 @@ function CharacterSheet() {
                   {extraValues.map((e) => (
                     <Grid.Col span={{ base: 6, md: 2, lg: 2 }} key={e.message}>
                       <Text>{e.message}</Text>
-                      <Paper py="xs" px="xl" withBorder>
+                      <Paper py="xs" px="xl" withBorder onClick={e.message == "Hp" ? openHpModal : undefined}>
                         {e.val}
                       </Paper>
                     </Grid.Col>

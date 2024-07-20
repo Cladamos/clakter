@@ -33,7 +33,7 @@ const attributes = [
 
 const extraDetails = [
   { label: "Armor Class", placeholder: "22", tooltip: "10 + your dex modifier + armor", key: "ac" },
-  { label: "Hit Point", placeholder: "66", tooltip: "Based on your hit dice rolls", key: "hp" },
+  { label: "Hit Point", placeholder: "66", tooltip: "Based on your hit dice rolls", key: "hitPoints.hpMax" },
   { label: "Speed", placeholder: "30ft", tooltip: "Based on your race", key: "speed" },
   { label: "Intiative", placeholder: "+3", tooltip: "Your dex modifier", key: "intiative" },
 ]
@@ -109,7 +109,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       alignment: "",
       level: "",
       ac: "",
-      hp: "",
+      hitPoints: { hp: "", thp: "", hpMax: "" },
       speed: "",
       intiative: "",
       attributes: [

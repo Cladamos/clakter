@@ -11,7 +11,7 @@ export type Character = {
   alignment: string
   level: string
   ac: string
-  hp: string
+  hitPoints: { hp: string; thp: string }
   speed: string
   intiative: string
   attributes: { name: string; score: string; effect: number }[]
