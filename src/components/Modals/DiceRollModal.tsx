@@ -9,7 +9,7 @@ type DiceRollModalProps = {
   input: string
 }
 
-//TODO: Fix dice transitions
+//TODO: Add dice and text transition when roll button clickex
 
 function DiceRollModal(props: DiceRollModalProps) {
   const [roll, setRoll] = useState(DiceCalculator(props.input))
@@ -42,7 +42,7 @@ function DiceRollModal(props: DiceRollModalProps) {
             </Paper>
           </Tooltip>
           <Text size="lg" fw={700}>
-            {"Total: " + dice.score + " + " + roll.modifier + " = " + (dice.score + roll.modifier)}
+            {roll.modifier ? "Total: " + dice.score + " + " + roll.modifier + " = " + (dice.score + roll.modifier) : "Total: " + dice.score}
           </Text>
           <Group w="100%" mt="lg" grow>
             <Button size="md" variant="outline" onClick={handleRollAgain}>

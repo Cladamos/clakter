@@ -85,7 +85,7 @@ function DiceRoller() {
         </Group>
         <Group w="100%" justify="center" gap={30}>
           {diceSvgs.map((dice, index) => (
-            <Flex direction="column" align="center" gap="sm">
+            <Flex direction="column" align="center" gap="sm" key={dice.svg.toString()}>
               <Tooltip label={dice.damage === "" ? `Modifier` : `Roll ${dice.damage}`}>
                 <Button
                   onClick={() => handleSvgClick(1 + dice.damage)}
@@ -116,7 +116,7 @@ function DiceRoller() {
         <Group w="100%" justify="center" gap="md">
           <Group gap="xl" w="100%" justify="center" align="flex-end">
             {dices.map((dice) => (
-              <Flex align="center" direction="column" gap={5}>
+              <Flex align="center" direction="column" gap={5} key={dice.type.toString()}>
                 <Paper
                   className={`${classes.dice} ${classes.small_dice}`}
                   style={{
