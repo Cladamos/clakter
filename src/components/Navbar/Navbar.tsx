@@ -31,6 +31,7 @@ const dices = [
 const menuItems: MenuItems[] = [
   { label: "Characters", route: "/" },
   { label: "Spells", route: "/spells" },
+  { label: "Notes", route: "/notes" },
 ]
 
 function Navbar() {
@@ -63,7 +64,7 @@ function Navbar() {
     >
       <DiceRollModal opened={openedDiceRollModal} close={closeDiceRollModal} input={rollInput} />
       <AppShell.Header>
-        <Container size="xl" h="100%">
+        <Container size="lg" h="100%">
           <Group h="100%" justify="space-between">
             <Burger opened={opened} onClick={toggle} hiddenFrom="lg" size="sm" w={isMobile ? 100 : 300} />
             <Text size="xl" fw={900} w={{ lg: "300" }}>

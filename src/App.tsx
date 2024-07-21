@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import { CharacterProvider } from "./contexts/CharacterContext"
 import Navbar from "./components/Navbar/Navbar"
+import NotesView from "./views/NotesView"
 
 const router = createBrowserRouter([
   {
@@ -25,9 +26,10 @@ const router = createBrowserRouter([
       </MantineProvider>
     ),
     children: [
-      { path: "/spells", element: <SpellsView /> },
-      { path: "/dice-roller", element: <DiceRollerView /> },
       { path: "/", index: true, element: <CharacterView /> },
+      { path: "/spells", element: <SpellsView /> },
+      { path: "/notes", element: <NotesView /> },
+      { path: "/dice-roller", element: <DiceRollerView /> },
     ],
   },
 ])

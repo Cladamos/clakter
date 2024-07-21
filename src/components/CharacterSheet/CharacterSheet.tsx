@@ -74,7 +74,7 @@ function CharacterSheet() {
         <HpModal opened={openedHpModal} close={closeHpModal} />
         <PersonalDetailsModal opened={openedPersonalDetailsModal} close={closePersonalDetailsModal} />
         <DiceRollModal opened={openedDiceRollModal} close={closeDiceRollModal} input={rollInput} />
-        <Container size="xl" mt={90}>
+        <Container size="lg" mt={90}>
           <Group gap="lg">
             {isMobile ? (
               <></>

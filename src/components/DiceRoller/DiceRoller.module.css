@@ -1,6 +1,6 @@
 .dice svg {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   transition: 300ms all ease;
   cursor: pointer;
 }
