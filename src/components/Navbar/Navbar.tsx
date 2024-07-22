@@ -89,7 +89,7 @@ function Navbar() {
                       {dices.map((dice) => (
                         <Tooltip label={dice.damage === "" ? `Modifier` : `Roll ${dice.damage}`} key={dice.svg.toString()}>
                           <Button
-                            className={`${classes.dice} ${classes.small_dice} ${classes.dice_rotate}`}
+                            className={`${classes.dice} ${classes.small_dice}`}
                             style={{
                               fill: colorScheme === "dark" ? "white" : "black",
                             }}
