@@ -89,7 +89,7 @@ function DiceRoller() {
               <Tooltip label={dice.damage === "" ? `Modifier` : `Roll ${dice.damage}`}>
                 <Button
                   onClick={() => handleSvgClick(1 + dice.damage)}
-                  className={classes.dice}
+                  className={`${classes.dice} ${classes.dice_rotate}`}
                   style={{
                     fill: colorScheme === "dark" ? "white" : "black",
                   }}
@@ -115,8 +115,8 @@ function DiceRoller() {
 
         <Group w="100%" justify="center" gap="md">
           <Group gap="xl" w="100%" justify="center" align="flex-end">
-            {dices.map((dice) => (
-              <Flex align="center" direction="column" gap={5} key={dice.type.toString()}>
+            {dices.map((dice, index) => (
+              <Flex align="center" direction="column" gap={5} key={index}>
                 <Paper
                   className={`${classes.dice} ${classes.small_dice}`}
                   style={{
