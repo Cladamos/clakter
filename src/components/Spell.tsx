@@ -7,7 +7,7 @@ type Props = {
   level: string
   desc: string
   index: string
-  handleCurrSpell: (index: string) => void
+  handleCurrSpell: (spell: string) => void
 }
 
 function Spell(props: Props) {

@@ -6,6 +6,7 @@ import { IconExclamationCircle, IconSearch } from "@tabler/icons-react"
 import React, { useState } from "react"
 import SpellModal from "./Modals/SpellModal"
 import { useDisclosure } from "@mantine/hooks"
+import { useLocalStorage } from "usehooks-ts"
 import CreateSpellModal from "./Modals/CreateSpellModal"
 import { createdSpell } from "./Modals/CreateSpellModal"
 
@@ -21,21 +22,6 @@ type FetchAllSpellsResponseBody = {
   }[]
 }
 
-const spells: createdSpell[] = [
-  {
-    name: "Test",
-    desc: "test123",
-    level: "2 Level",
-    components: "VSM",
-    castingTime: "321",
-    range: "123",
-    material: "elma ve 1 kilo muz",
-    duration: "3",
-    school: "test",
-    classes: "uyyy",
-  },
-]
-
 async function fetchAllSpels() {
   const response = await axios<FetchAllSpellsResponseBody>("https://www.dnd5eapi.co/api/spells")
   return response.data
@@ -46,9 +32,9 @@ function Cards() {
     queryFn: fetchAllSpels,
   })
 
-  const [createdSpells, setCreatedSpells] = useState(spells)
+  const [createdSpells, setCreatedSpells] = useLocalStorage<createdSpell[]>("createdSpells", [])
   const [input, setInput] = useState("")
-  const [currSpell, setCurrSpell] = useState("")
+  const [currSpell, setCurrSpell] = useState<string | createdSpell>("aid")
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
   const [openedCreateSpellModal, { open: openCreateSpellModal, close: closeCreateSpellModal }] = useDisclosure(false)
   const [activePage, setPage] = useState(1)
@@ -96,7 +82,13 @@ function Cards() {
     )
   }
 
-  const data = query.data.results.filter((curr) => curr.name.toLowerCase().includes(input.toLowerCase()))
+  const mergedSpells = [
+    ...query.data.results,
+    ...createdSpells.map((c) => {
+      return { index: c.name.toLowerCase(), name: c.name, level: c.level }
+    }),
+  ]
+  const data = mergedSpells.filter((curr) => curr.name.toLowerCase().includes(input.toLowerCase()))
 
   const indexOfLastCard = activePage * cardsPerPage
   const indexOfFirstCard = indexOfLastCard - cardsPerPage
@@ -106,15 +98,20 @@ function Cards() {
     setInput(event.target.value)
     setPage(1)
   }
-  function handleCurrSpell(index: string) {
-    setCurrSpell(index)
+  function handleCurrSpell(spell: string) {
+    let createdSpell = createdSpells.find((c) => c.name.toLowerCase() == spell)
+    if (createdSpell !== undefined) {
+      setCurrSpell(createdSpell)
+    } else {
+      setCurrSpell(spell)
+    }
     openSpellModal()
   }
 
   return (
     <>
-      <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} />
-      <SpellModal opened={openedSpellModal} close={closeSpellModal} spellIndex={currSpell} />
+      <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} spells={mergedSpells} />
+      <SpellModal opened={openedSpellModal} close={closeSpellModal} spell={currSpell} />
       <Container size="lg" mt={100}>
         <Group gap="lg" justify="center">
           <Input
@@ -126,7 +123,7 @@ function Cards() {
             value={input}
             onChange={handleChange}
           />
-          <Grid>
+          <Grid w="100%">
             {currentCards.map((spell) => (
               <Grid.Col span={variants.regular} key={spell.name}>
                 <Spell title={spell.name} desc="" level={"Level " + spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />

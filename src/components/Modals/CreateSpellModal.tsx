@@ -6,6 +6,11 @@ type CreateSpellModalProps = {
   opened: boolean
   close: () => void
   createSpell: (spell: createdSpell) => void
+  spells: {
+    index: string
+    name: string
+    level: string
+  }[]
 }
 
 export type createdSpell = {
@@ -13,7 +18,7 @@ export type createdSpell = {
   desc: string
   level: string
   components: string
-  castingTime: string
+  casting_time: string
   range: string
   material: string
   duration: string
@@ -29,24 +34,34 @@ function CreateSpellModal(props: CreateSpellModalProps) {
       desc: "",
       level: "2 Level",
       components: "VSM",
-      castingTime: "",
+      casting_time: "",
       range: "",
       material: "",
       duration: "",
       school: "",
       classes: "",
     },
-    validate: {},
+    validate: { name: (value) => (props.spells.find((s) => s.name == value) ? "There is a another spell with same name" : null) },
   })
 
   function handleSumbit(name: string) {
-    props.createSpell(form.getValues())
+    props.createSpell({ ...form.getValues(), level: findNumber(form.getValues().level) })
     props.close()
     form.reset()
     notifications.show({
       title: "Your spell is created",
       message: "Your " + name + " created succesfuly. It look awesome :D",
     })
+  }
+
+  function findNumber(s: string): string {
+    let number = ""
+    for (let i = 0; i < s.length; i++) {
+      if (!isNaN(Number(s[i]))) {
+        number += s[i]
+      }
+    }
+    return number == "" ? "0" : number
   }
 
   return (
@@ -94,8 +109,8 @@ function CreateSpellModal(props: CreateSpellModalProps) {
               placeholder="1 Action"
               label="Casting Time"
               required
-              key={form.key("castingTime")}
-              {...form.getInputProps("castingTime")}
+              key={form.key("casting_time")}
+              {...form.getInputProps("casting_time")}
             />
             <TextInput size="md" radius="md" placeholder="30 Feet" label="Range" required key={form.key("range")} {...form.getInputProps("range")} />
           </Group>
