@@ -307,7 +307,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
           <Stepper.Step label="Second step" description="Create Personality">
             <Grid grow>
               {personalDetails.map((p) => (
-                <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
+                <Grid.Col span={{ base: 12, md: 6, lg: 6 }} key={p.key}>
                   <Textarea
                     size="md"
                     radius="md"
