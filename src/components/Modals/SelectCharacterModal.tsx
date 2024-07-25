@@ -1,6 +1,7 @@
 import { Avatar, Divider, Button, Modal, Stack, Text, Group, ScrollArea } from "@mantine/core"
 import { Character, useCharacter } from "../../contexts/CharacterContext"
 import { notifications } from "@mantine/notifications"
+import { useTheme } from "../../contexts/ThemeContext"
 
 type selectCharacterModalProps = {
   opened: boolean
@@ -9,6 +10,7 @@ type selectCharacterModalProps = {
 
 function SelectCharacterModal(props: selectCharacterModalProps) {
   const characterCtx = useCharacter()
+  const { setThemeColor } = useTheme()
 
   function handleSetCharacter(character: Character) {
     characterCtx.setCurrCharacter(character)
@@ -17,6 +19,7 @@ function SelectCharacterModal(props: selectCharacterModalProps) {
       title: "Current character is " + character.name,
       message: "Current character succesfuly changed",
     })
+    setThemeColor(character.theme)
   }
 
   return (
@@ -30,10 +33,10 @@ function SelectCharacterModal(props: selectCharacterModalProps) {
                 <>
                   <Button variant="subtle" justify="flex-start" size="lg" key={c.id} onClick={() => handleSetCharacter(c)}>
                     <Group gap="md">
-                      <Avatar color="var(--mantine-color-anchor)" alt={c.name}>
+                      <Avatar color={c.theme} alt={c.name}>
                         {c.name.slice(0, 2).toUpperCase()}
                       </Avatar>
-                      <Text maw={100} truncate="end">
+                      <Text maw={100} c={c.theme} truncate="end">
                         {c.name}
                       </Text>
                     </Group>

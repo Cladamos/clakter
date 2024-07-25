@@ -1,6 +1,7 @@
 import { Button, Group, Modal, Text, Stack } from "@mantine/core"
 import { useCharacter } from "../../contexts/CharacterContext"
 import { notifications } from "@mantine/notifications"
+import { useTheme } from "../../contexts/ThemeContext"
 
 type DeleteCharacterModalProps = {
   opened: boolean
@@ -9,6 +10,7 @@ type DeleteCharacterModalProps = {
 
 function DeleteCharacterModal(props: DeleteCharacterModalProps) {
   const characterCtx = useCharacter()
+  const { setThemeColor } = useTheme()
 
   function handleDelete() {
     characterCtx.setCharacters((cs) => [...cs.filter((c) => c.id !== characterCtx?.currCharacter?.id)])
@@ -19,6 +21,7 @@ function DeleteCharacterModal(props: DeleteCharacterModalProps) {
       message: "Your " + characterCtx.currCharacter?.class + " gone to void D:",
       color: "red",
     })
+    setThemeColor("indigo")
   }
 
   return (

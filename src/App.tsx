@@ -8,23 +8,33 @@ import SpellsView from "./views/SpellsView"
 import DiceRollerView from "./views/DiceRollerView"
 import CharacterView from "./views/CharacterView"
 
-import { theme } from "./theme"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import { CharacterProvider } from "./contexts/CharacterContext"
 import Navbar from "./components/Navbar/Navbar"
 import NotesView from "./views/NotesView"
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext"
+
+function AppLayout() {
+  const { theme } = useTheme()
+  return (
+    <MantineProvider theme={theme}>
+      <Notifications />
+      <Navbar />
+      <Outlet />
+    </MantineProvider>
+  )
+}
 
 const router = createBrowserRouter([
   {
     path: "",
     element: (
-      <MantineProvider theme={theme}>
-        <Notifications />
-        <Navbar />
-        <Outlet />
-      </MantineProvider>
+      <ThemeProvider>
+        <AppLayout />
+      </ThemeProvider>
     ),
+
     children: [
       { path: "/", index: true, element: <CharacterView /> },
       { path: "/spells", element: <SpellsView /> },

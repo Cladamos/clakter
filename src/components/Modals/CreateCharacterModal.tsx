@@ -1,10 +1,28 @@
-import { Modal, Stepper, Button, Group, TextInput, Stack, Card, Text, Checkbox, Grid, Container, Tooltip, Textarea } from "@mantine/core"
+import {
+  Modal,
+  Stepper,
+  Button,
+  Group,
+  TextInput,
+  Stack,
+  Card,
+  Text,
+  Checkbox,
+  Grid,
+  Container,
+  Tooltip,
+  Textarea,
+  Popover,
+  SimpleGrid,
+  Divider,
+} from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
 import { useState, useEffect, useRef } from "react"
 import { Character, useCharacter } from "../../contexts/CharacterContext"
 import { v4 as uuidv4 } from "uuid"
+import { useTheme } from "../../contexts/ThemeContext"
 
 type createCharacterModalProps = {
   opened: boolean
@@ -79,8 +97,11 @@ const skillChecks = [
   { label: "Survival", key: "skillChecks.17.score" },
 ]
 
+const colors = ["gray", "red", "pink", "grape", "violet", "indigo", "blue", "cyan", "teal", "green", "lime", "yellow", "orange"] // Comes here https://yeun.github.io/open-color/
+
 function CreateCharacterModal(props: createCharacterModalProps) {
   const characterCtx = useCharacter()
+  const { themeColor, setThemeColor } = useTheme()
 
   const [active, setActive] = useState(0)
   const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current))
@@ -108,6 +129,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       proficiency: "",
       alignment: "",
       level: "",
+      theme: "indigo",
       ac: "",
       hitPoints: { hp: "", thp: "", hpMax: "" },
       speed: "",
@@ -180,6 +202,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
 
   function handleModalClose() {
     props.close()
+    setThemeColor(characterCtx.currCharacter ? characterCtx.currCharacter.theme : "indigo")
     setActive(0)
   }
 
@@ -201,11 +224,8 @@ function CreateCharacterModal(props: createCharacterModalProps) {
         message: "Have fun with your " + character.class + ". Such a great choice!",
       })
     }
-    props.close()
-    setActive(0)
-  }
 
-  function handleError() {
+    props.close()
     setActive(0)
   }
 
@@ -293,7 +313,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       centered
       title={props.type == "creating" ? "Create Your Own Character" : "Edit Your Character"}
     >
-      <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stepper active={active} onStepClick={setActive} size="xs" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>
@@ -302,6 +322,35 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                   <TextInput size="md" radius="md" placeholder={b.placeholder} label={b.label} key={form.key(b.key)} {...form.getInputProps(b.key)} />
                 </Grid.Col>
               ))}
+              <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+                <Text fw={500}> Character Theme</Text>
+                <Popover>
+                  <Popover.Target>
+                    <Button fullWidth size="md" radius="md">
+                      <Text fw={500}>{themeColor[0].toUpperCase() + themeColor.substring(1)}</Text>
+                    </Button>
+                  </Popover.Target>
+                  <Popover.Dropdown>
+                    <Text style={{ textAlign: "center" }}>Theme Colors</Text>
+                    <Divider />
+                    <SimpleGrid cols={4} pt="xs">
+                      {colors.map((color) => (
+                        <Tooltip label={color}>
+                          <Button
+                            size="xs"
+                            key={color}
+                            color={color}
+                            onClick={() => {
+                              setThemeColor(color)
+                              form.setValues({ theme: color })
+                            }}
+                          ></Button>
+                        </Tooltip>
+                      ))}
+                    </SimpleGrid>
+                  </Popover.Dropdown>
+                </Popover>
+              </Grid.Col>
             </Grid>
           </Stepper.Step>
           <Stepper.Step label="Second step" description="Create Personality">

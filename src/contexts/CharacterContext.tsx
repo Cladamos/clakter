@@ -10,6 +10,7 @@ export type Character = {
   proficiency: string
   alignment: string
   level: string
+  theme: string
   ac: string
   hitPoints: { hp: string; thp: string; hpMax: string }
   speed: string
@@ -44,7 +45,7 @@ export const useCharacter = () => {
   const ctx = useContext(CharacterContext)
 
   if (ctx === null) {
-    throw new Error("UserContext should be used within the UserProvider")
+    throw new Error("CharacterContext should be used within the CharacterProvider")
   }
 
   return ctx
