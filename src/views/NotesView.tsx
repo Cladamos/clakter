@@ -1,4 +1,5 @@
+import Notes from "../components/Notes"
 function NotesView() {
-  return <></>
+  return <Notes />
 }
 export default NotesView
