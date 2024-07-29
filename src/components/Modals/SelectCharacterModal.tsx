@@ -30,8 +30,8 @@ function SelectCharacterModal(props: selectCharacterModalProps) {
           {characterCtx.characters.map((c) => {
             if (characterCtx.currCharacter?.id !== c.id) {
               return (
-                <>
-                  <Button variant="subtle" justify="flex-start" size="lg" key={c.id} onClick={() => handleSetCharacter(c)}>
+                <Stack key={c.id}>
+                  <Button fullWidth variant="subtle" justify="flex-start" size="lg" key={c.id} onClick={() => handleSetCharacter(c)} color={c.theme}>
                     <Group gap="md">
                       <Avatar color={c.theme} alt={c.name}>
                         {c.name.slice(0, 2).toUpperCase()}
@@ -42,7 +42,7 @@ function SelectCharacterModal(props: selectCharacterModalProps) {
                     </Group>
                   </Button>
                   <Divider />
-                </>
+                </Stack>
               )
             }
           })}

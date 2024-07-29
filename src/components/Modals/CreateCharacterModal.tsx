@@ -117,7 +117,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     return acc
   }, {} as { [key: string]: (value: string) => string | null })
 
-  const form = useForm({
+  const form = useForm<Character>({
     mode: "uncontrolled",
 
     initialValues: {
@@ -175,6 +175,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       ideals: "",
       bonds: "",
       flaws: "",
+      spells: { results: [] },
     },
     validate: validationSchema,
   })
@@ -203,6 +204,10 @@ function CreateCharacterModal(props: createCharacterModalProps) {
   function handleModalClose() {
     props.close()
     setThemeColor(characterCtx.currCharacter ? characterCtx.currCharacter.theme : "indigo")
+    setActive(0)
+  }
+
+  function handleError() {
     setActive(0)
   }
 
@@ -313,7 +318,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       centered
       title={props.type == "creating" ? "Create Your Own Character" : "Edit Your Character"}
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
         <Stepper active={active} onStepClick={setActive} size="xs" mt="xs">
           <Stepper.Step label="First step" description="Determine basics">
             <Grid>
@@ -335,7 +340,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                     <Divider />
                     <SimpleGrid cols={4} pt="xs">
                       {colors.map((color) => (
-                        <Tooltip label={color}>
+                        <Tooltip label={color} key={color}>
                           <Button
                             size="xs"
                             key={color}

@@ -14,13 +14,15 @@ const variants = {
   regular: { base: 12, md: 6, lg: 4 },
 }
 
-type FetchAllSpellsResponseBody = {
+export type FetchAllSpellsResponseBody = {
   results: {
     index: string
-    name: "string"
-    level: "string"
+    name: string
+    level: string
   }[]
 }
+
+//TODO: Fix key issue about axios (I guess)
 
 async function fetchAllSpels() {
   const response = await axios<FetchAllSpellsResponseBody>("https://www.dnd5eapi.co/api/spells")
@@ -126,7 +128,7 @@ function Cards() {
           <Grid w="100%">
             {currentCards.map((spell) => (
               <Grid.Col span={variants.regular} key={spell.name}>
-                <Spell title={spell.name} desc="" level={"Level " + spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />
+                <Spell title={spell.name} desc="" level={spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />
               </Grid.Col>
             ))}
           </Grid>
