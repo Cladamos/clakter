@@ -222,7 +222,11 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     } else {
       const id = uuidv4()
       characterCtx.setCharacters((c) => [...c, { ...character, id: id }])
-      characterCtx.setCurrCharacter({ ...character, id: id })
+      characterCtx.setCurrCharacter({
+        ...character,
+        id: id,
+        hitPoints: { hpMax: character.hitPoints.hpMax, hp: character.hitPoints.hpMax, thp: character.hitPoints.thp },
+      })
       form.reset()
       notifications.show({
         title: "Your character is created",

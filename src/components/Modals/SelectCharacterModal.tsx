@@ -13,6 +13,7 @@ function SelectCharacterModal(props: selectCharacterModalProps) {
   const { setThemeColor } = useTheme()
 
   function handleSetCharacter(character: Character) {
+    characterCtx.setCharacters((cs) => [...cs.filter((c) => c.id !== characterCtx.currCharacter!.id), characterCtx.currCharacter!])
     characterCtx.setCurrCharacter(character)
     props.close()
     notifications.show({

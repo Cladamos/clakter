@@ -71,7 +71,7 @@ function CharacterSheet() {
 
     return (
       <>
-        <HpModal opened={openedHpModal} close={closeHpModal} />
+        <HpModal opened={openedHpModal} close={closeHpModal} key={c.id} />
         <PersonalDetailsModal opened={openedPersonalDetailsModal} close={closePersonalDetailsModal} />
         <DiceRollModal opened={openedDiceRollModal} close={closeDiceRollModal} input={rollInput} />
         <Container size="lg" mt={90}>
