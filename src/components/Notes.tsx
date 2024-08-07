@@ -76,10 +76,7 @@ function SortableNote({
 }
 
 function Notes() {
-  const [notes, setNotes] = useLocalStorage<Note[]>("notes", [
-    { id: "321", title: "dsad", content: "qweqweq", color: "cyan", isEditing: false },
-    { id: "sdsds", title: "qeweqweq", content: "asdad", color: "red", isEditing: false },
-  ])
+  const [notes, setNotes] = useLocalStorage<Note[]>("notes", [])
 
   const [noteTitle, setNoteTitle] = useState("")
   const [noteContent, setNoteContent] = useState("")
