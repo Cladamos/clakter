@@ -1,6 +1,7 @@
 import { Modal, Stack, Button, Textarea, NativeSelect, Group, TextInput, Grid } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
+import { createdSpell } from "../../contexts/CreatedSpellContext"
 
 type CreateSpellModalProps = {
   opened: boolean
@@ -11,19 +12,6 @@ type CreateSpellModalProps = {
     name: string
     level: string
   }[]
-}
-
-export type createdSpell = {
-  name: string
-  desc: string
-  level: string
-  components: string
-  casting_time: string
-  range: string
-  material: string
-  duration: string
-  school: string
-  classes: string
 }
 
 const basics = [

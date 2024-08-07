@@ -6,9 +6,8 @@ import { IconExclamationCircle, IconSearch } from "@tabler/icons-react"
 import React, { useState } from "react"
 import SpellModal from "./Modals/SpellModal"
 import { useDisclosure } from "@mantine/hooks"
-import { useLocalStorage } from "usehooks-ts"
 import CreateSpellModal from "./Modals/CreateSpellModal"
-import { createdSpell } from "./Modals/CreateSpellModal"
+import { createdSpell, useCreatedSpells } from "../contexts/CreatedSpellContext"
 
 const variants = {
   regular: { base: 12, md: 6, lg: 4 },
@@ -22,8 +21,6 @@ export type FetchAllSpellsResponseBody = {
   }[]
 }
 
-//TODO: Fix key issue about axios (I guess)
-
 async function fetchAllSpels() {
   const response = await axios<FetchAllSpellsResponseBody>("https://www.dnd5eapi.co/api/spells")
   return response.data
@@ -33,8 +30,6 @@ function Cards() {
     queryKey: ["spells"],
     queryFn: fetchAllSpels,
   })
-
-  const [createdSpells, setCreatedSpells] = useLocalStorage<createdSpell[]>("createdSpells", [])
   const [input, setInput] = useState("")
   const [currSpell, setCurrSpell] = useState<string | createdSpell>("aid")
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
@@ -42,8 +37,10 @@ function Cards() {
   const [activePage, setPage] = useState(1)
   const cardsPerPage = 12
 
+  const { createdSpells, setCreatedSpells } = useCreatedSpells()
+
   function handleCreateSpell(spell: createdSpell) {
-    setCreatedSpells([...createdSpells, spell])
+    setCreatedSpells((spells) => [...spells, spell])
   }
 
   if (query.isLoading || query.isPending) {
@@ -60,7 +57,7 @@ function Cards() {
             onChange={handleChange}
           />
           <Grid w="100%">
-            {Array.from(Array(12)).map((index) => (
+            {Array.from(Array(12)).map((_, index) => (
               <Grid.Col span={variants.regular} key={index}>
                 <Skeleton height={125} mt={6} radius="md" />
               </Grid.Col>

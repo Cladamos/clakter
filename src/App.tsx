@@ -14,6 +14,7 @@ import { CharacterProvider } from "./contexts/CharacterContext"
 import Navbar from "./components/Navbar/Navbar"
 import NotesView from "./views/NotesView"
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext"
+import { CreatedSpellProvider } from "./contexts/CreatedSpellContext"
 
 function AppLayout() {
   const { theme } = useTheme()
@@ -31,7 +32,9 @@ const router = createBrowserRouter([
     path: "",
     element: (
       <ThemeProvider>
-        <AppLayout />
+        <CreatedSpellProvider>
+          <AppLayout />
+        </CreatedSpellProvider>
       </ThemeProvider>
     ),
 

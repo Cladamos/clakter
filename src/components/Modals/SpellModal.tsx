@@ -3,7 +3,7 @@ import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { useDisclosure } from "@mantine/hooks"
 import { IconExclamationCircle } from "@tabler/icons-react"
-import { createdSpell } from "./CreateSpellModal"
+import { createdSpell } from "../../contexts/CreatedSpellContext"
 
 type SpellModalProps = {
   opened: boolean
