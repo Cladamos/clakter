@@ -136,7 +136,7 @@ function Cards() {
             total={data.length / cardsPerPage}
             value={activePage}
             onChange={setPage}
-            size="md"
+            size="sm"
             disabled={currentCards.length < cardsPerPage}
           />
         </Group>

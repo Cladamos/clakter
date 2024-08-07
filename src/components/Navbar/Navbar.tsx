@@ -137,6 +137,19 @@ function Navbar() {
               {menuItem.label}
             </Button>
           ))}
+          <Button
+            w="100%"
+            variant="subtle"
+            justify="start"
+            size="lg"
+            radius="md"
+            component={Link}
+            to="/dice-roller"
+            key="Dice Roller"
+            onClick={toggle}
+          >
+            Dice Roller
+          </Button>
         </Group>
       </AppShell.Navbar>
     </AppShell>
