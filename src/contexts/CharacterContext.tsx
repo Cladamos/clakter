@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext } from "react"
 import { useLocalStorage } from "usehooks-ts"
+import { FetchAllSpellsResponseBody } from "../components/Cards"
 
 export type Character = {
   id: string
@@ -23,6 +24,7 @@ export type Character = {
   ideals: string
   bonds: string
   flaws: string
+  spells: FetchAllSpellsResponseBody
 }
 
 export const CharacterContext = createContext<{
