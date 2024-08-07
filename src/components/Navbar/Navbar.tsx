@@ -67,7 +67,7 @@ function Navbar() {
         <Container size="lg" h="100%">
           <Group h="100%" justify="space-between">
             <Burger opened={opened} onClick={toggle} hiddenFrom="lg" size="sm" w={isMobile ? 100 : 300} />
-            <Text size="xl" fw={900} w={{ lg: "300" }}>
+            <Text size="xl" fw={900} w={{ lg: "300" }} component={Link} to={"/"}>
               Clakter
             </Text>
             <Group gap="sm" visibleFrom="lg" justify="center">
