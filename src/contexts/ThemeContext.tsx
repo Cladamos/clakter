@@ -9,7 +9,7 @@ export const ThemeContext = createContext<{
 } | null>(null)
 
 export const ThemeProvider = (props: { children: ReactNode }) => {
-  const [themeColor, setThemeColor] = useLocalStorage("theme", "cyan")
+  const [themeColor, setThemeColor] = useLocalStorage("theme", "indigo")
 
   const theme = createTheme({
     fontFamily: "Poppins, sans-serif",
