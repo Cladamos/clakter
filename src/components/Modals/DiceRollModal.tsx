@@ -2,6 +2,7 @@ import { Flex, Modal, Paper, useMantineColorScheme, Text, Group, Button, Tooltip
 import DiceCalculator from "../DiceRoller/DiceCalculator.tsx"
 import classes from "../DiceRoller/DiceRoller.module.css"
 import { useEffect, useState } from "react"
+import D20 from "../../assets/diceSvgs/dice-d20.svg?react"
 
 type DiceRollModalProps = {
   opened: boolean
@@ -35,7 +36,7 @@ function DiceRollModal(props: DiceRollModalProps) {
   return (
     <Modal opened={props.opened} onClose={props.close} size="sm" radius="md" centered padding="md">
       {roll.results.map((dice, index) => (
-        <Flex key={index + dice.score} align="center" direction="column" gap={5}>
+        <Flex key={index + dice.score} align="center" direction="column">
           <Stack align="center" gap={0} mb="md">
             <Tooltip label="Roll Again">
               <Paper
@@ -48,14 +49,28 @@ function DiceRollModal(props: DiceRollModalProps) {
                 <dice.type />
               </Paper>
             </Tooltip>
-            <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
-              {dice.score}
-            </Text>
+            {roll.modifier ? (
+              dice.score == 1 || dice.score == 20 ? (
+                <Text c={dice.score == 1 ? "red" : "green"} size="lg" fw={700} pt="sm" className={`${animate ? classes.shake : ""}`}>
+                  {dice.score == 1 ? "Critical Failure" : "Critical Success"}
+                </Text>
+              ) : (
+                <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
+                  {dice.score}
+                </Text>
+              )
+            ) : (
+              <></>
+            )}
           </Stack>
           {dice.score == 1 || dice.score == 20 ? (
-            <Text c={dice.score == 1 ? "red" : "green"} size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
-              {dice.score == 1 ? "Critical Failure" : "Critical Success"}
-            </Text>
+            dice.type == D20 ? (
+              <></>
+            ) : (
+              <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
+                {"Total: " + dice.score}
+              </Text>
+            )
           ) : (
             <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
               {roll.modifier

@@ -77,11 +77,11 @@ function CharacterSheet() {
 
   if (c) {
     const basicValues = [
-      { message: "Class: ", val: c.class },
-      { message: "Background: ", val: c.background },
-      { message: "Race: ", val: c.race },
-      { message: "Alignment: ", val: c.alignment },
-      { message: "Level: ", val: c.level },
+      { message: "Class", val: c.class },
+      { message: "Background", val: c.background },
+      { message: "Race", val: c.race },
+      { message: "Alignment", val: c.alignment },
+      { message: "Level", val: c.level },
     ]
     const extraValues = [
       { message: "Ac", val: c.ac },
