@@ -112,7 +112,7 @@ function CharacterSheet() {
                           {a.score}
                         </Paper>
                         <Paper withBorder px="xl" radius="xl">
-                          {"+" + a.effect}
+                          {a.effect >= 0 ? "+" + a.effect : a.effect}
                         </Paper>
                       </Stack>
                     </Grid.Col>
@@ -120,7 +120,7 @@ function CharacterSheet() {
                 </Grid>
               </Card>
             )}
-            <Stack w={isMobile ? "100%" : "88%"}>
+            <Stack w={isMobile ? "100%" : "88%"} gap="xs">
               <Card withBorder shadow="sm" radius="md">
                 <Group pb="sm" style={{ position: "relative", width: "100%" }}>
                   <Title
@@ -149,10 +149,11 @@ function CharacterSheet() {
                 <Card.Section withBorder inheritPadding py="sm">
                   <Grid grow>
                     {basicValues.map((b) => (
-                      <Grid.Col span={{ base: 12, md: 4, lg: 2 }} key={b.message}>
+                      <Grid.Col span={{ base: 12, md: 4, lg: 2 }} key={b.message} style={{ textAlign: "center" }}>
+                        <Text>{b.message}</Text>
                         <Paper withBorder py="xs">
-                          <Text style={{ textAlign: "center" }} size="md">
-                            {b.message + b.val}
+                          <Text style={{ textAlign: "center" }} size="sm" truncate="end">
+                            {b.val}
                           </Text>
                         </Paper>
                       </Grid.Col>
@@ -171,7 +172,7 @@ function CharacterSheet() {
                             {a.score}
                           </Paper>
                           <Paper withBorder px="xl" radius="xl">
-                            {"+" + a.effect}
+                            {a.effect >= 0 ? "+" + a.effect : a.effect}
                           </Paper>
                         </Stack>
                       </Grid.Col>
@@ -186,7 +187,7 @@ function CharacterSheet() {
                   <CardSection withBorder inheritPadding py="xs">
                     <Text>Your Spells</Text>
                   </CardSection>
-                  <ScrollArea scrollbars="y" mt="sm" h={600}>
+                  <ScrollArea scrollbars="y" mt="sm" h={585}>
                     <Grid>
                       {c.spells.results.map((s) => (
                         <Grid.Col span={{ base: 12, md: 6, lg: 6 }} key={s.index}>
@@ -242,7 +243,11 @@ function CharacterSheet() {
                     <Grid mt="xs">
                       {c.savingThrows.map((s) => (
                         <Grid.Col span={{ base: 12, md: 6, lg: 3 }} key={s.name}>
-                          <Paper p="xs" onClick={() => handleDiceRoll("1d20" + s.score)} className="paper-hover">
+                          <Paper
+                            p="xs"
+                            onClick={() => (s.score == "0" ? handleDiceRoll("1d20") : handleDiceRoll("1d20" + s.score))}
+                            className="paper-hover"
+                          >
                             <Group>
                               {s.proficiency ? <IconCircleFilled /> : <IconCircle />}
                               <Text size="sm">{camelCaseToNormal(s.name) + ": " + s.score}</Text>
@@ -259,7 +264,11 @@ function CharacterSheet() {
                     <Grid mt="xs">
                       {c.skillChecks.map((s) => (
                         <Grid.Col span={{ base: 12, md: 6, lg: 3 }} key={s.name}>
-                          <Paper p="xs" onClick={() => handleDiceRoll("1d20" + s.score)} className="paper-hover">
+                          <Paper
+                            p="xs"
+                            onClick={() => (s.score == "0" ? handleDiceRoll("1d20") : handleDiceRoll("1d20" + s.score))}
+                            className="paper-hover"
+                          >
                             <Group>
                               {s.proficiency ? <IconCircleFilled /> : <IconCircle />}
                               <Text size="sm">{camelCaseToNormal(s.name) + ": " + s.score}</Text>
