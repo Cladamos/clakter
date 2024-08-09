@@ -7,6 +7,8 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import CreateCharacterModal from "../Modals/CreateCharacterModal"
 import DeleteCharacterModal from "../Modals/DeleteCharacterModal"
 import SelectCharacterModal from "../Modals/SelectCharacterModal"
+import CreateFromPresetsModal from "../Modals/CreateFromPresetsModal"
+import CreateCharacterSelectorModal from "../Modals/CreateCharacterSelectorModal"
 
 type NavbarAvatarProps = {
   size: string
@@ -16,6 +18,8 @@ function NavbarAvatar(props: NavbarAvatarProps) {
   const [openedDeleteCharacterModal, { open: openDeleteCharacterModal, close: closeDeleteCharacterModal }] = useDisclosure(false)
   const [openedCreateCharacterModal, { open: openCreateCharacterModal, close: closeCreateCharacterModal }] = useDisclosure(false)
   const [openedSelectCharacterModal, { open: openSelectCharacterModal, close: closeSelectCharacterModal }] = useDisclosure(false)
+  const [openedCreateSelector, { open: openCreateSelector, close: closeCreateSelector }] = useDisclosure(false)
+  const [openedCreateFromPreset, { open: openCreateFromPreset, close: closeCreateFromPreset }] = useDisclosure(false)
   const [modalType, setModalType] = useState<"editing" | "creating">("editing")
   const characterCtx = useCharacter()
 
@@ -35,7 +39,14 @@ function NavbarAvatar(props: NavbarAvatarProps) {
   if (characterCtx.currCharacter) {
     return (
       <>
+        <CreateCharacterSelectorModal
+          opened={openedCreateSelector}
+          close={closeCreateSelector}
+          openCreate={openCreateCharacterModal}
+          openCreateFromPresets={openCreateFromPreset}
+        />
         <CreateCharacterModal opened={openedCreateCharacterModal} close={closeCreateCharacterModal} type={modalType} />
+        <CreateFromPresetsModal opened={openedCreateFromPreset} close={closeCreateFromPreset} />
         <DeleteCharacterModal opened={openedDeleteCharacterModal} close={closeDeleteCharacterModal} />
         <SelectCharacterModal opened={openedSelectCharacterModal} close={closeSelectCharacterModal} />
         <Menu withArrow offset={20} position="bottom-start">
@@ -61,7 +72,13 @@ function NavbarAvatar(props: NavbarAvatarProps) {
             >
               Change character
             </Menu.Item>
-            <Menu.Item leftSection={<IconPlus style={{ width: rem(14), height: rem(14) }} />} onClick={() => handleModalType("creating")}>
+            <Menu.Item
+              leftSection={<IconPlus style={{ width: rem(14), height: rem(14) }} />}
+              onClick={() => {
+                openCreateSelector()
+                setModalType("creating")
+              }}
+            >
               Create new character
             </Menu.Item>
             <Menu.Divider />
