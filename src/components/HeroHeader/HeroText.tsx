@@ -49,7 +49,7 @@ export function HeroText(props: HeroTextProps) {
               </Button>
             )}
             <Button className={classes.control} size="lg" onClick={props.open}>
-              Create Your Character
+              Create Character
             </Button>
           </div>
         </div>

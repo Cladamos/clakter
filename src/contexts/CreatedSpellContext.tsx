@@ -28,7 +28,7 @@ export const useCreatedSpells = () => {
   const ctx = useContext(CreatedSpellContext)
 
   if (ctx === null) {
-    throw new Error("CharacterContext should be used within the CharacterProvider")
+    throw new Error("CreatedSpellContext should be used within the CreatedSpellProvider")
   }
 
   return ctx

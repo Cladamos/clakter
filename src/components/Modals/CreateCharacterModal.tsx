@@ -199,8 +199,6 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     }
   }, [props.opened])
 
-  if (!props.opened) return null
-
   function handleModalClose() {
     props.close()
     setThemeColor(characterCtx.currCharacter ? characterCtx.currCharacter.theme : "indigo")
