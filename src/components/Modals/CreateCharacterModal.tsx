@@ -53,7 +53,7 @@ const extraDetails = [
   { label: "Armor Class", placeholder: "22", tooltip: "10 + your dex modifier + armor", key: "ac" },
   { label: "Hit Point", placeholder: "66", tooltip: "Based on your hit dice rolls", key: "hitPoints.hpMax" },
   { label: "Speed", placeholder: "30ft", tooltip: "Based on your race", key: "speed" },
-  { label: "Intiative", placeholder: "+3", tooltip: "Your dex modifier", key: "intiative" },
+  { label: "Initiative", placeholder: "+3", tooltip: "Your dex modifier", key: "initiative" },
 ]
 const personalDetails = [
   { label: "Personal Trait 1", placeholder: "Nothing can shake my optimistic attitude.", key: "personalTrait1" },
@@ -133,7 +133,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
       ac: "",
       hitPoints: { hp: "", thp: "", hpMax: "" },
       speed: "",
-      intiative: "",
+      initiative: "",
       attributes: [
         { name: "strength", score: "", effect: 0 },
         { name: "dexterity", score: "", effect: 0 },

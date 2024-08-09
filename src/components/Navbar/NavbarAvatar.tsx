@@ -7,7 +7,7 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import CreateCharacterModal from "../Modals/CreateCharacterModal"
 import DeleteCharacterModal from "../Modals/DeleteCharacterModal"
 import SelectCharacterModal from "../Modals/SelectCharacterModal"
-import CreateFromPresetsModal from "../Modals/CreateFromPresetsModal"
+import CreateFromPresetsModal from "../Modals/PresetModal/CreateFromPresetsModal"
 import CreateCharacterSelectorModal from "../Modals/CreateCharacterSelectorModal"
 
 type NavbarAvatarProps = {

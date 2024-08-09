@@ -15,7 +15,7 @@ export type Character = {
   ac: string
   hitPoints: { hp: string; thp: string; hpMax: string }
   speed: string
-  intiative: string
+  initiative: string
   attributes: { name: string; score: string; effect: number }[]
   savingThrows: { name: string; type: string; score: string; proficiency: boolean }[]
   skillChecks: { name: string; type: string; score: string; proficiency: boolean }[]

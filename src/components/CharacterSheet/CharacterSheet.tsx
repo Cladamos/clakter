@@ -87,7 +87,7 @@ function CharacterSheet() {
       { message: "Ac", val: c.ac },
       { message: "Hp", val: Number(c.hitPoints.hp) + Number(c.hitPoints.thp) },
       { message: "Speed", val: c.speed },
-      { message: "Intiative", val: c.intiative },
+      { message: "Initiative", val: c.initiative },
     ]
 
     return (

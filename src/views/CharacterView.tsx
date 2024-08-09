@@ -5,7 +5,7 @@ import { HeroText } from "../components/HeroHeader/HeroText"
 import CreateCharacterModal from "../components/Modals/CreateCharacterModal"
 import CharacterSheet from "../components/CharacterSheet/CharacterSheet"
 import CreateCharacterSelectorModal from "../components/Modals/CreateCharacterSelectorModal"
-import CreateFromPresetsModal from "../components/Modals/CreateFromPresetsModal"
+import CreateFromPresetsModal from "../components/Modals/PresetModal/CreateFromPresetsModal"
 
 function CharactersView() {
   const characterCtx = useContext(CharacterContext)
