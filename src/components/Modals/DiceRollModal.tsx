@@ -49,16 +49,18 @@ function DiceRollModal(props: DiceRollModalProps) {
                 <dice.type />
               </Paper>
             </Tooltip>
-            {roll.modifier ? (
-              dice.score == 1 || dice.score == 20 ? (
+            {dice.score == 1 || dice.score == 20 ? (
+              dice.type == D20 ? (
                 <Text c={dice.score == 1 ? "red" : "green"} size="lg" fw={700} pt="sm" className={`${animate ? classes.shake : ""}`}>
                   {dice.score == 1 ? "Critical Failure" : "Critical Success"}
                 </Text>
               ) : (
-                <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
-                  {dice.score}
-                </Text>
+                <></>
               )
+            ) : roll.modifier ? (
+              <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
+                {dice.score}
+              </Text>
             ) : (
               <></>
             )}
