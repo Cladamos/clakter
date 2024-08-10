@@ -36,8 +36,8 @@ function Cards() {
   const [openedCreateSpellModal, { open: openCreateSpellModal, close: closeCreateSpellModal }] = useDisclosure(false)
   const [activePage, setPage] = useState(1)
   const [levelFilter, setLevelFilter] = useState<string[]>([])
-  const [classFilter, setClassFilter] = useState<string[]>([])
-  const [schoolFilter, setSchoolFilter] = useState<string[]>([])
+  // const [classFilter, setClassFilter] = useState<string[]>([])
+  // const [schoolFilter, setSchoolFilter] = useState<string[]>([])
   const cardsPerPage = 12
 
   const { createdSpells, setCreatedSpells } = useCreatedSpells()
