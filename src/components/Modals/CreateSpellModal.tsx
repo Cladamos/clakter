@@ -54,7 +54,7 @@ function CreateSpellModal(props: CreateSpellModalProps) {
   function findNumber(s: string): string {
     let number = ""
     for (let i = 0; i < s.length; i++) {
-      if (!isNaN(Number(s[i]))) {
+      if (!isNaN(Number(s[i])) && s[i] >= "0" && s[i] <= "9") {
         number += s[i]
       }
     }
