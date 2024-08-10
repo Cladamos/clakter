@@ -1,6 +1,6 @@
 import Spell from "./Spell"
 import axios from "axios"
-import { useQuery } from "@tanstack/react-query"
+import { useQueries, useQuery } from "@tanstack/react-query"
 import { Container, Grid, Skeleton, Alert, Input, Group, Pagination, Button, Stack, Popover, MultiSelect, Text, Divider } from "@mantine/core"
 import { IconAdjustmentsHorizontal, IconExclamationCircle, IconSearch } from "@tabler/icons-react"
 import React, { useEffect, useState } from "react"
@@ -31,7 +31,7 @@ async function fetchAllSpels() {
   return response.data
 }
 
-async function fetchSpellsByClass(className: string) {
+async function fetchSpellsByClass(className: string): Promise<{ index: string }[]> {
   const response = await axios<FetchClassSpellsResponseBody>(`https://www.dnd5eapi.co/api/classes/${className}/spells`)
   return response.data.results
 }
@@ -47,27 +47,23 @@ function Cards() {
   const [openedCreateSpellModal, { open: openCreateSpellModal, close: closeCreateSpellModal }] = useDisclosure(false)
   const [activePage, setPage] = useState(1)
   const [levelFilter, setLevelFilter] = useState<string[]>([])
-  const [filteredClassSpells, setFilteredClassSpells] = useState<{ index: string }[]>([])
   const [classFilter, setClassFilter] = useState<string[]>([])
   // const [schoolFilter, setSchoolFilter] = useState<string[]>([])
   const cardsPerPage = 12
 
   const { createdSpells, setCreatedSpells } = useCreatedSpells()
 
-  useEffect(() => {
-    if (classFilter.length === 0) {
-      setFilteredClassSpells([])
-      return
-    }
+  const classQueries = useQueries({
+    queries: classFilter.map((c) => ({
+      queryKey: ["classSpells", c.toLowerCase()],
+      queryFn: () => fetchSpellsByClass(c.toLowerCase()),
+      enabled: !!classFilter.length, // Only run queries if classFilter has values
+    })),
+  })
 
-    const fetchClassSpells = async () => {
-      const allClassSpells = await Promise.all(classFilter.map((c) => fetchSpellsByClass(c.toLowerCase())))
-      const combinedClassSpells = allClassSpells.flat()
-      setFilteredClassSpells(combinedClassSpells)
-    }
-
-    fetchClassSpells()
-  }, [classFilter])
+  const classLoading = classQueries.some((query) => query.isLoading)
+  const classError = classQueries.some((query) => query.isError)
+  const classData = classQueries.flatMap((query) => query.data || [])
 
   useEffect(() => setPage(1), [levelFilter, classFilter])
 
@@ -75,7 +71,7 @@ function Cards() {
     setCreatedSpells((spells) => [...spells, spell])
   }
 
-  if (query.isLoading || query.isPending) {
+  if (query.isLoading || query.isPending || classLoading) {
     return (
       <Container size="lg" mt={100}>
         <Group gap="lg" justify="center">
@@ -103,7 +99,7 @@ function Cards() {
     )
   }
 
-  if (query.isError) {
+  if (query.isError || classError) {
     return (
       <Container size="lg" mt={100}>
         <Alert variant="light" color="red" title="Error" icon={<IconExclamationCircle />}>
@@ -127,7 +123,7 @@ function Cards() {
   const classFilteredData =
     classFilter.length > 0
       ? [
-          ...data.filter((s) => filteredClassSpells.some((c) => c.index.toLowerCase() === s.index)),
+          ...data.filter((s) => classData.some((c) => c.index.toLowerCase() === s.index)),
           ...createdSpells
             .filter((s) => {
               return classFilter.some((cls) => s.classes.toLowerCase().split(", ").includes(cls.toLowerCase()))
