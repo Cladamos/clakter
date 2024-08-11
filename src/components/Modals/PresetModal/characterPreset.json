@@ -293,7 +293,11 @@
     "bonds": "I've been searching my whole life for the answer to a certain question.",
     "flaws": "I speak without really thinking through my words, invariably insulting others.",
     "spells": {
-      "results": []
+      "results": [
+        { "index": "magic-missile", "name": "Magic Missile", "level": "1" },
+        { "index": "shield", "name": "Shield", "level": "1" },
+        { "index": "burning-hands", "name": "Burning Hands", "level": "1" }
+      ]
     }
   },
   {
@@ -352,7 +356,14 @@
     "bonds": "I owe a great debt to a powerful entity that saved my life.",
     "flaws": "I'm quick to anger and slow to forgive.",
     "spells": {
-      "results": []
+      "results": [
+        { "index": "eldritch-blast", "name": "Eldritch Blast", "level": "0" },
+        { "index": "mage-hand", "name": "Mage Hand", "level": "0" },
+        { "index": "prestidigitation", "name": "Prestidigitation", "level": "0" },
+        { "index": "charm-person", "name": "Charm Person", "level": "1" },
+        { "index": "misty-step", "name": "Misty Step", "level": "2" },
+        { "index": "hold-person", "name": "Hold Person", "level": "2" }
+      ]
     }
   },
   {
@@ -411,7 +422,13 @@
     "bonds": "My loyalty to my sovereign is unwavering.",
     "flaws": "I have an intense need for the approval of others.",
     "spells": {
-      "results": []
+      "results": [
+        { "index": "bless", "name": "Bless", "level": "1" },
+        { "index": "cure-wounds", "name": "Cure Wounds", "level": "1" },
+        { "index": "divine-favor", "name": "Divine Favor", "level": "1" },
+        { "index": "find-steed", "name": "Find Steed", "level": "2" },
+        { "index": "lesser-restoration", "name": "Lesser Restoration", "level": "2" }
+      ]
     }
   },
   {
@@ -470,7 +487,16 @@
     "bonds": "I idolize a hero of the old tales and measure my deeds against that person's.",
     "flaws": "I'm a sucker for a pretty face.",
     "spells": {
-      "results": []
+      "results": [
+        { "index": "fire-bolt", "name": "Fire Bolt", "level": "0" },
+        { "index": "prestidigitation", "name": "Prestidigitation", "level": "0" },
+        { "index": "ray-of-frost", "name": "Ray of Frost", "level": "0" },
+        { "index": "magic-missile", "name": "Magic Missile", "level": "1" },
+        { "index": "mage-armor", "name": "Mage Armor", "level": "1" },
+        { "index": "shield", "name": "Shield", "level": "1" },
+        { "index": "mirror-image", "name": "Mirror Image", "level": "2" },
+        { "index": "misty-step", "name": "Misty Step", "level": "2" }
+      ]
     }
   },
   {
@@ -529,7 +555,16 @@
     "bonds": "I'm still seeking the approval of my mentor.",
     "flaws": "I have trouble keeping my true feelings hidden. My sharp tongue lands me in trouble.",
     "spells": {
-      "results": []
+      "results": [
+        { "index": "vicious-mockery", "name": "Vicious Mockery", "level": "0" },
+        { "index": "prestidigitation", "name": "Prestidigitation", "level": "0" },
+        { "index": "mage-hand", "name": "Mage Hand", "level": "0" },
+        { "index": "animal-friendship", "name": "Animal Friendship", "level": "1" },
+        { "index": "cure-wounds", "name": "Cure Wounds", "level": "1" },
+        { "index": "faerie-fire", "name": "Faerie Fire", "level": "1" },
+        { "index": "heat-metal", "name": "Heat Metal", "level": "2" },
+        { "index": "shatter", "name": "Shatter", "level": "2" }
+      ]
     }
   },
   {
@@ -588,7 +623,13 @@
     "bonds": "I will bring terrible wrath down on the evildoers who destroyed my homeland.",
     "flaws": "There's no room for caution in a life lived to the fullest.",
     "spells": {
-      "results": []
+      "results": [
+        { "index": "hunters-mark", "name": "Hunter's Mark", "level": "1" },
+        { "index": "cure-wounds", "name": "Cure Wounds", "level": "1" },
+        { "index": "longstrider", "name": "Longstrider", "level": "1" },
+        { "index": "pass-without-trace", "name": "Pass Without Trace", "level": "2" },
+        { "index": "silence", "name": "Silence", "level": "2" }
+      ]
     }
   },
   {
