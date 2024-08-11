@@ -88,7 +88,7 @@ function DiceRoller() {
             <Flex direction="column" align="center" gap="sm" key={dice.svg.toString()}>
               <Tooltip label={dice.damage === "" ? `Modifier` : `Roll ${dice.damage}`}>
                 <Button
-                  onClick={() => handleSvgClick(1 + dice.damage)}
+                  onClick={() => (input == "" ? handleSvgClick(1 + dice.damage) : handleRollButtonClick())}
                   className={`${classes.dice} ${classes.dice_rotate}`}
                   style={{
                     fill: colorScheme === "dark" ? "white" : "black",
