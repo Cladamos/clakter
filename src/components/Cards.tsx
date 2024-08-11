@@ -8,6 +8,7 @@ import SpellModal from "./Modals/SpellModal"
 import { useDisclosure } from "@mantine/hooks"
 import CreateSpellModal from "./Modals/CreateSpellModal"
 import { createdSpell, useCreatedSpells } from "../contexts/CreatedSpellContext"
+import { useCharacter } from "../contexts/CharacterContext"
 
 const variants = {
   regular: { base: 12, md: 6, lg: 4 },
@@ -60,6 +61,7 @@ function Cards() {
   const cardsPerPage = 12
 
   const { createdSpells, setCreatedSpells } = useCreatedSpells()
+  const { currCharacter } = useCharacter()
 
   const classQueries = useQueries({
     queries: classFilter.map((c) => ({
@@ -187,7 +189,7 @@ function Cards() {
     <>
       <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} spells={mergedSpells} />
       <SpellModal opened={openedSpellModal} close={closeSpellModal} spell={currSpell} />
-      <Container size="lg" mt={100}>
+      <Container size="lg" mt={100} key={currCharacter?.id}>
         <Stack gap="lg" align="center">
           <Group w="100%" justify="center">
             <Input
