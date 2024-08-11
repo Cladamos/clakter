@@ -32,7 +32,13 @@ function HpModal(props: HpModalProps) {
           <Button size="md" variant="outline" onClick={props.close}>
             Close
           </Button>
-          <Button size="md" onClick={handleSetHp}>
+          <Button
+            size="md"
+            onClick={() => {
+              handleSetHp()
+              props.close()
+            }}
+          >
             Set hit points
           </Button>
         </Group>
