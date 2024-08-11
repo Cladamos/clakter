@@ -41,6 +41,14 @@ function Cards() {
     queryKey: ["spells"],
     queryFn: fetchAllSpels,
   })
+  const spellsBySchool = useQuery({
+    queryKey: ["spells-by-school"],
+    queryFn: async () => {
+      const response = await axios<Record<string, string[]>>("/spell-by-school.json")
+      return response.data
+    },
+  })
+  console.log(spellsBySchool.data)
   const [input, setInput] = useState("")
   const [currSpell, setCurrSpell] = useState<string | createdSpell>("aid")
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
@@ -48,7 +56,7 @@ function Cards() {
   const [activePage, setPage] = useState(1)
   const [levelFilter, setLevelFilter] = useState<string[]>([])
   const [classFilter, setClassFilter] = useState<string[]>([])
-  // const [schoolFilter, setSchoolFilter] = useState<string[]>([])
+  const [schoolFilter, setSchoolFilter] = useState<string[]>([])
   const cardsPerPage = 12
 
   const { createdSpells, setCreatedSpells } = useCreatedSpells()
@@ -134,10 +142,28 @@ function Cards() {
         ]
       : data
 
+  const filteredSchoolSpells: string[] = Object.entries(spellsBySchool.data!).reduce(
+    (acc, [k, v]) => (schoolFilter.includes(k) ? [...acc, ...v] : acc),
+    [] as string[],
+  )
+  const schoolFilteredData =
+    schoolFilter.length > 0
+      ? [
+          ...classFilteredData.filter((d) => filteredSchoolSpells.includes(d.index)),
+          ...createdSpells
+            .filter((s) => {
+              return schoolFilter.some((sch) => s.school.toLowerCase().split(", ").includes(sch.toLowerCase()))
+            })
+            .map((s) => {
+              return { index: s.name.toLowerCase(), name: s.name, level: s.level }
+            }),
+        ]
+      : classFilteredData
+
   const levelFilteredData =
     levelFilter.length > 0
-      ? classFilteredData.filter((d) => levelFilter.some((l) => (l == "Cantrip" ? "0" == d.level : l.slice(0, 1) == d.level)))
-      : classFilteredData
+      ? schoolFilteredData.filter((d) => levelFilter.some((l) => (l == "Cantrip" ? "0" == d.level : l.slice(0, 1) == d.level)))
+      : schoolFilteredData
 
   const indexOfLastCard = activePage * cardsPerPage
   const indexOfFirstCard = indexOfLastCard - cardsPerPage
@@ -208,7 +234,7 @@ function Cards() {
                     value={classFilter}
                     onChange={setClassFilter}
                   />
-                  {/* <Divider />
+                  <Divider />
                   <MultiSelect
                     label="Filter by school"
                     comboboxProps={{ withinPortal: false }}
@@ -218,7 +244,7 @@ function Cards() {
                     data={["Abjuration", "Conjuration", "Divination", "Enchantment", "Evocation", "Illusion", "Necromancy", "Transmutation"]}
                     value={schoolFilter}
                     onChange={setSchoolFilter}
-                  /> */}
+                  />
                 </Stack>
               </Popover.Dropdown>
             </Popover>
