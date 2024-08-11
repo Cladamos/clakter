@@ -17,6 +17,7 @@ function Spell(props: Props) {
   const [isInSpellbook, setIsInSpellbook] = useState(
     characterCtx.currCharacter?.spells.results.find((s) => s.index === props.index) === undefined ? false : true,
   )
+  const [isDelete, setIsDelete] = useState(false)
 
   function handleAdd() {
     if (!characterCtx.currCharacter) {
@@ -39,6 +40,11 @@ function Spell(props: Props) {
     if (isInSpellbook) {
       newSpells = characterCtx.currCharacter.spells.results.filter((s) => s.index !== currSpell.index)
       setIsInSpellbook(false)
+      setIsDelete(false)
+      notifications.show({
+        title: "Successful",
+        message: "Your spell successfully deleted from your spellbook",
+      })
     } else {
       newSpells = [...characterCtx.currCharacter.spells.results, currSpell]
       setIsInSpellbook(true)
@@ -69,9 +75,26 @@ function Spell(props: Props) {
         {props.desc}
       </Text>
       {characterCtx.currCharacter ? (
-        <Button fullWidth mt="md" radius="md" onClick={handleAdd} variant={isInSpellbook ? "filled" : "outline"}>
-          {isInSpellbook ? "In your spellbook" : "Add to your spellbook"}
-        </Button>
+        isDelete ? (
+          <Group grow>
+            <Button mt="md" radius="md" variant="outline" onClick={() => setIsDelete(false)}>
+              Cancel
+            </Button>
+            <Button mt="md" radius="md" variant="filled" onClick={handleAdd}>
+              Delete
+            </Button>
+          </Group>
+        ) : (
+          <Button
+            fullWidth
+            mt="md"
+            radius="md"
+            onClick={() => (isInSpellbook ? (isDelete ? handleAdd() : setIsDelete(true)) : handleAdd())}
+            variant={isInSpellbook ? "filled" : "outline"}
+          >
+            {isInSpellbook ? "In your spellbook" : "Add to your spellbook"}
+          </Button>
+        )
       ) : (
         <Tooltip label="You need to create character for use spellbook">
           <Button fullWidth mt="md" radius="md" disabled>

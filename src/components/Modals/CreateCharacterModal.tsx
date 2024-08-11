@@ -434,7 +434,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
             <Card withBorder shadow="sm" radius="md">
               <Card.Section withBorder inheritPadding py="xs">
                 <Group justify="space-between">
-                  <Text fw={500}>Saving throws</Text>
+                  <Text fw={500}>Skills</Text>
                 </Group>
               </Card.Section>
               <Grid mt="md">
