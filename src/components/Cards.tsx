@@ -81,7 +81,7 @@ function Cards() {
     setCreatedSpells((spells) => [...spells, spell])
   }
 
-  if (query.isLoading || query.isPending || classLoading) {
+  if (query.isLoading || query.isPending) {
     return (
       <Container size="lg" mt={100}>
         <Group gap="lg" justify="center">
@@ -252,11 +252,21 @@ function Cards() {
             </Popover>
           </Group>
           <Grid w="100%">
-            {currentCards.map((spell) => (
-              <Grid.Col span={variants.regular} key={spell.name}>
-                <Spell title={spell.name} desc="" level={spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />
-              </Grid.Col>
-            ))}
+            {classLoading ? (
+              <Grid w="100%">
+                {Array.from(Array(12)).map((_, index) => (
+                  <Grid.Col span={variants.regular} key={index}>
+                    <Skeleton height={125} mt={6} radius="md" />
+                  </Grid.Col>
+                ))}
+              </Grid>
+            ) : (
+              currentCards.map((spell) => (
+                <Grid.Col span={variants.regular} key={spell.name}>
+                  <Spell title={spell.name} desc="" level={spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />
+                </Grid.Col>
+              ))
+            )}
           </Grid>
           <Button w="100%" radius="md" onClick={openCreateSpellModal}>
             Create Your Own Spells
