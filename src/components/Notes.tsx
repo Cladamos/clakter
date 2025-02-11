@@ -17,7 +17,7 @@ import {
   TextInput,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { IconPencil, IconTrash } from "@tabler/icons-react"
+import { IconCheck, IconPencil, IconTrash, IconX } from "@tabler/icons-react"
 import { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { useLocalStorage } from "usehooks-ts"
@@ -42,6 +42,7 @@ function SortableNote({
   handleDeleteNote: (note: Note) => void
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: note.id })
+  const [isOnConfirmation, setIsOnConfirmation] = useState(false)
 
   const style = {
     transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
@@ -58,9 +59,20 @@ function SortableNote({
               {note.title}
             </Text>
             <Group gap="xs" wrap="nowrap">
-              <ActionIcon variant="transparent" color="var(--mantine-color-text)" onClick={() => handleDeleteNote(note)}>
-                <IconTrash />
-              </ActionIcon>
+              {isOnConfirmation ? (
+                <Group gap="xs" wrap="nowrap">
+                  <ActionIcon variant="transparent" color="var(--mantine-color-text)" onClick={() => setIsOnConfirmation(false)}>
+                    <IconX />
+                  </ActionIcon>
+                  <ActionIcon variant="transparent" color="var(--mantine-color-text)" onClick={() => handleDeleteNote(note)}>
+                    <IconCheck />
+                  </ActionIcon>
+                </Group>
+              ) : (
+                <ActionIcon variant="transparent" color="var(--mantine-color-text)" onClick={() => setIsOnConfirmation(true)}>
+                  <IconTrash />
+                </ActionIcon>
+              )}
               <ActionIcon variant="transparent" color="var(--mantine-color-text)" onClick={() => handleEditNote(note)}>
                 <IconPencil />
               </ActionIcon>
