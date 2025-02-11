@@ -15,6 +15,7 @@ import {
   Text,
   Textarea,
   TextInput,
+  useMantineColorScheme,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { IconCheck, IconPencil, IconTrash, IconX } from "@tabler/icons-react"
@@ -52,7 +53,7 @@ function SortableNote({
 
   return (
     <Grid.Col span={{ base: 12, md: 6, lg: 4 }} ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Card withBorder shadow="sm" radius="md" h={250} bg={note.color}>
+      <Card withBorder radius="md" h={250} bg={note.color}>
         <Card.Section withBorder inheritPadding p="sm">
           <Group justify="space-between" wrap="nowrap">
             <Text size="lg" truncate="end">
@@ -89,11 +90,13 @@ function SortableNote({
 
 function Notes() {
   const [notes, setNotes] = useLocalStorage<Note[]>("notes", [])
-
   const [noteTitle, setNoteTitle] = useState("")
   const [noteContent, setNoteContent] = useState("")
   const [noteColor, setNoteColor] = useState("gray")
   const [editId, setEditId] = useState("")
+  const [isEditing, setIsEditing] = useState(false)
+
+  const { colorScheme } = useMantineColorScheme()
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
@@ -120,6 +123,14 @@ function Notes() {
     }
   }
 
+  function handleCancelEditNote() {
+    setNoteColor("")
+    setNoteContent("")
+    setNoteTitle("")
+    setEditId("")
+    setIsEditing(false)
+  }
+
   function handleCreateNote() {
     if (noteTitle == "" && noteContent == "") {
       notifications.show({
@@ -138,6 +149,7 @@ function Notes() {
         message: "Your note is succesfuly edited",
       })
       setEditId("")
+      setIsEditing(false)
     } else {
       setNotes((notes) => [...notes, { id: uuidv4(), title: noteTitle, content: noteContent, color: noteColor, isEditing: false }])
       notifications.show({
@@ -164,6 +176,7 @@ function Notes() {
     setNoteContent(n.content)
     setNoteColor(n.color)
     setEditId(n.id)
+    setIsEditing(true)
   }
 
   return (
@@ -176,9 +189,20 @@ function Notes() {
                 <SortableNote key={n.id} note={n} handleEditNote={handleEditNote} handleDeleteNote={handleDeleteNote} />
               ))}
               <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-                <Card withBorder shadow="sm" radius="md" h={250} style={{ display: "flex", flexDirection: "column" }}>
+                <Card
+                  bd={
+                    isEditing
+                      ? "2px solid var(--mantine-primary-color-filled)"
+                      : colorScheme === "dark"
+                      ? "2px solid var(--mantine-color-dark-4)"
+                      : "2px solid var(--mantine-color-gray-3)"
+                  }
+                  shadow={isEditing ? "md" : undefined}
+                  radius="md"
+                  h={250}
+                >
                   <Card.Section withBorder inheritPadding py={1} pb={1}>
-                    <Group justify="space-between" align="flex-start">
+                    <Group justify="space-between" wrap="nowrap" align="center">
                       <TextInput
                         value={noteTitle}
                         size="lg"
@@ -186,6 +210,13 @@ function Notes() {
                         placeholder="Title"
                         onChange={(event) => setNoteTitle(event.currentTarget.value)}
                       />
+                      {isEditing ? (
+                        <ActionIcon variant="transparent" color="var(--mantine-color-dark-3)" onClick={handleCancelEditNote}>
+                          <IconX />
+                        </ActionIcon>
+                      ) : (
+                        <></>
+                      )}
                     </Group>
                   </Card.Section>
                   <Textarea
