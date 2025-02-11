@@ -480,13 +480,16 @@ function CreateCharacterModal(props: createCharacterModalProps) {
           </Stepper.Completed>
         </Stepper>
       </form>
-
-      <Group justify="center" mt="xl">
-        <Button variant="default" onClick={prevStep}>
-          Back
-        </Button>
-        <Button onClick={nextStep}>Next Step</Button>
-      </Group>
+      {active !== 4 ? (
+        <Group justify="center" mt="xl">
+          <Button variant="default" onClick={prevStep}>
+            Back
+          </Button>
+          <Button onClick={nextStep}>Next Step</Button>
+        </Group>
+      ) : (
+        <></>
+      )}
     </Modal>
   )
 }
