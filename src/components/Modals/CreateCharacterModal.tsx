@@ -278,7 +278,17 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     let newAttributes: { name: string; score: string; effect: number }[] = []
     form.getValues().attributes.map((a) => newAttributes.push({ ...a, effect: ~~((Number(a.score) - 10) / 2) })) // "~~" is bitwise operator to truncate I don't want to import math
     form.setValues({ attributes: newAttributes })
-    calculateSkills()
+  }
+
+  for (let i = 0; i < attributes.length; i++) {
+    form.watch(attributes[i].key, () => {
+      calculateEffects()
+      calculateSkills()
+      // TODO: Find better solution to set timeout
+      setTimeout(() => {
+        form.getInputNode(attributes[i].key)?.focus()
+      }, 1)
+    })
   }
 
   function calculateSkills() {
@@ -286,28 +296,30 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     form.getValues().savingThrows.map((s, index) =>
       newSavingThrows.push({
         ...s,
-        proficiency: false,
         score:
-          form.getValues().attributes[index].effect <= 0
-            ? String(form.getValues().attributes[index].effect)
-            : "+" + String(form.getValues().attributes[index].effect),
+          form.getValues().attributes[index].effect + (s.proficiency ? Number(form.getValues().proficiency) : 0) <= 0
+            ? String(form.getValues().attributes[index].effect + (s.proficiency ? Number(form.getValues().proficiency) : 0))
+            : "+" + String(form.getValues().attributes[index].effect + (s.proficiency ? Number(form.getValues().proficiency) : 0)),
       }),
     )
     form.setValues({ savingThrows: newSavingThrows })
 
     const newSkillChecks: { name: string; type: string; score: string; proficiency: boolean }[] = []
-    form
-      .getValues()
-      .skillChecks.map((s) =>
-        form
-          .getValues()
-          .attributes.find((a) =>
-            a.name.includes(s.type)
-              ? newSkillChecks.push({ ...s, proficiency: false, score: a.effect <= 0 ? String(a.effect) : "+" + String(a.effect) })
-              : null,
-          ),
-      )
+    form.getValues().skillChecks.map((s) =>
+      form.getValues().attributes.find((a) =>
+        a.name.includes(s.type)
+          ? newSkillChecks.push({
+              ...s,
+              score:
+                a.effect + (s.proficiency ? Number(form.getValues().proficiency) : 0) <= 0
+                  ? String(a.effect + (s.proficiency ? Number(form.getValues().proficiency) : 0))
+                  : "+" + String(a.effect + (s.proficiency ? Number(form.getValues().proficiency) : 0)),
+            })
+          : null,
+      ),
+    )
     form.setValues({ skillChecks: newSkillChecks })
+    form.getInputNode("attributes.0.score")?.focus()
   }
 
   return (
@@ -404,9 +416,6 @@ function CreateCharacterModal(props: createCharacterModalProps) {
                   </Grid.Col>
                 ))}
               </Grid>
-              <Button size="lg" mb="lg" onClick={calculateEffects}>
-                Calculate saving thorws and skill checks
-              </Button>
               <Card withBorder shadow="sm" radius="md">
                 <Card.Section withBorder inheritPadding py="xs">
                   <Text fw={500}>Saving throws</Text>
