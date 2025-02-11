@@ -32,6 +32,6 @@ function PersonalDetailsModal(props: PersonalDetailsModalProps) {
         </Stack>
       </Modal>
     )
-  } else return <></>
+  }
 }
 export default PersonalDetailsModal

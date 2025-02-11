@@ -285,8 +285,6 @@ function CharacterSheet() {
         </Container>
       </>
     )
-  } else {
-    return
   }
 }
 

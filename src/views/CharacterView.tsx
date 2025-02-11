@@ -26,13 +26,12 @@ function CharactersView() {
         <HeroText open={openSelector} />
       </>
     )
-  } else {
-    return (
-      <>
-        <CreateCharacterModal type="creating" opened={openedCreate} close={close} />
-        <CharacterSheet />
-      </>
-    )
   }
+  return (
+    <>
+      <CreateCharacterModal type="creating" opened={openedCreate} close={close} />
+      <CharacterSheet />
+    </>
+  )
 }
 export default CharactersView
