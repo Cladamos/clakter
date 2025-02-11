@@ -37,7 +37,7 @@ function DiceRollModal(props: DiceRollModalProps) {
     <Modal opened={props.opened} onClose={props.close} size="sm" radius="md" centered padding="md">
       {roll.results.map((dice, index) => (
         <Flex key={index + dice.score} align="center" direction="column">
-          <Stack align="center" gap={0} mb="md">
+          <Stack align="center" gap={0} mb="xs">
             <Tooltip label="Roll Again">
               <Paper
                 onClick={handleRollAgain}
@@ -49,39 +49,23 @@ function DiceRollModal(props: DiceRollModalProps) {
                 <dice.type />
               </Paper>
             </Tooltip>
-            {dice.score == 1 || dice.score == 20 ? (
-              dice.type == D20 ? (
-                <Text c={dice.score == 1 ? "red" : "green"} size="lg" fw={700} pt="sm" className={`${animate ? classes.shake : ""}`}>
-                  {dice.score == 1 ? "Critical Failure" : "Critical Success"}
-                </Text>
-              ) : (
-                <></>
-              )
-            ) : roll.modifier ? (
-              <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
-                {dice.score}
+            {(dice.score == 1 || dice.score == 20) && dice.type == D20 ? (
+              <Text c={dice.score == 1 ? "red" : "green"} size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
+                {dice.score == 1 ? "Critical Failure" : "Critical Success"}
               </Text>
             ) : (
-              <></>
+              <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
+                {roll.modifier ? dice.score + roll.modifier : dice.score}
+              </Text>
             )}
           </Stack>
-          {dice.score == 1 || dice.score == 20 ? (
-            dice.type == D20 ? (
-              <></>
-            ) : (
-              <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
-                {"Total: " + dice.score}
-              </Text>
-            )
-          ) : (
-            <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
-              {roll.modifier
-                ? roll.modifier < 0
-                  ? "Total: " + dice.score + roll.modifier + " = " + (dice.score + roll.modifier)
-                  : "Total: " + dice.score + " + " + roll.modifier + " = " + (dice.score + roll.modifier)
-                : "Total: " + dice.score}
-            </Text>
-          )}
+          <Text size="lg" fw={700} className={`${animate ? classes.shake : ""}`}>
+            {roll.modifier
+              ? roll.modifier < 0
+                ? "Total: " + dice.score + roll.modifier + " = " + (dice.score + roll.modifier)
+                : "Total: " + dice.score + " + " + roll.modifier + " = " + (dice.score + roll.modifier)
+              : "Total: " + dice.score}
+          </Text>
           <Group w="100%" mt="lg" grow>
             <Button size="md" variant="outline" onClick={handleRollAgain}>
               Roll Again
