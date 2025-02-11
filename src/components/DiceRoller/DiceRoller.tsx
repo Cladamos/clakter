@@ -1,4 +1,4 @@
-import { Container, Group, Input, Button, Text, Flex, useMantineColorScheme, Tooltip, Paper } from "@mantine/core"
+import { Container, Group, Input, Button, Text, Flex, useMantineColorScheme, Tooltip, Paper, em } from "@mantine/core"
 import D4 from "../../assets/diceSvgs/dice-d4.svg?react"
 import D6 from "../../assets/diceSvgs/dice-d6.svg?react"
 import D8 from "../../assets/diceSvgs/dice-d8.svg?react"
@@ -9,6 +9,7 @@ import { FC, useState } from "react"
 import classes from "./DiceRoller.module.css"
 import { IconArrowBadgeLeft, IconArrowBadgeRight, IconSquareLetterM } from "@tabler/icons-react"
 import DiceCalculator, { DiceResult } from "./DiceCalculator"
+import { useMediaQuery, useScrollIntoView } from "@mantine/hooks"
 
 type Dices = {
   svg: FC
@@ -34,17 +35,33 @@ function DiceRoller() {
   const [count, setCount] = useState(diceSvgs.map(({ count }) => count))
   const total = dices.reduce((acc, curr) => acc + curr.score, 0) + modifier
 
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`)
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 60,
+    duration: 750,
+  })
+
   function handleRollButtonClick() {
     const output = DiceCalculator(input)
     setDices(output.results)
     setModifier(output.modifier)
     setCount(diceSvgs.map(({ count }) => count))
     setInput("")
+    if (isMobile) {
+      scrollIntoView({
+        alignment: "center",
+      })
+    }
   }
   function handleSvgClick(damage: string) {
     const output = DiceCalculator(damage)
     setDices(output.results)
     setModifier(0)
+    if (isMobile) {
+      scrollIntoView({
+        alignment: "center",
+      })
+    }
   }
 
   function handleButtonClick(index: number, action: string) {
@@ -74,7 +91,7 @@ function DiceRoller() {
     setCount(newCounts)
   }
   return (
-    <Container size="lg" mt={100} h="100%">
+    <Container size="lg" mt={100} mb={50} h="100%">
       <Group gap={50}>
         <Group w="100%" justify="center">
           <Input size="lg" w={200} placeholder="1d6 + 3d10 + 8" value={input} onChange={(event) => setInput(event.target.value)} />
@@ -83,29 +100,30 @@ function DiceRoller() {
             Roll!
           </Button>
         </Group>
-        <Group w="100%" justify="center" gap={30}>
+        <Group w="100%" justify="center" gap={isMobile ? 20 : 30}>
           {diceSvgs.map((dice, index) => (
             <Flex direction="column" align="center" gap="sm" key={dice.svg.toString()}>
               <Tooltip label={dice.damage === "" ? `Modifier` : `Roll ${dice.damage}`}>
                 <Button
                   onClick={() => (input == "" ? handleSvgClick(1 + dice.damage) : handleRollButtonClick())}
-                  className={`${classes.dice} ${classes.dice_rotate}`}
+                  className={isMobile ? `${classes.dice} ${classes.small_dice} ${classes.dice_rotate}` : `${classes.dice} ${classes.dice_rotate}`}
                   style={{
                     fill: colorScheme === "dark" ? "white" : "black",
                   }}
                   variant="default"
                   radius="md"
-                  h="130"
+                  h={isMobile ? 70 : 130}
+                  w={isMobile ? 100 : undefined}
                 >
                   <dice.svg />
                 </Button>
               </Tooltip>
-              <Group gap={10}>
-                <Button px={1} radius={4} size="xs" onClick={() => handleButtonClick(index, "decrease")}>
+              <Group gap={isMobile ? 2 : 10}>
+                <Button variant="subtle" px={1} radius={4} size="xs" onClick={() => handleButtonClick(index, "decrease")}>
                   <IconArrowBadgeLeft />
                 </Button>
-                <Text>{count[index] + dice.damage}</Text>
-                <Button px={1} radius={4} size="xs" onClick={() => handleButtonClick(index, "increase")}>
+                <Text size={isMobile ? "sm" : "md"}>{count[index] + dice.damage}</Text>
+                <Button variant="subtle" px={1} radius={4} size="xs" onClick={() => handleButtonClick(index, "increase")}>
                   <IconArrowBadgeRight />
                 </Button>
               </Group>
@@ -113,7 +131,7 @@ function DiceRoller() {
           ))}
         </Group>
 
-        <Group w="100%" justify="center" gap="md">
+        <Group ref={targetRef} w="100%" justify="center" gap="md">
           <Group gap="xl" w="100%" justify="center" align="flex-end">
             {dices.map((dice, index) => (
               <Flex align="center" direction="column" gap={5} key={index}>
