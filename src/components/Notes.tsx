@@ -22,6 +22,7 @@ import { IconCheck, IconPencil, IconTrash, IconX } from "@tabler/icons-react"
 import { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { useLocalStorage } from "usehooks-ts"
+import { useScrollIntoView } from "@mantine/hooks"
 
 type Note = {
   id: string
@@ -97,6 +98,8 @@ function Notes() {
   const [isEditing, setIsEditing] = useState(false)
 
   const { colorScheme } = useMantineColorScheme()
+
+  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement, HTMLDivElement>()
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
@@ -177,18 +180,19 @@ function Notes() {
     setNoteColor(n.color)
     setEditId(n.id)
     setIsEditing(true)
+    scrollIntoView({ alignment: "end" })
   }
 
   return (
     <Container size="lg" mt={100}>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd} modifiers={[restrictToParentElement]} autoScroll>
         <SortableContext items={notes} strategy={rectSortingStrategy}>
-          <ScrollArea scrollbars="y" h={800} offsetScrollbars>
+          <ScrollArea scrollbars="y" h="calc(100vh - 150px)" offsetScrollbars viewportRef={scrollableRef}>
             <Grid>
               {notes.map((n) => (
                 <SortableNote key={n.id} note={n} handleEditNote={handleEditNote} handleDeleteNote={handleDeleteNote} />
               ))}
-              <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+              <Grid.Col ref={targetRef} span={{ base: 12, md: 6, lg: 4 }}>
                 <Card
                   bd={
                     isEditing
