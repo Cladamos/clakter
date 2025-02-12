@@ -209,7 +209,7 @@ function CharacterSheet() {
                   <CardSection withBorder inheritPadding py="xs">
                     <Text>Your Spells</Text>
                   </CardSection>
-                  <ScrollArea scrollbars="y" mt="sm" h={585}>
+                  <ScrollArea scrollbars="y" mt="sm" h={600}>
                     <Grid>
                       {c.spells.results.map((s) => (
                         <Grid.Col span={{ base: 12, md: 6, lg: 6 }} key={s.index}>
