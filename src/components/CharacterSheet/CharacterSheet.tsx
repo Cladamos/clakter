@@ -148,8 +148,14 @@ function CharacterSheet() {
                 </Group>
                 <Card.Section withBorder inheritPadding py="sm">
                   <Grid grow>
-                    {basicValues.map((b) => (
-                      <Grid.Col span={{ base: 12, md: 4, lg: 2 }} key={b.message} style={{ textAlign: "center" }}>
+                    {basicValues.map((b, index) => (
+                      <Grid.Col
+                        pt={isMobile ? (index === 0 || index === 1 ? "xs" : 2) : "xs"}
+                        pb={isMobile ? (index === 4 ? "xs" : 2) : "xs"}
+                        span={{ base: 6, md: 4, lg: 2 }}
+                        key={b.message}
+                        style={{ textAlign: "center" }}
+                      >
                         <Text>{b.message}</Text>
                         <Paper withBorder py="xs">
                           <Text style={{ textAlign: "center" }} size="sm" truncate="end">
@@ -165,13 +171,13 @@ function CharacterSheet() {
                 <Card withBorder shadow="sm" radius="md">
                   <Grid>
                     {c.attributes.map((a) => (
-                      <Grid.Col span={{ base: 6, md: 4, lg: 2 }} key={a.name}>
+                      <Grid.Col span={2} key={a.name}>
                         <Stack align="center" gap={0}>
                           <Text>{a.name.slice(0, 3).toUpperCase()}</Text>
-                          <Paper withBorder py="lg" px="xl">
+                          <Paper withBorder py="sm" px="md">
                             {a.score}
                           </Paper>
-                          <Paper withBorder px="xl" radius="xl">
+                          <Paper withBorder px="md" radius="xl">
                             {a.effect >= 0 ? "+" + a.effect : a.effect}
                           </Paper>
                         </Stack>
