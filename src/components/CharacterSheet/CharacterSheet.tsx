@@ -2,7 +2,7 @@ import { Button, Card, CardSection, Checkbox, Container, em, Grid, Group, Paper,
 import { useCharacter } from "../../contexts/CharacterContext"
 import { IconCircle, IconCircleFilled, IconEdit, IconFile, IconFlame } from "@tabler/icons-react"
 import { useState } from "react"
-import { useDisclosure, useMediaQuery } from "@mantine/hooks"
+import { useDisclosure, useMediaQuery, useScrollIntoView } from "@mantine/hooks"
 import DiceRollModal from "../Modals/DiceRollModal"
 import "./CharacterSheet.Module..css"
 import PersonalDetailsModal from "../Modals/PersonalDetailsModal"
@@ -47,6 +47,11 @@ function CharacterSheet() {
   const c = useCharacter().currCharacter
   const { createdSpells } = useCreatedSpells()
 
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 60,
+    duration: 750,
+  })
+
   const isMobile = useMediaQuery(`(max-width: ${em(1200)})`)
 
   function handleCurrSpell(spell: string) {
@@ -61,6 +66,18 @@ function CharacterSheet() {
   function handleDiceRoll(input: string) {
     setRollInput(input)
     openDiceRollModal()
+  }
+
+  function handleSpellViewCard() {
+    setIsSpellView((s) => !s)
+    // TODO: Find better solution than setTimeout
+    setTimeout(() => {
+      if (isMobile && !isSpellView) {
+        scrollIntoView({
+          alignment: "start",
+        })
+      }
+    }, 1)
   }
 
   function handleCheckbox(i: number, checkbox: { val: boolean; color: string }) {
@@ -135,7 +152,7 @@ function CharacterSheet() {
                   </Title>
                   <Group style={{ position: "absolute", right: 0 }} gap={0}>
                     <Tooltip label={isSpellView ? "Go sheet" : "Go spells"}>
-                      <Button variant="transparent" onClick={() => setIsSpellView((s) => !s)}>
+                      <Button variant="transparent" onClick={handleSpellViewCard}>
                         {isSpellView ? <IconFile /> : <IconFlame />}
                       </Button>
                     </Tooltip>
@@ -189,7 +206,7 @@ function CharacterSheet() {
                 <></>
               )}
               {isSpellView ? (
-                <Card withBorder shadow="sm" radius="md">
+                <Card ref={targetRef} withBorder shadow="sm" radius="md">
                   <CardSection withBorder inheritPadding py="xs">
                     <Text>Your Spells</Text>
                   </CardSection>
