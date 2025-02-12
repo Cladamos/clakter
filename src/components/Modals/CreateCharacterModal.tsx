@@ -276,7 +276,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
 
   function calculateEffects() {
     let newAttributes: { name: string; score: string; effect: number }[] = []
-    form.getValues().attributes.map((a) => newAttributes.push({ ...a, effect: ~~((Number(a.score) - 10) / 2) })) // "~~" is bitwise operator to truncate I don't want to import math
+    form.getValues().attributes.map((a) => newAttributes.push({ ...a, effect: Math.floor((Number(a.score) - 10) / 2) })) // "~~" is bitwise operator to truncate I don't want to import math
     form.setValues({ attributes: newAttributes })
   }
 
