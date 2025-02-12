@@ -36,7 +36,6 @@ function Spell(props: Props) {
       level: string
     }[] = []
 
-    console.log(currSpell)
     if (isInSpellbook) {
       newSpells = characterCtx.currCharacter.spells.results.filter((s) => s.index !== currSpell.index)
       setIsInSpellbook(false)
@@ -55,7 +54,6 @@ function Spell(props: Props) {
       }
       return { ...c, spells: { results: newSpells } }
     })
-    console.log(newSpells)
   }
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>

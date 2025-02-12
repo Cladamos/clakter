@@ -276,7 +276,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
 
   function calculateEffects() {
     let newAttributes: { name: string; score: string; effect: number }[] = []
-    form.getValues().attributes.map((a) => newAttributes.push({ ...a, effect: Math.floor((Number(a.score) - 10) / 2) })) // "~~" is bitwise operator to truncate I don't want to import math
+    form.getValues().attributes.map((a) => newAttributes.push({ ...a, effect: Math.floor((Number(a.score) - 10) / 2) }))
     form.setValues({ attributes: newAttributes })
   }
 
@@ -284,7 +284,7 @@ function CreateCharacterModal(props: createCharacterModalProps) {
     form.watch(attributes[i].key, () => {
       calculateEffects()
       calculateSkills()
-      // TODO: Find better solution to set timeout
+      // TODO: Find better solution than setTimeout
       setTimeout(() => {
         form.getInputNode(attributes[i].key)?.focus()
       }, 1)

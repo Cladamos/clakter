@@ -49,7 +49,6 @@ function Cards() {
       return response.data
     },
   })
-  console.log(spellsBySchool.data)
   const [input, setInput] = useState("")
   const [currSpell, setCurrSpell] = useState<string | createdSpell>("aid")
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
@@ -125,8 +124,6 @@ function Cards() {
       return { index: c.name.toLowerCase(), name: c.name, level: c.level }
     }),
   ]
-
-  console.log()
 
   const data = mergedSpells.filter((curr) => curr.name.toLowerCase().includes(input.toLowerCase()))
 

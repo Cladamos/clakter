@@ -89,7 +89,6 @@ function CharacterSheet() {
       checkboxValues = { val: true, color: "red" }
     }
     setDeathSaveStates(deathSaveStates.map((d, index) => (index == i ? checkboxValues : d)))
-    console.log(checkboxValues)
   }
 
   if (c) {
