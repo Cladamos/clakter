@@ -1,4 +1,20 @@
-import { Button, Card, CardSection, Checkbox, Container, em, Grid, Group, Paper, ScrollArea, Stack, Text, Title, Tooltip } from "@mantine/core"
+import {
+  Button,
+  Card,
+  CardSection,
+  Checkbox,
+  Container,
+  em,
+  Grid,
+  Group,
+  Paper,
+  ScrollArea,
+  Stack,
+  Text,
+  Title,
+  Tooltip,
+  useMantineColorScheme,
+} from "@mantine/core"
 import { useCharacter } from "../../contexts/CharacterContext"
 import { IconCircle, IconCircleFilled, IconEdit, IconFile, IconFlame } from "@tabler/icons-react"
 import { useState } from "react"
@@ -11,6 +27,9 @@ import CreateCharacterModal from "../Modals/CreateCharacterModal"
 import Spell from "../Spell"
 import SpellModal from "../Modals/SpellModal"
 import { createdSpell, useCreatedSpells } from "../../contexts/CreatedSpellContext"
+import D20 from "../../assets/diceSvgs/dice-d20.svg?react"
+import classes from "../DiceRoller/DiceRoller.module.css"
+import CustomDiceModal from "../Modals/CustomDiceModal"
 
 function camelCaseToNormal(input: string): string {
   let output = ""
@@ -42,10 +61,12 @@ function CharacterSheet() {
   const [openedHpModal, { open: openHpModal, close: closeHpModal }] = useDisclosure(false)
   const [openedCharacterModal, { open: openCharacterModal, close: closeCharacterModal }] = useDisclosure(false)
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
+  const [openedCustomDiceModal, { open: openCustomDiceModal, close: closeCustomDiceModal }] = useDisclosure(false)
   const [isSpellView, setIsSpellView] = useState(false)
   const [currSpell, setCurrSpell] = useState<createdSpell | string>("aid")
   const c = useCharacter().currCharacter
   const { createdSpells } = useCreatedSpells()
+  const { colorScheme } = useMantineColorScheme()
 
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
     offset: 60,
@@ -113,6 +134,7 @@ function CharacterSheet() {
         <HpModal opened={openedHpModal} close={closeHpModal} key={c.id} />
         <PersonalDetailsModal opened={openedPersonalDetailsModal} close={closePersonalDetailsModal} />
         <DiceRollModal opened={openedDiceRollModal} close={closeDiceRollModal} input={rollInput} />
+        <CustomDiceModal opened={openedCustomDiceModal} close={closeCustomDiceModal} />
         <Container size="lg" mt={100} mb={isMobile ? 25 : 0}>
           <Group gap="lg">
             {isMobile ? (
@@ -150,13 +172,29 @@ function CharacterSheet() {
                     {c.name}
                   </Title>
                   <Group style={{ position: "absolute", right: 0 }} gap={0}>
+                    {isMobile ? (
+                      <></>
+                    ) : (
+                      <Tooltip label="Custom Dices">
+                        <Button
+                          style={{ fill: "var(--mantine-primary-color-light-color)" }}
+                          className={`${classes.dice} ${classes.icon_dice}`}
+                          px="xs"
+                          size="xs"
+                          variant="transparent"
+                          onClick={openCustomDiceModal}
+                        >
+                          <D20 />
+                        </Button>
+                      </Tooltip>
+                    )}
                     <Tooltip label={isSpellView ? "Go sheet" : "Go spells"}>
-                      <Button variant="transparent" onClick={handleSpellViewCard}>
+                      <Button px="xs" size="xs" variant="transparent" onClick={handleSpellViewCard}>
                         {isSpellView ? <IconFile /> : <IconFlame />}
                       </Button>
                     </Tooltip>
                     <Tooltip label="Edit">
-                      <Button size="xs" variant="transparent" onClick={openCharacterModal}>
+                      <Button px="xs" size="xs" variant="transparent" onClick={openCharacterModal}>
                         <IconEdit />
                       </Button>
                     </Tooltip>
@@ -184,23 +222,39 @@ function CharacterSheet() {
                 </Card.Section>
               </Card>
               {isMobile ? (
-                <Card withBorder shadow="sm" radius="md">
-                  <Grid>
-                    {c.attributes.map((a) => (
-                      <Grid.Col span={2} key={a.name}>
-                        <Stack align="center" gap={0}>
-                          <Text>{a.name.slice(0, 3).toUpperCase()}</Text>
-                          <Paper withBorder py="sm" px="md">
-                            {a.score}
-                          </Paper>
-                          <Paper withBorder px="md" radius="xl">
-                            {a.effect >= 0 ? "+" + a.effect : a.effect}
-                          </Paper>
-                        </Stack>
-                      </Grid.Col>
-                    ))}
-                  </Grid>
-                </Card>
+                <>
+                  <Card withBorder shadow="sm" radius="md">
+                    <Grid>
+                      {c.attributes.map((a) => (
+                        <Grid.Col span={2} key={a.name}>
+                          <Stack align="center" gap={0}>
+                            <Text>{a.name.slice(0, 3).toUpperCase()}</Text>
+                            <Paper withBorder py="sm" px="md">
+                              {a.score}
+                            </Paper>
+                            <Paper withBorder px="md" radius="xl">
+                              {a.effect >= 0 ? "+" + a.effect : a.effect}
+                            </Paper>
+                          </Stack>
+                        </Grid.Col>
+                      ))}
+                    </Grid>
+                  </Card>
+                  <Button
+                    style={{
+                      fill: colorScheme === "dark" ? "white" : "black",
+                    }}
+                    className={`${classes.dice} ${classes.icon_dice}`}
+                    px="xs"
+                    size="md"
+                    variant="default"
+                    onClick={openCustomDiceModal}
+                  >
+                    <Group gap="xs" align="center">
+                      <D20 /> <Text>Custom Dices</Text>
+                    </Group>
+                  </Button>
+                </>
               ) : (
                 <></>
               )}
@@ -222,7 +276,7 @@ function CharacterSheet() {
               ) : (
                 <>
                   <Card withBorder shadow="sm" radius="md">
-                    <Grid grow style={{ textAlign: "center" }}>
+                    <Grid grow style={{ textAlign: "center" }} align="end">
                       {extraValues.map((e) => (
                         <Grid.Col span={{ base: 6, md: 2, lg: 2 }} key={e.message}>
                           <Text>{e.message}</Text>
@@ -243,9 +297,9 @@ function CharacterSheet() {
                           )}
                         </Grid.Col>
                       ))}
-                      <Grid.Col span={{ base: 12, md: 4, lg: 2 }}>
-                        <Text> Death Saves</Text>
-                        <Paper py="xs" px="xl" withBorder>
+                      <Grid.Col span={{ base: 12, md: 2, lg: 2 }}>
+                        <Text>Death Saves</Text>
+                        <Paper py="xs" px="md" withBorder>
                           <Group justify="center">
                             {deathSaveStates.map((c, index) => (
                               <Checkbox

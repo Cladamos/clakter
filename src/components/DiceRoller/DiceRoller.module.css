@@ -10,6 +10,11 @@
   height: 32px;
 }
 
+.icon_dice svg {
+  width: 24px;
+  height: 24px;
+}
+
 .dice:focus {
   outline: 1px solid var(--mantine-primary-color-filled);
 }
