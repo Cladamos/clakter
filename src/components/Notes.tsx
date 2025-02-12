@@ -184,7 +184,7 @@ function Notes() {
   }
 
   return (
-    <Container size="lg" mt={100}>
+    <Container size="lg" mt={100} mb={25}>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd} modifiers={[restrictToParentElement]} autoScroll>
         <SortableContext items={notes} strategy={rectSortingStrategy}>
           <ScrollArea scrollbars="y" h="calc(100vh - 150px)" offsetScrollbars viewportRef={scrollableRef}>

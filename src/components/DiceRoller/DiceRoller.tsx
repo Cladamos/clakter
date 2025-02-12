@@ -91,7 +91,7 @@ function DiceRoller() {
     setCount(newCounts)
   }
   return (
-    <Container size="lg" mt={100} mb={50} h="100%">
+    <Container size="lg" mt={100} mb={25} h="100%">
       <Group gap={50}>
         <Group w="100%" justify="center">
           <Input size="lg" w={200} placeholder="1d6 + 3d10 + 8" value={input} onChange={(event) => setInput(event.target.value)} />

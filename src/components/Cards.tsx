@@ -189,7 +189,7 @@ function Cards() {
     <>
       <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} spells={mergedSpells} />
       <SpellModal opened={openedSpellModal} close={closeSpellModal} spell={currSpell} />
-      <Container size="lg" mt={100} key={currCharacter?.id}>
+      <Container size="lg" mt={100} mb={25} key={currCharacter?.id}>
         <Stack gap="lg" align="center">
           <Group w="100%" justify="center">
             <Input
