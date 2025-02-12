@@ -82,7 +82,9 @@ function SortableNote({
           </Group>
         </Card.Section>
         <ScrollArea>
-          <Text pt="xs">{note.content}</Text>
+          <Text style={{ whiteSpace: "pre-wrap" }} pt="xs">
+            {note.content}
+          </Text>
         </ScrollArea>
       </Card>
     </Grid.Col>
