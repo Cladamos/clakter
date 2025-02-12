@@ -273,6 +273,7 @@ function CharacterSheet() {
                         <Grid.Col span={{ base: 12, md: 6, lg: 3 }} key={s.name}>
                           <Paper
                             p="xs"
+                            withBorder
                             onClick={() => (s.score == "0" ? handleDiceRoll("1d20") : handleDiceRoll("1d20" + s.score))}
                             className="paper-hover"
                           >
@@ -294,6 +295,7 @@ function CharacterSheet() {
                         <Grid.Col span={{ base: 12, md: 6, lg: 3 }} key={s.name}>
                           <Paper
                             p="xs"
+                            withBorder
                             onClick={() => (s.score == "0" ? handleDiceRoll("1d20") : handleDiceRoll("1d20" + s.score))}
                             className="paper-hover"
                           >
