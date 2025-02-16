@@ -113,7 +113,9 @@ function SpellModal(props: SpellModalProps) {
         </Tooltip>
       </Group>
       <Stack gap="sm">
-        <Text size="sm">{modalData.data.desc}</Text>
+        <Text style={{ whiteSpace: "pre-wrap" }} size="sm">
+          {modalData.data.desc}
+        </Text>
         <Group justify="space-between">
           <Text size="sm">School: {modalData.data.school}</Text>
           <Text size="sm">Classes: {modalData.data.classes}</Text>
