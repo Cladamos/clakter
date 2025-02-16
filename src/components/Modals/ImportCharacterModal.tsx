@@ -1,4 +1,4 @@
-import { Blockquote, Button, Modal, Stack, Textarea } from "@mantine/core"
+import { Alert, Text, Button, Modal, Stack, Textarea } from "@mantine/core"
 import { useInputState } from "@mantine/hooks"
 import { Character, useCharacter } from "../../contexts/CharacterContext"
 import { notifications } from "@mantine/notifications"
@@ -50,12 +50,13 @@ function ImportCharacterModal(props: ImportModalProps) {
 
       setLostSpells(spells)
     } catch (e) {
-      console.log(e)
       setIsJsonParseError(true)
     }
   }, [data])
 
   function handleCreate() {
+    character = JSON.parse(data)
+    console.log(character)
     setCharacters((c) => [...c, character])
     characters.find((c) => c.id === character.id) ? (character.id = uuidv4()) : character.id
     setCurrCharacter({
@@ -93,9 +94,12 @@ function ImportCharacterModal(props: ImportModalProps) {
           maxRows={5}
         ></Textarea>
         {isHaveCreatedSpells && (
-          <Blockquote color="red" icon={<IconInfoCircle />} cite={lostSpells} m="md">
-            You don't have these following created spells if you want to see them in your character you need to create
-          </Blockquote>
+          <Alert variant="light" radius="md" color="red" title="Unknown Spells" icon={<IconInfoCircle />}>
+            <Stack>
+              <Text size="sm">You don't have these following created spells if you want to see them in your character you need to create:</Text>
+              <Text fw={700}>{lostSpells.toString()}</Text>
+            </Stack>
+          </Alert>
         )}
         <Button disabled={isJsonParseError} onClick={handleCreate}>
           Create
