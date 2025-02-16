@@ -5,6 +5,7 @@ type Props = {
   close: () => void
   openCreate: () => void
   openCreateFromPresets: () => void
+  openImportCharacter: () => void
 }
 
 function CreateCharacterSelectorModal(props: Props) {
@@ -17,9 +18,18 @@ function CreateCharacterSelectorModal(props: Props) {
       centered
       padding="xl"
       title="Which way do you want to create a character?"
-      transitionProps={{ duration: 400 }}
     >
       <Stack>
+        <Button
+          size="md"
+          fullWidth
+          onClick={() => {
+            props.openCreate()
+            props.close()
+          }}
+        >
+          Create your own character
+        </Button>
         <Button
           variant="light"
           size="md"
@@ -32,14 +42,15 @@ function CreateCharacterSelectorModal(props: Props) {
           Create from presets
         </Button>
         <Button
+          variant="light"
           size="md"
           fullWidth
           onClick={() => {
-            props.openCreate()
+            props.openImportCharacter()
             props.close()
           }}
         >
-          Create your own character
+          Import from JSON
         </Button>
       </Stack>
     </Modal>
