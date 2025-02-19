@@ -13,7 +13,7 @@ type SpellModalProps = {
 
 type FetchCurrSpellResposeBody = {
   name: string
-  desc: string
+  desc: string[]
   range: string
   casting_time: string
   duration: string
@@ -114,7 +114,17 @@ function SpellModal(props: SpellModalProps) {
       </Group>
       <Stack gap="sm">
         <Text style={{ whiteSpace: "pre-wrap" }} size="sm">
-          {modalData.data.desc}
+          {typeof modalData.data.desc === "string"
+            ? modalData.data.desc
+            : typeof modalData.data.desc === "undefined"
+            ? ""
+            : modalData.data.desc.map((line, index) => (
+                <span key={index}>
+                  {index > 0 && "\n"}
+                  {line}
+                  <br />
+                </span>
+              ))}
         </Text>
         <Group justify="space-between">
           <Text size="sm">School: {modalData.data.school}</Text>

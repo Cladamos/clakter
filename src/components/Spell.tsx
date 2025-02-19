@@ -7,7 +7,6 @@ import { useState } from "react"
 type Props = {
   title: string
   level: string
-  desc: string
   index: string
   handleCurrSpell: (spell: string) => void
 }
@@ -68,10 +67,6 @@ function Spell(props: Props) {
           </ActionIcon>
         </Group>
       </Group>
-
-      <Text size="sm" c="dimmed">
-        {props.desc}
-      </Text>
       {characterCtx.currCharacter ? (
         isDelete ? (
           <Group grow>
