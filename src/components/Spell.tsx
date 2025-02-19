@@ -1,8 +1,9 @@
 import { Card, Text, Badge, Button, Group, ActionIcon, Tooltip } from "@mantine/core"
-import { IconInfoCircle } from "@tabler/icons-react"
+import { IconInfoCircle, IconPencil, IconTrash } from "@tabler/icons-react"
 import { useCharacter } from "../contexts/CharacterContext"
 import { notifications } from "@mantine/notifications"
 import { useState } from "react"
+import { useCreatedSpells } from "../contexts/CreatedSpellContext"
 
 type Props = {
   title: string
@@ -17,6 +18,35 @@ function Spell(props: Props) {
     characterCtx.currCharacter?.spells.results.find((s) => s.index === props.index) === undefined ? false : true,
   )
   const [isDelete, setIsDelete] = useState(false)
+  const [isDeleteSpell, setIsDeleteSpell] = useState(false)
+
+  const { createdSpells, setCreatedSpells } = useCreatedSpells()
+  const isCreated = createdSpells.find((s) => s.name === props.title && s.level === props.level)
+
+  function handleDeleteFromCreatedSpells() {
+    const currSpell = { index: props.index, name: props.title, level: props.level }
+    let newSpells: {
+      index: string
+      name: string
+      level: string
+    }[] = []
+
+    if (isInSpellbook) {
+      newSpells = characterCtx.currCharacter!.spells.results.filter((s) => s.index !== currSpell.index)
+    }
+    characterCtx.setCurrCharacter((c) => {
+      if (c === null) {
+        return null
+      }
+      return { ...c, spells: { results: newSpells } }
+    })
+
+    setCreatedSpells((s) => [...s.filter((s) => s.name !== currSpell.name && s.level !== currSpell.level)])
+    notifications.show({
+      title: "Spell deleted",
+      message: "Your spell is successfully deleted",
+    })
+  }
 
   function handleAdd() {
     if (!characterCtx.currCharacter) {
@@ -61,22 +91,45 @@ function Spell(props: Props) {
           {props.title}
         </Text>
         <Group>
-          <Badge color="pink">{props.level == "0" ? "Cantrip" : "Level " + props.level}</Badge>
-          <ActionIcon radius={100} size="md" onClick={() => props.handleCurrSpell(props.index)}>
-            <IconInfoCircle size={20} />
-          </ActionIcon>
+          {!isCreated && <Badge color="pink">{props.level == "0" ? "Cantrip" : "Level " + props.level}</Badge>}
+          <Group gap={8}>
+            {isCreated && (
+              <>
+                <ActionIcon variant="subtle" radius={100} size="md" onClick={() => setIsDeleteSpell(true)}>
+                  <IconTrash size={20} />
+                </ActionIcon>
+                <ActionIcon variant="subtle" radius={100} size="md" onClick={() => props.handleCurrSpell(props.index)}>
+                  <IconPencil size={20} />
+                </ActionIcon>
+              </>
+            )}
+            <ActionIcon radius={100} size="md" onClick={() => props.handleCurrSpell(props.index)}>
+              <IconInfoCircle size={20} />
+            </ActionIcon>
+          </Group>
         </Group>
       </Group>
       {characterCtx.currCharacter ? (
-        isDelete ? (
-          <Group grow>
-            <Button mt="md" radius="md" variant="outline" onClick={() => setIsDelete(false)}>
-              Cancel
-            </Button>
-            <Button mt="md" radius="md" variant="filled" onClick={handleAdd}>
-              Delete
-            </Button>
-          </Group>
+        isDelete || isDeleteSpell ? (
+          isDelete ? (
+            <Group grow>
+              <Button mt="md" radius="md" variant="outline" onClick={() => setIsDelete(false)}>
+                Cancel
+              </Button>
+              <Button mt="md" radius="md" variant="filled" onClick={handleAdd}>
+                Delete
+              </Button>
+            </Group>
+          ) : (
+            <Group grow>
+              <Button mt="md" radius="md" variant="outline" onClick={() => setIsDeleteSpell(false)}>
+                Cancel
+              </Button>
+              <Button mt="md" radius="md" variant="filled" onClick={handleDeleteFromCreatedSpells}>
+                Delete
+              </Button>
+            </Group>
+          )
         ) : (
           <Button
             fullWidth
