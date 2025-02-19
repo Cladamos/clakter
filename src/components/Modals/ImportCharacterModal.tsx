@@ -1,4 +1,4 @@
-import { Alert, Text, Button, Modal, Stack, Textarea } from "@mantine/core"
+import { Alert, Text, Button, Modal, Stack, JsonInput } from "@mantine/core"
 import { useInputState } from "@mantine/hooks"
 import { Character, useCharacter } from "../../contexts/CharacterContext"
 import { notifications } from "@mantine/notifications"
@@ -83,7 +83,7 @@ function ImportCharacterModal(props: ImportModalProps) {
   return (
     <Modal opened={props.opened} onClose={props.close} size="md" radius="md" centered padding="xl" title="Paste your character JSON">
       <Stack>
-        <Textarea
+        <JsonInput
           error={isJsonParseError ? "Your JSON is not proper for character input" : null}
           value={data}
           onChange={(val) => setData(val)}
@@ -92,11 +92,14 @@ function ImportCharacterModal(props: ImportModalProps) {
           autosize
           minRows={5}
           maxRows={5}
-        ></Textarea>
+          formatOnBlur={true}
+        ></JsonInput>
         {isHaveCreatedSpells && (
           <Alert variant="light" radius="md" color="red" title="Unknown Spells" icon={<IconInfoCircle />}>
             <Stack>
-              <Text size="sm">You don't have these following created spells if you want to see them in your character you need to create:</Text>
+              <Text size="sm">
+                You don't have those following created spells, if you want to see their description and features you need to create them:
+              </Text>
               <Text fw={700}>{lostSpells.toString()}</Text>
             </Stack>
           </Alert>
