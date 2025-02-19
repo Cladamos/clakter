@@ -71,6 +71,7 @@ function Cards() {
   })
 
   const classLoading = classQueries.some((query) => query.isLoading)
+  const classPending = classQueries.some((query) => query.isPending)
   const classError = classQueries.some((query) => query.isError)
   const classData = classQueries.flatMap((query) => query.data || [])
 
@@ -80,7 +81,7 @@ function Cards() {
     setCreatedSpells((spells) => [...spells, spell])
   }
 
-  if (query.isLoading || query.isPending) {
+  if (query.isLoading || query.isPending || spellsBySchool.isLoading || spellsBySchool.isPending) {
     return (
       <Container size="lg" mt={100}>
         <Group gap="lg" justify="center">
@@ -108,7 +109,7 @@ function Cards() {
     )
   }
 
-  if (query.isError || classError) {
+  if (query.isError || classError || spellsBySchool.error) {
     return (
       <Container size="lg" mt={100}>
         <Alert variant="light" color="red" title="Error" icon={<IconExclamationCircle />}>
@@ -249,7 +250,7 @@ function Cards() {
             </Popover>
           </Group>
           <Grid w="100%">
-            {classLoading ? (
+            {classLoading || classPending || spellsBySchool.isLoading || spellsBySchool.isPending ? (
               <Grid w="100%">
                 {Array.from(Array(12)).map((_, index) => (
                   <Grid.Col span={variants.regular} key={index}>
