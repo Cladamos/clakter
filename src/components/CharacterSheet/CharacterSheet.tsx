@@ -267,7 +267,7 @@ function CharacterSheet() {
                     <Grid>
                       {c.spells.results.map((s) => (
                         <Grid.Col span={{ base: 12, md: 6, lg: 6 }} key={s.index}>
-                          <Spell title={s.name} desc="" index={s.index} level={s.level} handleCurrSpell={handleCurrSpell} />
+                          <Spell title={s.name} index={s.index} level={s.level} handleCurrSpell={handleCurrSpell} />
                         </Grid.Col>
                       ))}
                     </Grid>
