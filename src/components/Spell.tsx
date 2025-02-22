@@ -87,7 +87,7 @@ function Spell(props: Props) {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Group justify="space-between" mb="xs">
-        <Text fw={500} size="sm">
+        <Text title={props.title} w={160} truncate="end" fw={500} size="sm">
           {props.title}
         </Text>
         <Group>
