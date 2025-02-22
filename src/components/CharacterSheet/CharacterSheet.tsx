@@ -31,6 +31,7 @@ import { createdSpell, useCreatedSpells } from "../../contexts/CreatedSpellConte
 import D20 from "../../assets/diceSvgs/dice-d20.svg?react"
 import classes from "../DiceRoller/DiceRoller.module.css"
 import CustomDiceModal from "../Modals/CustomDiceModal"
+import { motion } from "motion/react"
 
 function camelCaseToNormal(input: string): string {
   let output = ""
@@ -144,27 +145,29 @@ function CharacterSheet() {
         <CustomDiceModal opened={openedCustomDiceModal} close={closeCustomDiceModal} />
         <Container size="lg" mt={80} mb={isMobile ? 25 : 0}>
           <Group gap="lg">
-            {isMobile ? (
-              <></>
-            ) : (
-              <Card withBorder shadow="sm" radius="md" w="10%">
-                <Grid>
-                  {c.attributes.map((a) => (
-                    <Grid.Col span={12} key={a.name}>
-                      <Stack align="center" gap={0}>
-                        <Text>{a.name.slice(0, 3).toUpperCase()}</Text>
-                        <Paper withBorder py="lg" px="xl">
-                          {a.score}
-                        </Paper>
-                        <Paper withBorder px="xl" radius="xl">
-                          {a.effect >= 0 ? "+" + a.effect : a.effect}
-                        </Paper>
-                      </Stack>
-                    </Grid.Col>
-                  ))}
-                </Grid>
-              </Card>
-            )}
+            <motion.div style={{ width: "10%" }} layout="position" transition={{ duration: 0.2 }}>
+              {isMobile ? (
+                <></>
+              ) : (
+                <Card withBorder shadow="sm" radius="md" w="100%">
+                  <Grid>
+                    {c.attributes.map((a) => (
+                      <Grid.Col span={12} key={a.name}>
+                        <Stack align="center" gap={0}>
+                          <Text>{a.name.slice(0, 3).toUpperCase()}</Text>
+                          <Paper withBorder py="lg" px="xl">
+                            {a.score}
+                          </Paper>
+                          <Paper withBorder px="xl" radius="xl">
+                            {a.effect >= 0 ? "+" + a.effect : a.effect}
+                          </Paper>
+                        </Stack>
+                      </Grid.Col>
+                    ))}
+                  </Grid>
+                </Card>
+              )}
+            </motion.div>
             <Stack w={isMobile ? "100%" : "88%"} gap="xs">
               <Card withBorder shadow="sm" radius="md">
                 <Group pb="sm" style={{ position: "relative", width: "100%" }}>
