@@ -51,6 +51,7 @@ function Cards() {
   })
   const [input, setInput] = useState("")
   const [currSpell, setCurrSpell] = useState<string | createdSpell>("aid")
+  const [editSpell, setEditSpell] = useState<createdSpell>()
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
   const [openedCreateSpellModal, { open: openCreateSpellModal, close: closeCreateSpellModal }] = useDisclosure(false)
   const [activePage, setPage] = useState(1)
@@ -59,7 +60,7 @@ function Cards() {
   const [schoolFilter, setSchoolFilter] = useState<string[]>([])
   const cardsPerPage = 12
 
-  const { createdSpells, setCreatedSpells } = useCreatedSpells()
+  const { createdSpells } = useCreatedSpells()
   const { currCharacter } = useCharacter()
 
   const classQueries = useQueries({
@@ -76,10 +77,6 @@ function Cards() {
   const classData = classQueries.flatMap((query) => query.data || [])
 
   useEffect(() => setPage(1), [levelFilter, classFilter])
-
-  function handleCreateSpell(spell: createdSpell) {
-    setCreatedSpells((spells) => [...spells, spell])
-  }
 
   if (query.isLoading || query.isPending || spellsBySchool.isLoading || spellsBySchool.isPending) {
     return (
@@ -185,7 +182,13 @@ function Cards() {
 
   return (
     <>
-      <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} spells={mergedSpells} />
+      <CreateSpellModal
+        opened={openedCreateSpellModal}
+        close={closeCreateSpellModal}
+        spells={mergedSpells}
+        spell={typeof editSpell !== "undefined" ? editSpell : undefined}
+        setEditSpell={typeof editSpell !== "undefined" ? setEditSpell : undefined}
+      />
       <SpellModal opened={openedSpellModal} close={closeSpellModal} spell={currSpell} />
       <Container size="lg" mt={80} mb={25} key={currCharacter?.id}>
         <Stack gap="lg" align="center">
@@ -261,7 +264,14 @@ function Cards() {
             ) : (
               currentCards.map((spell) => (
                 <Grid.Col span={variants.regular} key={spell.name}>
-                  <Spell title={spell.name} level={spell.level} index={spell.index} handleCurrSpell={handleCurrSpell} />
+                  <Spell
+                    title={spell.name}
+                    level={spell.level}
+                    index={spell.index}
+                    handleCurrSpell={handleCurrSpell}
+                    openEdit={openCreateSpellModal}
+                    setEditSpell={setEditSpell}
+                  />
                 </Grid.Col>
               ))
             )}

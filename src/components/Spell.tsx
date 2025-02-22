@@ -3,13 +3,15 @@ import { IconInfoCircle, IconPencil, IconTrash } from "@tabler/icons-react"
 import { useCharacter } from "../contexts/CharacterContext"
 import { notifications } from "@mantine/notifications"
 import { useState } from "react"
-import { useCreatedSpells } from "../contexts/CreatedSpellContext"
+import { createdSpell, useCreatedSpells } from "../contexts/CreatedSpellContext"
 
 type Props = {
   title: string
   level: string
   index: string
   handleCurrSpell: (spell: string) => void
+  openEdit: () => void
+  setEditSpell: React.Dispatch<React.SetStateAction<createdSpell | undefined>>
 }
 
 function Spell(props: Props) {
@@ -40,8 +42,7 @@ function Spell(props: Props) {
       }
       return { ...c, spells: { results: newSpells } }
     })
-
-    setCreatedSpells((s) => [...s.filter((s) => s.name !== currSpell.name && s.level !== currSpell.level)])
+    setCreatedSpells((s) => [...s.filter((s) => s.name !== currSpell.name)])
     notifications.show({
       title: "Spell deleted",
       message: "Your spell is successfully deleted",
@@ -98,7 +99,14 @@ function Spell(props: Props) {
                 <ActionIcon variant="subtle" radius={100} size="md" onClick={() => setIsDeleteSpell(true)}>
                   <IconTrash size={20} />
                 </ActionIcon>
-                <ActionIcon variant="subtle" radius={100} size="md" onClick={() => props.handleCurrSpell(props.index)}>
+                <ActionIcon
+                  variant="subtle"
+                  radius={100}
+                  size="md"
+                  onClick={() => {
+                    props.openEdit(), props.setEditSpell(createdSpells.find((s) => s.name === props.title))
+                  }}
+                >
                   <IconPencil size={20} />
                 </ActionIcon>
               </>

@@ -32,6 +32,7 @@ import D20 from "../../assets/diceSvgs/dice-d20.svg?react"
 import classes from "../DiceRoller/DiceRoller.module.css"
 import CustomDiceModal from "../Modals/CustomDiceModal"
 import { motion } from "motion/react"
+import CreateSpellModal from "../Modals/CreateSpellModal"
 
 function camelCaseToNormal(input: string): string {
   let output = ""
@@ -64,9 +65,12 @@ function CharacterSheet() {
   const [openedCharacterModal, { open: openCharacterModal, close: closeCharacterModal }] = useDisclosure(false)
   const [openedSpellModal, { open: openSpellModal, close: closeSpellModal }] = useDisclosure(false)
   const [openedCustomDiceModal, { open: openCustomDiceModal, close: closeCustomDiceModal }] = useDisclosure(false)
+  const [openedCreateSpellModal, { open: openCreateSpellModal, close: closeCreateSpellModal }] = useDisclosure(false)
   const [isSpellView, setIsSpellView] = useState(false)
   const [currSpell, setCurrSpell] = useState<createdSpell | string>("aid")
   const [spellSelect, setSpellSelect] = useState<string>("All")
+  const [editSpell, setEditSpell] = useState<createdSpell>()
+
   const c = useCharacter().currCharacter
   const { createdSpells } = useCreatedSpells()
   const { colorScheme } = useMantineColorScheme()
@@ -135,8 +139,17 @@ function CharacterSheet() {
         ? c.spells.results
         : c.spells.results.filter((s) => (spellSelect === "Cantrip" ? "0" === s.level : spellSelect.slice(0, 1) == s.level))
 
+    // TODO: Must give spells array to create spell modal or send api request on create spell modal
+    // or better solution create new json file with all spells names on it and validate from it
     return (
       <>
+        <CreateSpellModal
+          opened={openedCreateSpellModal}
+          close={closeCreateSpellModal}
+          spells={[]}
+          spell={typeof editSpell !== "undefined" ? editSpell : undefined}
+          setEditSpell={typeof editSpell !== "undefined" ? setEditSpell : undefined}
+        />
         <CreateCharacterModal opened={openedCharacterModal} close={closeCharacterModal} type="editing" />
         <SpellModal opened={openedSpellModal} close={closeSpellModal} spell={currSpell} />
         <HpModal opened={openedHpModal} close={closeHpModal} key={c.id} />
@@ -287,7 +300,14 @@ function CharacterSheet() {
                     <Grid>
                       {filteredSpells.map((s) => (
                         <Grid.Col span={{ base: 12, md: 6, lg: 6 }} key={s.index}>
-                          <Spell title={s.name} index={s.index} level={s.level} handleCurrSpell={handleCurrSpell} />
+                          <Spell
+                            title={s.name}
+                            index={s.index}
+                            level={s.level}
+                            handleCurrSpell={handleCurrSpell}
+                            openEdit={openCreateSpellModal}
+                            setEditSpell={setEditSpell}
+                          />
                         </Grid.Col>
                       ))}
                     </Grid>

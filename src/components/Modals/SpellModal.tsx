@@ -79,7 +79,7 @@ function SpellModal(props: SpellModalProps) {
           </Badge>
         </Tooltip>
         <Popover
-          disabled={modalData.data.material === undefined}
+          disabled={modalData.data.material === undefined || modalData.data.material === ""}
           position="top"
           withArrow
           opened={opened}

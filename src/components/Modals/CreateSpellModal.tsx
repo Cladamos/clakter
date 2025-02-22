@@ -1,17 +1,20 @@
 import { Modal, Stack, Button, Textarea, NativeSelect, Group, TextInput, Grid } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
-import { createdSpell } from "../../contexts/CreatedSpellContext"
+import { createdSpell, useCreatedSpells } from "../../contexts/CreatedSpellContext"
+import { useEffect, useRef } from "react"
+import { useCharacter } from "../../contexts/CharacterContext"
 
 type CreateSpellModalProps = {
   opened: boolean
   close: () => void
-  createSpell: (spell: createdSpell) => void
   spells: {
     index: string
     name: string
     level: string
   }[]
+  spell?: createdSpell
+  setEditSpell?: React.Dispatch<React.SetStateAction<createdSpell | undefined>>
 }
 
 const basics = [
@@ -24,6 +27,8 @@ const basics = [
 ]
 
 function CreateSpellModal(props: CreateSpellModalProps) {
+  const { setCreatedSpells } = useCreatedSpells()
+  const { currCharacter, setCurrCharacter } = useCharacter()
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -38,17 +43,77 @@ function CreateSpellModal(props: CreateSpellModalProps) {
       school: "",
       classes: "",
     },
-    validate: { name: (value) => (props.spells.find((s) => s.name == value) ? "There is a another spell with same name" : null) },
+    validate: {
+      name: (value) =>
+        props.spells.find((s) => s.name == value) ? (props.spell?.name === value ? null : "There is a another spell with same name") : null,
+    },
   })
 
+  const isInSpellBook = currCharacter?.spells.results.find((s) => s.name === props.spell?.name) === undefined ? false : true
+
+  const initialLoad = useRef(true)
+
+  useEffect(() => {
+    if (props.opened && initialLoad.current) {
+      if (props.spell) {
+        form.setValues(props.spell)
+      }
+      if (!props.spell) {
+        form.reset()
+      }
+      initialLoad.current = false
+    }
+  }, [props.opened, props.spell, form])
+
+  useEffect(() => {
+    if (!props.opened) {
+      initialLoad.current = true
+    }
+  }, [props.opened])
+
   function handleSumbit(name: string) {
-    props.createSpell({ ...form.getValues(), level: findNumber(form.getValues().level) })
-    props.close()
+    if (props.spell && props.setEditSpell) {
+      if (isInSpellBook) {
+        setCurrCharacter((c) => {
+          if (c === null) {
+            return null
+          }
+          return {
+            ...c,
+            spells: {
+              results: [
+                ...c.spells.results.filter((s) => s.name !== props.spell!.name),
+                { index: form.getValues().name.toLowerCase(), name: form.getValues().name, level: findNumber(form.getValues().level) },
+              ],
+            },
+          }
+        })
+      }
+      setCreatedSpells((s) => [
+        ...s.filter((spell) => spell.name !== props.spell?.name),
+        { ...form.getValues(), level: findNumber(form.getValues().level) },
+      ])
+      notifications.show({
+        title: "Your spell is edited",
+        message: name + " is edited successfully",
+      })
+      props.setEditSpell(undefined)
+    } else {
+      setCreatedSpells((s) => [...s, { ...form.getValues(), level: findNumber(form.getValues().level) }])
+      notifications.show({
+        title: "Your spell is created",
+        message: "Your " + name + " created succesfuly. It look awesome :D",
+      })
+    }
     form.reset()
-    notifications.show({
-      title: "Your spell is created",
-      message: "Your " + name + " created succesfuly. It look awesome :D",
-    })
+    props.close()
+  }
+
+  function handleClose() {
+    props.close()
+    if (props.setEditSpell) {
+      props.setEditSpell(undefined)
+    }
   }
 
   function findNumber(s: string): string {
@@ -62,7 +127,7 @@ function CreateSpellModal(props: CreateSpellModalProps) {
   }
 
   return (
-    <Modal opened={props.opened} onClose={props.close} size="lg" padding="lg" radius="md" centered title="Create Your Own Spell">
+    <Modal opened={props.opened} onClose={handleClose} size="lg" padding="lg" radius="md" centered title="Create Your Own Spell">
       <form onSubmit={form.onSubmit((val) => handleSumbit(val.name))}>
         <Stack gap="sm">
           <TextInput size="md" radius="md" placeholder="Aid" label="Name" required key={form.key("name")} {...form.getInputProps("name")} />
@@ -96,7 +161,9 @@ function CreateSpellModal(props: CreateSpellModalProps) {
               size="md"
               radius="md"
               required
-              onChange={(event) => form.setFieldValue("components", event.currentTarget.value)}
+              onChange={(event) => {
+                form.setFieldValue("components", event.currentTarget.value), form.setFieldValue("material", "")
+              }}
             />
           </Group>
           <Grid grow>
