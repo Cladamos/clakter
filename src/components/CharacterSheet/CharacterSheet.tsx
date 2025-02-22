@@ -7,6 +7,7 @@ import {
   em,
   Grid,
   Group,
+  NativeSelect,
   Paper,
   ScrollArea,
   Stack,
@@ -64,6 +65,7 @@ function CharacterSheet() {
   const [openedCustomDiceModal, { open: openCustomDiceModal, close: closeCustomDiceModal }] = useDisclosure(false)
   const [isSpellView, setIsSpellView] = useState(false)
   const [currSpell, setCurrSpell] = useState<createdSpell | string>("aid")
+  const [spellSelect, setSpellSelect] = useState<string>("All")
   const c = useCharacter().currCharacter
   const { createdSpells } = useCreatedSpells()
   const { colorScheme } = useMantineColorScheme()
@@ -126,6 +128,11 @@ function CharacterSheet() {
       { message: "Speed", val: c.speed },
       { message: "Initiative", val: c.initiative },
     ]
+
+    const filteredSpells =
+      spellSelect === "All"
+        ? c.spells.results
+        : c.spells.results.filter((s) => (spellSelect === "Cantrip" ? "0" === s.level : spellSelect.slice(0, 1) == s.level))
 
     return (
       <>
@@ -261,11 +268,21 @@ function CharacterSheet() {
               {isSpellView ? (
                 <Card ref={targetRef} withBorder shadow="sm" radius="md">
                   <CardSection withBorder inheritPadding py="xs">
-                    <Text>Your Spells</Text>
+                    <Group justify="space-between">
+                      <Text>Your Spells</Text>
+                      <NativeSelect
+                        value={spellSelect}
+                        data={["All", "Cantrip", "1 Level", "2 Level", "3 Level", "4 Level", "5 Level", "6 Level", "7 Level", "8 Level", "9 Level"]}
+                        component="select"
+                        size="sm"
+                        radius="md"
+                        onChange={(e) => setSpellSelect(e.currentTarget.value)}
+                      />
+                    </Group>
                   </CardSection>
                   <ScrollArea scrollbars="y" mt="sm" h={600}>
                     <Grid>
-                      {c.spells.results.map((s) => (
+                      {filteredSpells.map((s) => (
                         <Grid.Col span={{ base: 12, md: 6, lg: 6 }} key={s.index}>
                           <Spell title={s.name} index={s.index} level={s.level} handleCurrSpell={handleCurrSpell} />
                         </Grid.Col>
