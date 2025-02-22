@@ -91,8 +91,8 @@ function DiceRoller() {
     setCount(newCounts)
   }
   return (
-    <Container size="lg" mt={100} mb={25} h="100%">
-      <Group gap={50}>
+    <Container size="lg" mt={isMobile ? 80 : 0} mb={25} h="100%">
+      <Flex h={isMobile ? "100%" : "calc(100vh - 60px)"} direction="column" justify="center" align="center" gap="xl">
         <Group w="100%" justify="center">
           <Input size="lg" w={200} placeholder="1d6 + 3d10 + 8" value={input} onChange={(event) => setInput(event.target.value)} />
 
@@ -162,7 +162,7 @@ function DiceRoller() {
           </Group>
           <Text size="xl"> Total: {total}</Text>
         </Group>
-      </Group>
+      </Flex>
     </Container>
   )
 }

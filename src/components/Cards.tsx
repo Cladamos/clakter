@@ -83,7 +83,7 @@ function Cards() {
 
   if (query.isLoading || query.isPending || spellsBySchool.isLoading || spellsBySchool.isPending) {
     return (
-      <Container size="lg" mt={100}>
+      <Container size="lg" mt={80}>
         <Group gap="lg" justify="center">
           <Input
             leftSection={<IconSearch size={30} />}
@@ -111,7 +111,7 @@ function Cards() {
 
   if (query.isError || classError || spellsBySchool.error) {
     return (
-      <Container size="lg" mt={100}>
+      <Container size="lg" mt={80}>
         <Alert variant="light" color="red" title="Error" icon={<IconExclamationCircle />}>
           There was an error occured.
         </Alert>
@@ -187,7 +187,7 @@ function Cards() {
     <>
       <CreateSpellModal opened={openedCreateSpellModal} close={closeCreateSpellModal} createSpell={handleCreateSpell} spells={mergedSpells} />
       <SpellModal opened={openedSpellModal} close={closeSpellModal} spell={currSpell} />
-      <Container size="lg" mt={100} mb={25} key={currCharacter?.id}>
+      <Container size="lg" mt={80} mb={25} key={currCharacter?.id}>
         <Stack gap="lg" align="center">
           <Group w="100%" justify="center">
             <Input

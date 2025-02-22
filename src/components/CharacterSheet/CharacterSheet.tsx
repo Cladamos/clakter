@@ -142,7 +142,7 @@ function CharacterSheet() {
         <PersonalDetailsModal opened={openedPersonalDetailsModal} close={closePersonalDetailsModal} />
         <DiceRollModal opened={openedDiceRollModal} close={closeDiceRollModal} input={rollInput} />
         <CustomDiceModal opened={openedCustomDiceModal} close={closeCustomDiceModal} />
-        <Container size="lg" mt={100} mb={isMobile ? 25 : 0}>
+        <Container size="lg" mt={80} mb={isMobile ? 25 : 0}>
           <Group gap="lg">
             {isMobile ? (
               <></>
