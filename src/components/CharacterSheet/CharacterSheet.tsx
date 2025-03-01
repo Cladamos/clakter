@@ -12,7 +12,6 @@ import {
   ScrollArea,
   Stack,
   Text,
-  Title,
   Tooltip,
   useMantineColorScheme,
 } from "@mantine/core"
@@ -184,16 +183,21 @@ function CharacterSheet() {
             <Stack w={isMobile ? "100%" : "88%"} gap="xs">
               <Card withBorder shadow="sm" radius="md">
                 <Group pb="sm" style={{ position: "relative", width: "100%" }}>
-                  <Title
+                  <Text
                     className="title-hover"
-                    style={isMobile ? { width: "100%", textAlign: "start", marginLeft: "auto" } : { width: "100%", textAlign: "center" }}
-                    size="h2"
+                    style={
+                      isMobile
+                        ? { width: "60%", textAlign: "start", marginRight: "auto" }
+                        : { width: "60%", textAlign: "center", marginRight: "auto", marginLeft: "auto" }
+                    }
+                    size="25px"
+                    truncate="end"
                     fw={900}
                     c="var(--mantine-color-anchor)"
                     onClick={openPersonalDetailsModal}
                   >
                     {c.name}
-                  </Title>
+                  </Text>
                   <Group style={{ position: "absolute", right: 0 }} gap={0}>
                     {isMobile ? (
                       <></>
